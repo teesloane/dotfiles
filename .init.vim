@@ -1,38 +1,41 @@
-
 " - -- General Sanity --- "
 let mapleader=","
 syntax on
 syntax enable
 
-set foldenable 		" Enable folding
-set encoding=utf-8	" For those sweet sweet iamges
-set nu    		" Turn on line nums
-set expandtab  	 	" Expand tabs to spaces
-set hidden 		" buffer remembers undo history and marks
-set noerrorbells 	" Disable error bells
-set noshowmode 		" hide current mode (liteline handles it)
-set shiftwidth=2 	" The # of spaces for indenting
-set softtabstop=2	" Tab key results in 2 spaces
-set incsearch           " search as characters are entered
-set hlsearch            " highlight matches
-set foldlevelstart=10   " open most folds by default
-set foldmethod=indent   " fold based on indent level
+" My Junk "
+set background=dark       " make dark
+set foldenable            " Enable folding
+set foldlevelstart=10     " open most folds by default
+set foldmethod=indent     " fold based on indent level
+set encoding=utf-8 nobomb " For those sweet sweet iamges
+set nu                    " Turn on line nums
+set expandtab             " Expand tabs to spaces
+set hidden                " buffer remembers undo history and marks
+set noerrorbells          " Disable error bells
+set noshowmode            " hide current mode (liteline handles it)
+set shiftwidth=2          " The # of spaces for indenting
+set softtabstop=2         " Tab key results in 2 spaces
+set incsearch             " search as characters are entered
+set hlsearch              " highlight matches
+set wildignore+=*/bower_components/*,*/node_modules/*
 
+" --- Misc --- "
 
-let g:deoplete#enable_at_startup = 1
-
+"undo anything forever"
+if has("persistent_undo")
+    set undodir=~/.undodir/
+    set undofile
+endif
 
 " --- Key shorts --- "
 nnoremap <leader>m :NERDTreeToggle<CR>
 nnoremap <space> za
-nnoremap j gj
-nnoremap k gk 
 nnoremap <leader>u :UndotreeToggle<CR>
 
 
 " -- Plugins -- "
 call plug#begin('~/.local/share/nvim/plugged')
-
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/goyo.vim'
@@ -46,28 +49,32 @@ Plug 'itchyny/lightline.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'mbbill/undotree'
 call plug#end()
-
 " -- End Plugins -- "
 
+" -- Start Plugins Config-- "
+let g:deoplete#enable_at_startup = 1
+
+" LiteLine
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'component': {
+      \   'readonly': '%{&readonly?"⭤":""}',
+      \ }
+      \ }"
+
 " NERDTree
-let g:NERDTreeLimitedSyntax = 1
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
-let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
+let g:NERDTreeDirArrows=0
+let g:WebDevIconsNerdTreeAfterGlyphPadding = ''
+let g:WebDevIconsUnicodeGlphDoubleWidth = 1
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 
-"undo anything forever"
+"CtrlP config"
+let g:ctrlp_custom_ignore = '\v[\/]\.(node_modules)$'
 
-if has("persistent_undo")
-    set undodir=~/.undodir/
-    set undofile
-endif
-
-" Colors " 
+" Colors "
 set termguicolors     " enable true colors support
-let ayucolor="light"  " for light version of theme
 let ayucolor="mirage" " for mirage version of theme
-let ayucolor="dark"   " for dark version of theme
+"let ayucolor="light"  " for light version of theme
+"let ayucolor="dark"   " for dark version of theme
 colorscheme ayu
 
