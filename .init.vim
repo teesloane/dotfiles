@@ -1,9 +1,8 @@
-" - -- General Sanity --- "
-let mapleader=","
+let mapleader="," 
 syntax on
 syntax enable
 
-" My Junk "
+" ------ My Junk -------"
 set background=dark       " make dark
 set foldenable            " Enable folding
 set foldlevelstart=10     " open most folds by default
@@ -20,7 +19,6 @@ set incsearch             " search as characters are entered
 set hlsearch              " highlight matches
 set wildignore+=*/bower_components/*,*/node_modules/*
 
-" --- Misc --- "
 
 "undo anything forever"
 if has("persistent_undo")
@@ -28,7 +26,7 @@ if has("persistent_undo")
     set undofile
 endif
 
-" --- Key shorts --- "
+" --- LEADER SHORTCUTS --- "
 nnoremap <leader>m :NERDTreeToggle<CR>
 nnoremap <space> za
 nnoremap <leader>u :UndotreeToggle<CR>
@@ -42,17 +40,19 @@ Plug 'junegunn/goyo.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'ryanoasis/vim-devicons'
-Plug 'Valloric/YouCompleteMe'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'itchyny/lightline.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'mbbill/undotree'
+Plug 'chriskempson/base16-vim' 
 call plug#end()
 " -- End Plugins -- "
 
+
 " -- Start Plugins Config-- "
 let g:deoplete#enable_at_startup = 1
+
 
 " LiteLine
 let g:lightline = {
@@ -73,8 +73,7 @@ let g:ctrlp_custom_ignore = '\v[\/]\.(node_modules)$'
 
 " Colors "
 set termguicolors     " enable true colors support
-let ayucolor="mirage" " for mirage version of theme
-"let ayucolor="light"  " for light version of theme
-"let ayucolor="dark"   " for dark version of theme
-colorscheme ayu
+colorscheme base16-oceanicnext
 
+" Highlights must be done at the end of file
+highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
