@@ -17,6 +17,7 @@ set shiftwidth=2          " The # of spaces for indenting
 set softtabstop=2         " Tab key results in 2 spaces
 set incsearch             " search as characters are entered
 set hlsearch              " highlight matches
+filetype plugin indent on " Detect files for indenting?
 
 " --- directory things --- "
 set wildignore+=*/bower_components/*,*/node_modules/*
