@@ -17,6 +17,8 @@ set shiftwidth=2          " The # of spaces for indenting
 set softtabstop=2         " Tab key results in 2 spaces
 set incsearch             " search as characters are entered
 set hlsearch              " highlight matches
+
+" --- directory things --- "
 set wildignore+=*/bower_components/*,*/node_modules/*
 set backupdir=~/.config/nvim/backups
 set directory=~/.config/nvim/swaps
@@ -49,7 +51,6 @@ call plug#end()
 
 " -- Start Plugins Config-- "
 let g:deoplete#enable_at_startup = 1
-
 
 " LiteLine
 let g:lightline = {
