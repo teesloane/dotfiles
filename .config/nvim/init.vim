@@ -18,13 +18,10 @@ set softtabstop=2         " Tab key results in 2 spaces
 set incsearch             " search as characters are entered
 set hlsearch              " highlight matches
 set wildignore+=*/bower_components/*,*/node_modules/*
+set backupdir=~/.config/nvim/backups
+set directory=~/.config/nvim/swaps
+set undodir=~/.config/nvim/undo
 
-
-"undo anything forever"
-if has("persistent_undo")
-    set undodir=~/.undodir/
-    set undofile
-endif
 
 " --- LEADER SHORTCUTS --- "
 nnoremap <leader>m :NERDTreeToggle<CR>
