@@ -1,25 +1,25 @@
 let mapleader="," 
 
 " GENERAL SANITY STUFF {{{
-set background=dark        " make dark
-syntax on                  " turn on syntax highlighting
-syntax enable              " something?
-set clipboard+=unnamedplus " enable copying to clipboard
-set foldenable             " Enable folding
-set foldlevelstart=10      " open most folds by default
-set foldmethod=indent      " fold based on indent level
-set modelines=1            " tell vim to look for file specific settings (used for this config to make it fold on load)
-set encoding=utf-8 nobomb  " For those sweet sweet iamges
-set nu                     " Turn on line nums
-set expandtab              " Expand tabs to spaces
-set hidden                 " buffer remembers undo history and marks
-set noerrorbells           " Disable error bells
-set noshowmode             " hide current mode (liteline handles it)
-set shiftwidth=2           " The # of spaces for indenting
-set softtabstop=2          " Tab key results in 2 spaces
-set incsearch              " search as characters are entered
-set hlsearch               " highlight matches
-filetype plugin indent on  " Detect files for indenting?
+set background=dark             " make dark
+syntax on                       " turn on syntax highlighting
+syntax enable                   " something?
+set clipboard+=unnamedplus      " enable copying to clipboard
+set foldenable                  " Enable folding
+set foldlevelstart=10           " open most folds by default
+set foldmethod=indent           " fold based on indent level
+set modelines=1                 " tell vim to look for file specific settings (used for this config to make it fold on load)
+set encoding=utf-8 nobomb       " For those sweet sweet iamges
+set nu                          " Turn on line nums
+set expandtab                   " Expand tabs to spaces
+set hidden                      " buffer remembers undo history and marks
+set noerrorbells                " Disable error bells
+set noshowmode                  " hide current mode (liteline handles it)
+set shiftwidth=2                " The # of spaces for indenting
+set softtabstop=2               " Tab key results in 2 spaces
+set incsearch                   " search as characters are entered
+set hlsearch                    " highlight matches
+filetype plugin indent on       " Detect files for indenting?
 " }}}
 
 " DIRECTORIES {{{
