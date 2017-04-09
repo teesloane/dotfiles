@@ -33,7 +33,8 @@ set undodir=~/.config/nvim/undo
 nnoremap <leader>m :NERDTreeToggle<CR>  
 nnoremap <space> za                     
 nnoremap <leader>u :UndotreeToggle<CR>  
-nnoremap <Leader>fa :Ag<CR>
+"fzf commands
+nnoremap <Leader>ag :Ag<CR>
 nnoremap <Leader>ff :Files<CR>
 nnoremap <Leader>fb :Buffers<CR>
 "}}}
@@ -54,6 +55,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'Yggdroot/indentLine'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 "}}}
 
@@ -68,10 +70,8 @@ else
   Plug 'junegunn/fzf.vim'
 endif
 
-
 " start deoplete at startup
 let g:deoplete#enable_at_startup = 1
-
 
 " FZF SETUP  This is the default extra key bindings
 let g:fzf_action = {
@@ -79,11 +79,9 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 
-
 " Default fzf layout
 " - down / up / left / right
 let g:fzf_layout = { 'down': '~40%' }
-
 
 " LiteLine
 let g:lightline = {
@@ -92,7 +90,6 @@ let g:lightline = {
       \   'readonly': '%{&readonly?"⭤":""}',
       \ }
       \ }"
-
 
 " NERDTree
 let g:NERDTreeDirArrows=0
