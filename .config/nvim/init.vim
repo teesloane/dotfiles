@@ -35,7 +35,8 @@ nnoremap <space> za
 nnoremap <leader>u :UndotreeToggle<CR>  
 "fzf commands
 nnoremap <Leader>ag :Ag<CR>
-nnoremap <Leader>ff :Files<CR>
+nnoremap <Leader>ff :GitFiles<CR>
+nnoremap <Leader>af :Files<CR>
 nnoremap <Leader>fb :Buffers<CR>
 "}}}
 
