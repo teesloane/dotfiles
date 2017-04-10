@@ -19,7 +19,9 @@ set shiftwidth=2                " The # of spaces for indenting
 set softtabstop=2               " Tab key results in 2 spaces
 set incsearch                   " search as characters are entered
 set hlsearch                    " highlight matches
+let g:jsx_ext_required = 0      " FOR THE JSX
 filetype plugin indent on       " Detect files for indenting?
+command! W w                    " Remap W to w 
 " }}}
 
 " DIRECTORIES {{{
@@ -57,6 +59,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'mxw/vim-jsx'
 call plug#end()
 "}}}
 
@@ -91,6 +94,9 @@ let g:lightline = {
       \   'readonly': '%{&readonly?"⭤":""}',
       \ }
       \ }"
+
+" width of goyo mode
+let g:goyo_width = 110
 
 " NERDTree
 let g:NERDTreeDirArrows=0
