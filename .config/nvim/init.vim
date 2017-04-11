@@ -53,6 +53,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'itchyny/lightline.vim'
 Plug 'mbbill/undotree'
+Plug 'pangloss/vim-javascript'
 Plug 'chriskempson/base16-vim' 
 Plug 'airblade/vim-gitgutter'
 Plug 'Yggdroot/indentLine'
@@ -76,6 +77,7 @@ endif
 
 " start deoplete at startup
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#file#enable_buffer_path = 1  "autocomplete path relative to file not pwd
 
 " FZF SETUP  This is the default extra key bindings
 let g:fzf_action = {
@@ -109,6 +111,7 @@ let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 set termguicolors     " enable true colors support
 colorscheme base16-oceanicnext
 highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+highlight link xmlEndTag xmlTag   "make jsx tags not suck
 "}}}
 
 " enable folding for this file on load
