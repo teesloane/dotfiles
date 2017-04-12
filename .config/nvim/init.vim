@@ -40,6 +40,8 @@ nnoremap <Leader>ag :Ag<CR>
 nnoremap <Leader>ff :GitFiles<CR>
 nnoremap <Leader>af :Files<CR>
 nnoremap <Leader>fb :Buffers<CR>
+"NERDTree 
+nnoremap <Leader>fm :NERDTreeFind<CR>
 "}}}
 
 " PLUGINGS {{{
