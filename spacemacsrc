@@ -354,6 +354,13 @@ you should place your code here."
   ;; Enable custom neotree theme
   (doom-themes-neotree-config)  ; all-the-icons fonts must be installed!
   (doom-themes-nlinum-config)   ; requires nlinum and hl-line-mode | Line highlighting
+  (setq
+   doom-neotree-folder-size 2
+   doom-neotree-project-size 0.5
+   doom-neotree-chevron-size 0.5
+   doom-neotree-line-spacing 1.2
+   doom-neotree-enable-file-icons simple
+   )
 
   ;; Icons and themes and ThiNgS
   (setq neo-theme 'icons)
@@ -362,20 +369,13 @@ you should place your code here."
   (unless (display-graphic-p)
     (setq-default linum-format "%d "))
 
-  (set-window-margins nil 1)
-
   ;; Spacline settings CUSTOMIZATION
   (setq-default  spaceline-all-the-icons-separator-type 'arrow)
-
-  ;; shrink neo tree icons
-  ;; (defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 0.5)))
-  ;; (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'text-scale-twice)))
 
 
   ;; ==========================================
   ;; Mode settings javascript etc
   ;; ==========================================
-
 
   ;; js2 mode settings
   (push '("\\.js\\'" . react-mode) auto-mode-alist)
@@ -411,8 +411,6 @@ you should place your code here."
     (setq-default flycheck-disabled-checkers
                   (append flycheck-disabled-checkers
                           '(javascript-jshint))))
-
-
 
 
   ;; =================================
