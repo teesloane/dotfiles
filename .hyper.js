@@ -99,9 +99,10 @@ module.exports = {
   //   `project#1.0.1`
   plugins: [
     "hyperterm-spacegray",
+    //"hyper-snazzy",
     "hyperterm-paste",
     "hyper-tabs-enhanced",
-    "hyper-statusline",
+    //"hyper-statusline",
     "hypercwd"
   ],
 
@@ -110,6 +111,7 @@ module.exports = {
     tabIconsColored: true,
     border: true
   },
+
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
