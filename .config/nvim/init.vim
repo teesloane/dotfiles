@@ -19,6 +19,10 @@ set shiftwidth=2                " The # of spaces for indenting
 set softtabstop=2               " Tab key results in 2 spaces
 set incsearch                   " search as characters are entered
 set hlsearch                    " highlight matches
+set autoindent
+
+
+hi Normal guibg=NONE ctermbg=NONE
 let g:jsx_ext_required = 0      " FOR THE JSX
 filetype plugin indent on       " Detect files for indenting?
 command! W w                    " Remap W to w 
