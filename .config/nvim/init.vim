@@ -200,15 +200,10 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 
 "COLORS AND HILIGHTING THINGS {{{
 set termguicolors     " enable true colors support
-colorscheme base16-oceanicnext
+colorscheme base16-eighties
 highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 highlight link xmlEndTag xmlTag   "make jsx tags not suck
 "}}}
-
-" following should be at end of file
-" enable folding for this file on load
-" vim:foldmethod=marker:foldlevel=0
-
 
 " MOST OF THIS STUFF IS STOLEN FROM VIM BOOSTRAP
 " LANGUAGE STUFF {{{
