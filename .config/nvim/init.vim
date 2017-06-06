@@ -76,6 +76,9 @@ noremap <leader>q :bp<CR>
 noremap <leader>x :bn<CR>
 noremap <leader>w :bn<CR>
 
+"" Set working directory
+nnoremap <leader>. :lcd %:p:h<CR>
+
 "" Close buffer
 noremap <leader>c :bd<CR>
 
