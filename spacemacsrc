@@ -336,6 +336,7 @@ you should place your code here."
   (global-linum-mode)                 ; Show line numbers by default
   (global-vi-tilde-fringe-mode -1)    ; turn off le fringe ~~~~ things
   (global-visual-line-mode t)         ; break word on wrap
+  (spacemacs/toggle-indent-guide-globally-on) ; turn on the line wrap
   (setq-default line-spacing 0.8)     ; line height, oh my poor eyes
   (setq-default spaceline-all-the-icons-theme t)
   (setq-default spaceline-all-the-icons)
