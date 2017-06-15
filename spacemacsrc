@@ -342,6 +342,8 @@ you should place your code here."
   (setq-default spaceline-all-the-icons)
   (setq create-lockfiles nil)  ; DISABLE LOCK FILES BECAUSE THEY ARE THE WORST I DONT UNDERSTAND THEM WHY DO THEY KEEP DOING THE THING
   (setq require-final-newline t)
+  (setq persp-add-buffer-on-after-change-major-mode t)
+
 
   ;; ==========================================
   ;; THEME SETTINGS
