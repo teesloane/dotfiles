@@ -35,7 +35,6 @@ filetype plugin indent on       " Detect files for indenting?
 
 " DIRECTORIES {{{
 set wildignore+=*/bower_components/*,*/node_modules/*
-set backupdir=~/.config/nvim/backups
 set directory=~/.config/nvim/swaps
 set undodir=~/.config/nvim/undo
 "}}}
@@ -140,6 +139,7 @@ Plug 'mbbill/undotree'
 Plug 'pangloss/vim-javascript'
 Plug 'chriskempson/base16-vim' 
 Plug 'airblade/vim-gitgutter'
+Plug 'fatih/vim-go'
 Plug 'Yggdroot/indentLine'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
