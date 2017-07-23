@@ -292,7 +292,7 @@ values."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
+   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
@@ -346,13 +346,17 @@ you should place your code here."
 
 
   (global-hl-line-mode -1)            ; Disable current line highlight
-  (global-linum-mode)                 ; Show line numbers by default
+  ;; (global-linum-mode)                 ; Show line numbers by default
   (global-vi-tilde-fringe-mode -1)    ; turn off le fringe ~~~~ things
   (global-visual-line-mode t)         ; break word on wrap
   (spacemacs/toggle-indent-guide-globally-on) ; turn on the line wrap
+  (setq powerline-default-separator 'alternate)
   (setq-default line-spacing 0.8)     ; line height, oh my poor eyes
-  (setq-default spaceline-all-the-icons-theme t)
-  (setq-default spaceline-all-the-icons)
+
+  ;; Spacelines; might need to disable if your buffer is slow.
+  ;; (setq-default spaceline-all-the-icons-theme t)
+  ;; (setq-default spaceline-all-the-icons)
+
   (setq create-lockfiles nil)  ; DISABLE LOCK FILES BECAUSE THEY ARE THE WORST I DONT UNDERSTAND THEM WHY DO THEY KEEP DOING THE THING
   (setq require-final-newline t)
   (setq persp-add-buffer-on-after-change-major-mode t)
@@ -362,11 +366,11 @@ you should place your code here."
   ;; THEME SETTINGS
   ;; ==========================================
 
-
-  (require 'spaceline-all-the-icons)
-  (use-package spaceline-all-the-icons
-    :after spaceline
-    :config (spaceline-all-the-icons-theme))
+  ;; disabling becuase i think this might make things slow...
+  ;; (require 'spaceline-all-the-icons)
+  ;; (use-package spaceline-all-the-icons
+  ;;   :after spaceline
+  ;;   :config (spaceline-all-the-icons-theme))
 
   ;; settings for doom theme https://github.com/hlissner/emacs-doom-theme
   ;; Enable custom neotree theme
@@ -418,17 +422,6 @@ you should place your code here."
                   (append flycheck-disabled-checkers
                           '(javascript-jshint))))
 
-
-
-
-  ;; =================================
-  ;; ORG MODE + Deft
-  ;; =================================
-  (defun my/org-mode-hook ()
-    (set-face-attribute 'org-level-1 nil :height 1.0))
-  (add-hook 'org-load-hook #'my/org-mode-hook)
-
-
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -453,3 +446,29 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("5a7830712d709a4fc128a7998b7fa963f37e960fd2e8aa75c76f692b36e6cf3c" default)))
+ '(evil-want-Y-yank-to-eol nil)
+ '(linum-format " %5i ")
+ '(neo-theme (quote icons))
+ '(package-selected-packages
+   (quote
+    (winum unfill symon string-inflection sayid ruby-refactor realgud test-simple loc-changes load-relative password-generator org-brain magithub ghub+ apiwrap ghub impatient-mode helm-purpose window-purpose imenu-list godoctor go-rename fuzzy evil-org evil-lion editorconfig browse-at-remote clojure-snippets clj-refactor inflections edn paredit peg cider-eval-sexp-fu cider seq queue clojure-mode dash sql-indent disaster company-c-headers cmake-mode clang-format tagedit erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks deft doom-themes diminish packed evil helm helm-core avy projectile async s spaceline-all-the-icons memoize font-lock+ origami flycheck-elm elm-mode magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito pcache ht all-the-icons rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby centered-window-mode js-import zonokai-theme zenburn-theme zen-and-art-theme yaml-mode xterm-color web-mode web-beautify slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme reveal-in-osx-finder rainbow-mode rainbow-identifiers railscasts-theme purple-haze-theme pug-mode professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pbcopy pastels-on-dark-theme osx-trash osx-dictionary organic-green-theme org alert log4e gntp omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme markdown-mode majapahit-theme lush-theme livid-mode skewer-mode simple-httpd light-soap-theme less-css-mode launchctl json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme helm-css-scss hc-zenburn-theme haml-mode gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme go-guru go-eldoc gitignore-mode fringe-helper git-gutter+ git-gutter gandalf-theme flyspell-correct-helm flyspell-correct pos-tip flycheck flatui-theme flatland-theme firebelly-theme farmhouse-theme magit magit-popup git-commit with-editor espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web web-completion-data company-tern dash-functional tern company-go go-mode company color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme yasnippet auto-dictionary apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme auto-complete ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link which-key use-package spacemacs-theme smeargle quelpa pcre2el orgit org-projectile org-present org-pomodoro org-download mwim mmm-mode markdown-toc magit-gitflow macrostep hydra htmlize help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip exec-path-from-shell evil-visualstar evil-magit evil-escape elisp-slime-nav diff-hl company-statistics bind-map auto-yasnippet auto-compile ace-window ace-jump-helm-line ac-ispell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
