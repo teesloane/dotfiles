@@ -154,7 +154,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Go Mono"
+   dotspacemacs-default-font '("Fira Code"
                                :size 12
                                :weight normal
                                :width normal
@@ -380,6 +380,16 @@ you should place your code here."
   ;; shrink neo tree icons
   (defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 0.5)))
   (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'text-scale-twice)))
+
+
+  ;; ==========================================
+  ;; Mode settings CIDER / CLOJURE
+  ;; ==========================================
+  (require 'cider)
+  (setq cider-cljs-lein-repl
+        "(do (require 'figwheel-sidecar.repl-api)
+           (figwheel-sidecar.repl-api/start-figwheel! \"dev\")
+           (figwheel-sidecar.repl-api/cljs-repl))")
 
 
   ;; ==========================================
