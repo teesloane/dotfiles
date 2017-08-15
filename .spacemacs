@@ -327,63 +327,29 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
 
 (defun dotspacemacs/user-config ()
-  "Configuration function for user code.
-This function is called at the very end of Spacemacs initialization after
-layers configuration.
-This is the place where most of your configurations should be done. Unless it is
-explicitly specified that a variable should be set before a package is loaded,
-you should place your code here."
-
-  ;; ----------------------------------------------------------------
-  ;;
-  ;; CUSTOM CONFIG --- PARTY PARTY PARTY ---
-  ;;
-  ;; ----------------------------------------------------------------
-
-  ;; make repl stuff better :) (thanks frank)
-  (require 'cider)
-  (setq cider-cljs-lein-repl
-        "(do (require 'figwheel-sidecar.repl-api)
-           (figwheel-sidecar.repl-api/start-figwheel! \"dev\" )
-           (figwheel-sidecar.repl-api/cljs-repl \"dev\"))")
-
   ;; ==========================================
   ;; DEFAULTS
   ;; ==========================================
 
-
-  (global-hl-line-mode -1)            ; Disable current line highlight
-  ;; (global-linum-mode)                 ; Show line numbers by default
-  (global-vi-tilde-fringe-mode -1)    ; turn off le fringe ~~~~ things
-  (global-visual-line-mode t)         ; break word on wrap
-  (spacemacs/toggle-indent-guide-globally-on) ; turn on the line wrap
+  (global-hl-line-mode -1)                             ; Disable current line highlight
+  (global-linum-mode)                                  ; Show line numbers by default
+  (global-vi-tilde-fringe-mode -1)                     ; turn off le fringe ~~~~ things
+  (global-visual-line-mode t)                          ; break word on wrap
+  (spacemacs/toggle-indent-guide-globally-on)          ; turn on the line wrap
   (setq powerline-default-separator 'alternate)
-  (setq-default line-spacing 0.8)     ; line height, oh my poor eyes
-
-  ;; Spacelines; might need to disable if your buffer is slow.
-  ;; (setq-default spaceline-all-the-icons-theme t)
-  ;; (setq-default spaceline-all-the-icons)
-
-  (setq create-lockfiles nil)  ; DISABLE LOCK FILES BECAUSE THEY ARE THE WORST I DONT UNDERSTAND THEM WHY DO THEY KEEP DOING THE THING
-  (setq require-final-newline t)
-  (setq persp-add-buffer-on-after-change-major-mode t)
-
+  (setq-default line-spacing 0.8)                      ; line height, oh my poor eyes
+  (setq create-lockfiles nil)                          ; DISABLE LOCK FILES
+  (setq require-final-newline t)                       ; final new line on file
+  (setq persp-add-buffer-on-after-change-major-mode t) ; I don't remember what this is
 
   ;; ==========================================
   ;; THEME SETTINGS
   ;; ==========================================
 
-  ;; disabling becuase i think this might make things slow...
-  ;; (require 'spaceline-all-the-icons)
-  ;; (use-package spaceline-all-the-icons
-  ;;   :after spaceline
-  ;;   :config (spaceline-all-the-icons-theme))
-
   ;; settings for doom theme https://github.com/hlissner/emacs-doom-theme
-  ;; Enable custom neotree theme
+
   (doom-themes-neotree-config)  ; all-the-icons fonts must be installed!
   (doom-themes-nlinum-config)   ; requires nlinum and hl-line-mode | Line highlighting
-
   ;; shrink neo tree icons
   (defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 0.5)))
   (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'text-scale-twice)))
@@ -395,15 +361,12 @@ you should place your code here."
   (require 'cider)
   (setq cider-cljs-lein-repl
         "(do (require 'figwheel-sidecar.repl-api)
-           (figwheel-sidecar.repl-api/start-figwheel! \"dev\")
-           (figwheel-sidecar.repl-api/cljs-repl))")
-
+           (figwheel-sidecar.repl-api/start-figwheel! \"dev\" )
+           (figwheel-sidecar.repl-api/cljs-repl \"dev\"))")
 
   ;; ==========================================
   ;; Mode settings javascript etc
   ;; ==========================================
-
-
   ;; js2 mode settings
   (push '("\\.js\\'" . react-mode) auto-mode-alist)
   (setq js2-strict-missing-semi-warning nil)
@@ -412,6 +375,7 @@ you should place your code here."
   (setq js2-highlight-level 3)
   (setq-default js2-basic-offset 2)
   (setq-default js-indent-level 2)
+  (setq css-indent-offset 2)
   (setq js2-mode-indent-ignore-first-tab nil)
   (setq js2-mode-show-parse-errors nil)
   (setq js2-mode-show-strict-warnings nil)
@@ -431,9 +395,8 @@ you should place your code here."
     (setq web-mode-script-padding 2)
     )
   (add-hook 'web-mode-hook  'my-web-mode-hook)
-  (setq css-indent-offset 2)
 
-  disable jshint since we prefer eslint checking
+  ;; disable jshint since we prefer eslint checking
   (with-eval-after-load "flycheck"
     (setq-default flycheck-disabled-checkers
                   (append flycheck-disabled-checkers
