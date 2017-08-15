@@ -390,6 +390,16 @@ you should place your code here."
 
 
   ;; ==========================================
+  ;; Mode settings CIDER / CLOJURE
+  ;; ==========================================
+  (require 'cider)
+  (setq cider-cljs-lein-repl
+        "(do (require 'figwheel-sidecar.repl-api)
+           (figwheel-sidecar.repl-api/start-figwheel! \"dev\")
+           (figwheel-sidecar.repl-api/cljs-repl))")
+
+
+  ;; ==========================================
   ;; Mode settings javascript etc
   ;; ==========================================
 
