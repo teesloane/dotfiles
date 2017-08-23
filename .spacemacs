@@ -74,7 +74,6 @@ values."
                                       js-import
                                       centered-window-mode
                                       all-the-icons
-                                      spaceline-all-the-icons
                                       doom-themes
                                     )
    ;; A list of packages that cannot be updated.
@@ -88,7 +87,7 @@ values."
    ;; `used-but-keep-unused' installs only the used packages but won't uninstall
    ;; them if they become unused. `all' installs *all* packages supported by
    ;; Spacemacs and never uninstall them. (default is `used-only')
-   dotspacemacs-install-packages 'used-but-keep-unused))
+   dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
   "Initialization function.
@@ -339,7 +338,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (global-vi-tilde-fringe-mode -1)                     ; turn off le fringe ~~~~ things
   (global-visual-line-mode t)                          ; break word on wrap
   (spacemacs/toggle-indent-guide-globally-on)          ; turn on the line wrap
-  (setq powerline-default-separator 'alternate)
+  (setq powerline-default-separator 'nil)
   (setq-default line-spacing 0.8)                      ; line height, oh my poor eyes
   (setq create-lockfiles nil)                          ; DISABLE LOCK FILES
   (setq require-final-newline t)                       ; final new line on file
