@@ -277,7 +277,7 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'origami
@@ -343,7 +343,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (global-vi-tilde-fringe-mode -1)                     ; turn off le fringe ~~~~ things
   (global-visual-line-mode t)                          ; break word on wrap
   (spacemacs/toggle-indent-guide-globally-on)          ; turn on the line wrap
-  (setq powerline-default-separator 'arrow)
+  (setq powerline-default-separator 'nil)
   (setq ns-use-srgb-colorspace nil)                    ; fixes ghosted powerline: https://www.reddit.com/r/spacemacs/comments/4mkgkl/ugly_separator_borders_on_powerline/?st=j7aij780&sh=3d169e31
   (setq-default line-spacing 0.7)                      ; line height, oh my poor eyes
   (setq create-lockfiles nil)                          ; DISABLE LOCK FILES
@@ -373,6 +373,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
         "(do (require 'figwheel-sidecar.repl-api)
            (figwheel-sidecar.repl-api/start-figwheel! \"dev\" )
            (figwheel-sidecar.repl-api/cljs-repl \"dev\"))")
+
+  ;; =========================================
+  ;; Libraries and whatever
+  ;; =========================================
+  (add-to-list 'load-path "~/.emacs.d/tees_libs/org-present")
+  (autoload 'org-present "org-present" nil t)
+
 
   ;; ==========================================
   ;; Mode settings javascript etc
