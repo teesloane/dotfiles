@@ -60,6 +60,7 @@ values."
      react
      colors
      syntax-checking
+     theming
      version-control
      erc
      (auto-completion :variables
@@ -354,15 +355,40 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; ==========================================
 
   ;; settings for doom theme https://github.com/hlissner/emacs-doom-theme
-
   (doom-themes-neotree-config)  ; all-the-icons fonts must be installed!
-  ;; (doom-themes-nlinum-config)   ; requires nlinum and hl-line-mode | Line highlighting
   (doom-themes-org-config)      ; make org cool
 
   ;; shrink neo tree icons
   (defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 0.5)))
   (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'text-scale-twice)))
 
+  ;; http://philipdaniels.com/blog/2017/02/spacemacs---configuring-the-solarized-theme/
+  ;; Get color-theme-solarized working. It is specified as an additional package
+  ;; above. First we setup some theme modifications - we must do this *before*
+  ;; we load the theme. Note that the color-theme-solarized package appears in
+  ;; the list of themes as plain old 'solarized'.
+  (setq theming-modifications
+        '((solarized
+          ;; Provide a sort of "on-off" modeline whereby the current buffer has a nice
+          ;; bright blue background, and all the others are in cream.
+          ;; TODO: Change to use variables here. However, got error:
+          ;; (Spacemacs) Error in dotspacemacs/user-config: Wrong type argument: stringp, pd-blue
+          (mode-line :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
+          (powerline-active1 :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
+          (powerline-active2 :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
+          (powerline-inactive1 :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
+          (powerline-inactive2 :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
+          ;; Make a really prominent helm selection line.
+          (helm-selection :foreground "white" :background "red" :inverse-video nil)
+          ;; See comment above about dotspacemacs-colorize-cursor-according-to-state.
+          (cursor :background "#b58900")
+        )))
+
+    (set-terminal-parameter nil 'background-mode 'dark)
+    (set-frame-parameter nil 'background-mode 'dark)
+    (spacemacs/load-theme 'solarized)
+
+    (set-face-attribute 'vertical-border nil :foreground "#282a2e")
 
   ;; ==========================================
   ;; Mode settings CIDER / CLOJURE
