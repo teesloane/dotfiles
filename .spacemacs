@@ -31,9 +31,7 @@ values."
 
 
    ;; ----------------------------------------------------------------
-   ;;
    ;; ### --- LAYERS --- ###
-   ;;
    ;; ----------------------------------------------------------------
 
    ;; List of configuration layers to load.
@@ -75,6 +73,7 @@ values."
                                       js-import
                                       centered-window-mode
                                       prettier-js
+                                      color-theme-solarized
                                       all-the-icons
                                       doom-themes
                                     )
@@ -153,8 +152,6 @@ values."
                          doom-nova
                          brin
                          spacegray
-                         darktooth
-                         zenburn
                          spacemacs-dark
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
@@ -345,11 +342,12 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (global-visual-line-mode t)                          ; break word on wrap
   (spacemacs/toggle-indent-guide-globally-on)          ; turn on the line wrap
   (setq powerline-default-separator 'arrow)
-  (setq ns-use-srgb-colorspace nil)                    ; fixes ghosted powerline: https://www.reddit.com/r/spacemacs/comments/4mkgkl/ugly_separator_borders_on_powerline/?st=j7aij780&sh=3d169e31
+  (setq ns-use-srgb-colorspace nil)                    ; fixes ghosted powerline: https://goo.gl/JfnTtv
   (setq-default line-spacing 0.7)                      ; line height, oh my poor eyes
   (setq create-lockfiles nil)                          ; DISABLE LOCK FILES
   (setq require-final-newline t)                       ; final new line on file
   (setq persp-add-buffer-on-after-change-major-mode t) ; I don't remember what this is
+  (setq initial-major-mode 'org-mode)                  ; default scratch pos to org mode
 
   ;; ==========================================
   ;; THEME SETTINGS
@@ -468,7 +466,7 @@ This function is called at the very end of Spacemacs initialization."
    (quote
     (completion log services image hl-nicks youtube services netsplit fill button match track readonly networks ring autojoin noncommands irccontrols move-to-prompt stamp menu list)))
  '(evil-want-Y-yank-to-eol nil)
- '(fci-rule-color "#383a42")
+ '(fci-rule-color "#383a42" t)
  '(jdee-db-active-breakpoint-face-colors (cons "#f0f0f0" "#4078f2"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#f0f0f0" "#50a14f"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#f0f0f0" "#9ca0a4"))
@@ -491,7 +489,7 @@ This function is called at the very end of Spacemacs initialization."
  '(org-fontify-whole-heading-line t)
  '(package-selected-packages
    (quote
-    (company-quickhelp winum unfill prettier-js org-category-capture request fuzzy flx goto-chg undo-tree pkg-info epl bind-key popup doom-tomorrow-night-theme clojure-snippets clj-refactor inflections edn paredit peg cider-eval-sexp-fu cider seq queue clojure-mode dash sql-indent disaster company-c-headers cmake-mode clang-format tagedit erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks deft doom-themes diminish packed evil helm helm-core avy projectile async s spaceline-all-the-icons memoize font-lock+ origami flycheck-elm elm-mode magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito pcache ht all-the-icons rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby centered-window-mode js-import zonokai-theme zenburn-theme zen-and-art-theme yaml-mode xterm-color web-mode web-beautify slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme reveal-in-osx-finder rainbow-mode rainbow-identifiers railscasts-theme purple-haze-theme pug-mode professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pbcopy pastels-on-dark-theme osx-trash osx-dictionary organic-green-theme org alert log4e gntp omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme markdown-mode majapahit-theme lush-theme livid-mode skewer-mode simple-httpd light-soap-theme less-css-mode launchctl json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme helm-css-scss hc-zenburn-theme haml-mode gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme go-guru go-eldoc gitignore-mode fringe-helper git-gutter+ git-gutter gandalf-theme flyspell-correct-helm flyspell-correct pos-tip flycheck flatui-theme flatland-theme firebelly-theme farmhouse-theme magit magit-popup git-commit with-editor espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web web-completion-data company-tern dash-functional tern company-go go-mode company color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme yasnippet auto-dictionary apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme auto-complete ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link which-key use-package spacemacs-theme smeargle quelpa pcre2el orgit org-projectile org-present org-pomodoro org-download mwim mmm-mode markdown-toc magit-gitflow macrostep hydra htmlize help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip exec-path-from-shell evil-visualstar evil-magit evil-escape elisp-slime-nav diff-hl company-statistics bind-map auto-yasnippet auto-compile ace-window ace-jump-helm-line ac-ispell)))
+    (solaire-mode symon sublime-themes string-inflection spacegray-theme sayid ruby-refactor realgud test-simple loc-changes load-relative password-generator org-brain impatient-mode helm-purpose window-purpose imenu-list godoctor go-rename evil-org evil-lion editorconfig company-quickhelp cmake-ide levenshtein browse-at-remote winum unfill prettier-js org-category-capture request fuzzy flx goto-chg undo-tree pkg-info epl bind-key popup doom-tomorrow-night-theme clojure-snippets clj-refactor inflections edn paredit peg cider-eval-sexp-fu cider seq queue clojure-mode dash sql-indent disaster company-c-headers cmake-mode clang-format tagedit erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks deft doom-themes diminish packed evil helm helm-core avy projectile async s spaceline-all-the-icons memoize font-lock+ origami flycheck-elm elm-mode magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito pcache ht all-the-icons rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby centered-window-mode js-import zonokai-theme zenburn-theme zen-and-art-theme yaml-mode xterm-color web-mode web-beautify slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme reveal-in-osx-finder rainbow-mode rainbow-identifiers railscasts-theme purple-haze-theme pug-mode professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pbcopy pastels-on-dark-theme osx-trash osx-dictionary organic-green-theme org alert log4e gntp omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme markdown-mode majapahit-theme lush-theme livid-mode skewer-mode simple-httpd light-soap-theme less-css-mode launchctl json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme helm-css-scss hc-zenburn-theme haml-mode gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme go-guru go-eldoc gitignore-mode fringe-helper git-gutter+ git-gutter gandalf-theme flyspell-correct-helm flyspell-correct pos-tip flycheck flatui-theme flatland-theme firebelly-theme farmhouse-theme magit magit-popup git-commit with-editor espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web web-completion-data company-tern dash-functional tern company-go go-mode company color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme yasnippet auto-dictionary apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme auto-complete ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org spaceline powerline restart-emacs rainbow-delimiters popwin persp-mode paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu eval-sexp-fu highlight dumb-jump f define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol aggressive-indent adaptive-wrap ace-link which-key use-package spacemacs-theme smeargle quelpa pcre2el orgit org-projectile org-present org-pomodoro org-download mwim mmm-mode markdown-toc magit-gitflow macrostep hydra htmlize help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip exec-path-from-shell evil-visualstar evil-magit evil-escape elisp-slime-nav diff-hl company-statistics bind-map auto-yasnippet auto-compile ace-window ace-jump-helm-line ac-ispell)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pos-tip-background-color "#36473A")
  '(pos-tip-foreground-color "#FFFFC8")
@@ -522,5 +520,5 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Source Code Pro" :foundry "nil" :slant normal :weight normal :height 120 :width normal)))))
 )
