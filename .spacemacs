@@ -235,7 +235,7 @@ values."
    dotspacemacs-enable-paste-transient-state nil
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
-   dotspacemacs-which-key-delay 1.75
+   dotspacemacs-which-key-delay 0.4
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficieng space it displays it at the bottom.
@@ -369,18 +369,14 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; the list of themes as plain old 'solarized'.
   (setq theming-modifications
         '((solarized
-          ;; Provide a sort of "on-off" modeline whereby the current buffer has a nice
           ;; bright blue background, and all the others are in cream.
-          ;; TODO: Change to use variables here. However, got error:
-          ;; (Spacemacs) Error in dotspacemacs/user-config: Wrong type argument: stringp, pd-blue
-          (mode-line :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
-          (powerline-active1 :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
-          (powerline-active2 :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
-          (powerline-inactive1 :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
-          (powerline-inactive2 :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
-          ;; Make a really prominent helm selection line.
-          (helm-selection :foreground "white" :background "red" :inverse-video nil)
-          ;; See comment above about dotspacemacs-colorize-cursor-according-to-state.
+          (mode-line            :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
+          (powerline-active1    :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
+          (powerline-active2    :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
+          (powerline-inactive1  :foreground "#2075c7" :background "#2C3E50" :inverse-video nil)
+          (powerline-inactive2  :foreground "#2075c7" :background "#2C3E50" :inverse-video nil)
+
+          (helm-selection :foreground "white" :background "#03A678" :inverse-video nil) ;; change helm selection
           (cursor :background "#b58900")
         )))
 
@@ -388,7 +384,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (set-frame-parameter nil 'background-mode 'dark)
     (spacemacs/load-theme 'solarized)
 
-    (set-face-attribute 'vertical-border nil :foreground "#282a2e")
+    (set-face-attribute 'vertical-border nil :foreground "#042029")
+    (set-face-attribute 'fringe nil ;; this must come after solarized is loaded
+                        :foreground (face-foreground 'default)
+                        :background (face-background 'default))
 
   ;; ==========================================
   ;; Mode settings CIDER / CLOJURE
@@ -547,4 +546,24 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro" :foundry "nil" :slant normal :weight normal :height 120 :width normal)))))
+)
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (define-word zonokai-theme zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit symon sublime-themes string-inflection sql-indent spaceline spacegray-theme solaire-mode smeargle slim-mode shell-pop seti-theme scss-mode sayid sass-mode rvm ruby-tools ruby-test-mode ruby-refactor rubocop rspec-mode robe reverse-theme reveal-in-osx-finder restart-emacs realgud rbenv rake rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme prettier-js popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pbcopy password-generator paradox osx-trash osx-dictionary origami orgit organic-green-theme org-projectile org-present org-pomodoro org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minitest minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode launchctl json-mode js2-refactor js-import js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme info+ indent-guide impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio godoctor go-rename go-guru go-eldoc gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme fuzzy flycheck-pos-tip flycheck-elm flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks emmet-mode elm-mode elisp-slime-nav editorconfig dumb-jump dracula-theme doom-themes django-theme disaster diff-hl deft darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web company-tern company-statistics company-quickhelp company-go company-c-headers column-enforce-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode cmake-mode cmake-ide clues-theme clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu chruby cherry-blossom-theme centered-window-mode busybee-theme bundler bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 )
