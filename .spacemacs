@@ -38,7 +38,6 @@ values."
    dotspacemacs-configuration-layers
    '(
      better-defaults
-     c-c++
      clojure
      colors
      deft
@@ -48,7 +47,6 @@ values."
      git
      github
      go
-     gtags
      helm
      html
      javascript
@@ -63,11 +61,6 @@ values."
      theming
      version-control
      yaml
-     (treemacs
-      :variables
-      treemacs-use-follow-mode t
-      treemacs-use-filewatch-mode t
-      treemacs-use-collapsed-directories 3)
      (auto-completion :variables
                       auto-completion-enable-help-tooltip t)
      )
@@ -317,21 +310,14 @@ values."
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
-It is called immediately after `dotspacemacs/init', before layer configuration
-executes.
- This function is mostly useful for variables that need to be set
-before packages are loaded. If you are unsure, you should try in setting them in
-`dotspacemacs/user-config' first."
+   It is called immediately after `dotspacemacs/init', before layer configuration executes.
+   Don't know what should go here? put it in `dospacemacs/user-config' first."
+
   ;; SETUP DEFT
   (setq deft-auto-save-interval 20)         ; Prevent unecessary auto save / cursor movement
   (setq deft-extensions '("txt" "md" "org"))
   (setq deft-directory "~/Dropbox/notes/")
-
-  ;; (add-hook 'org-load-hook #'my/org-mode-hook)
-  ;; (set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
-
   )
-
 
 (defun dotspacemacs/user-config ()
 
@@ -387,17 +373,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
                       :foreground (face-foreground 'default)
                       :background (face-background 'default))
 
-  ;; TREEMACS
-  (defun treemacs-header-with-brackets (current-root)
-    (format "| %s |" (file-name-nondirectory current-root)))
-  (setq treemacs-header-function #'treemacs-header-with-brackets)
-  ;; try and make the header look nice
-  (defface treemacs-header-face
-    ;; '((t :inherit font-lock-constant-face :underline t :size 1.4))
-    '((t :inherit font-lock-string-face))
-    "Face used by treemacs for its header."
-    :group 'treemacs-faces)
-
   ;; ==========================================
   ;; Mode settings ORG MODE
   ;; ==========================================
@@ -422,6 +397,21 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (add-hook 'org-load-hook #'my/org-mode-hook)
   (set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
+
+  ;; ==========================================
+  ;; Utilities
+  ;; ==========================================
+  (global-set-key (kbd "<f5>") 'set-selective-display-dlw)
+
+  (defun set-selective-display-dlw (&optional level)
+    "Fold text indented same of more than the cursor.
+    If level is set, set the indent level to LEVEL.
+    If 'selective-display' is already set to LEVEL, clicking
+    F5 again will unset 'selective-display' by setting it to 0."
+    (interactive "P")
+    (if (eq selective-display (1+ (current-column)))
+        (set-selective-display 0)
+      (set-selective-display (or level (1+ (current-column))))))
 
   ;; ==========================================
   ;; Mode settings CIDER / CLOJURE
