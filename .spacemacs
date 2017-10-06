@@ -382,9 +382,21 @@ values."
     :config (spaceline-all-the-icons-theme))
   (spaceline-all-the-icons--setup-anzu)            ;; Enable anzu searching
   (spaceline-all-the-icons--setup-git-ahead)       ;; Enable # of commits ahead of upstream in git
-  ;; (spaceline-all-the-icons--setup-package-updates) ;; Enable package update indicator
-  ;; (spaceline-all-the-icons--setup-paradox)         ;; Enable Paradox mode line
-  ;; (spaceline-all-the-icons--setup-neotree)         ;; Enable Neotree mode line
+  (spaceline-all-the-icons--setup-package-updates) ;; Enable package update indicator
+  (spaceline-all-the-icons--setup-paradox)         ;; Enable Paradox mode line
+  (spaceline-all-the-icons--setup-neotree)         ;; Enable Neotree mode line
+  (spaceline-toggle-all-the-icons-vc-icon-on)
+  (spaceline-toggle-all-the-icons-fullscreen-on)
+  (spaceline-toggle-all-the-icons-flycheck-status-on)
+  (spaceline-toggle-all-the-icons-git-status-on)
+  (spaceline-toggle-all-the-icons-vc-icon-on)
+  (spaceline-toggle-all-the-icons-mode-icon-on)
+  (spaceline-toggle-all-the-icons-package-updates-on)
+  (spaceline-toggle-all-the-icons-text-scale-on)
+  (spaceline-toggle-all-the-icons-region-info-on)
+
+  (setq anzu-cons-mode-line-p t)
+  (global-anzu-mode +1)
   (setq-default spaceline-all-the-icons-separator-type 'cup)
 
   ;; ==========================================
