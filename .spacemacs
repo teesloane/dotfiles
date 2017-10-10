@@ -61,6 +61,7 @@ values."
      sql
      syntax-checking
      theming
+     treemacs
      version-control
      yaml
      (auto-completion :variables
@@ -362,7 +363,9 @@ values."
            (powerline-inactive1  :foreground "#34495e" :background "#2C3E50" :inverse-video nil)
            (powerline-inactive2  :foreground "#34495e" :background "#2C3E50" :inverse-video nil)
            (helm-selection :foreground "white" :background "#03A678" :inverse-video nil) ;; change helm selection
-           (cursor :background "#b58900"))))
+           (cursor :background "#b58900"))
+          ))
+
 
 
   (set-terminal-parameter nil 'background-mode 'dark)
