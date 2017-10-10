@@ -19,6 +19,11 @@
 ;; MODES
 (push '("\\.js\\'" . rjsx-mode) auto-mode-alist)
 
+;; there are crashes on osx using projectil and dired :|
+(when (string= system-type "darwin")
+  (setq dired-use-ls-dired nil))
+
+
 ;; DEFAULTS
 (setq-default
     ;; GENERAL STUFF
@@ -32,11 +37,16 @@
     js2-highlight-level 3
     js2-basic-offset 2
     js-indent-level 2
+    web-mode-markup-indent-offset 2
+    web-mode-css-indent-offset 2
+    web-mode-code-indent-offset 2
+    web-mode-style-padding 2
+    web-mode-script-padding 2
 
     ;; PLUGINS
     evil-goggles-duration 0.100 ;; default is 0.200
+    avy-all-windows t
 )
-
 ;; KEYBINDINGS
 (map!
  (:leader
@@ -45,6 +55,9 @@
 
    (:desc "toggle" :prefix "t"
      :desc "Load theme"               :n "s" #'load-theme)
+
+   (:desc "jump" :prefix "j"
+     :desc "Jump to Char"               :n "j" #'avy-goto-char)
 
    (:desc "git" :prefix "g"
      :desc "Git status"        :n  "s" #'magit-status
