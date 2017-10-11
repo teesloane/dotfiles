@@ -3,8 +3,6 @@
 ;; TODO: neotree adjustable
 ;; TODO: add parinfer
 ;; TODO: add cmd+z / cmd+shift+z undo redo
-;; TODO: disable goggles
-;; TODO: ctrl + tab for moving persp
 ;; TODO: add layers to the windows for nested perspectives.
 
 ;; MODES
@@ -17,6 +15,7 @@
 (def-package! browse-at-remote :demand t :config)
 (def-package! yaml-mode        :demand t :config)
 (def-package! markdown-mode    :demand t :config)
+(def-package! js-import        :demand t :config)
 
 
 ;; DEFAULTS
