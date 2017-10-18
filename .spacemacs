@@ -61,7 +61,6 @@ values."
      sql
      syntax-checking
      theming
-     treemacs
      version-control
      yaml
      (auto-completion :variables
@@ -316,10 +315,14 @@ values."
    It is called immediately after `dotspacemacs/init', before layer configuration executes.
    Don't know what should go here? put it in `dospacemacs/user-config' first."
 
+  ;; might not be the right place for this.
+  (set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
+
   ;; SETUP DEFT
   (setq deft-auto-save-interval 20)         ; Prevent unecessary auto save / cursor movement
   (setq deft-extensions '("txt" "md" "org"))
   (setq deft-directory "~/Dropbox/notes/"))
+
 
 
 (defun dotspacemacs/user-config ()
@@ -354,17 +357,18 @@ values."
   ;; above. First we setup some theme modifications - we must do this *before*
   ;; we load the theme. Note that the color-theme-solarized package appears in
   ;; the list of themes as plain old 'solarized'.
-  (setq theming-modifications
-        '((solarized
-           ;; bright blue background, and all the others are in cream.
-           (mode-line            :foreground "#e9e2cb" :background "#34495e" :inverse-video nil)
-           (powerline-active1    :foreground "#e9e2cb" :background "#34495e" :inverse-video nil)
-           (powerline-active2    :foreground "#e9e2cb" :background "#34495e" :inverse-video nil)
-           (powerline-inactive1  :foreground "#34495e" :background "#2C3E50" :inverse-video nil)
-           (powerline-inactive2  :foreground "#34495e" :background "#2C3E50" :inverse-video nil)
-           (helm-selection :foreground "white" :background "#03A678" :inverse-video nil) ;; change helm selection
-           (cursor :background "#b58900"))
-          ))
+
+  ;; (setq theming-modifications
+  ;;       '((solarized
+  ;;          ;; bright blue background, and all the others are in cream.
+  ;;          (mode-line            :foreground "#e9e2cb" :background "#34495e" :inverse-video nil)
+  ;;          (powerline-active1    :foreground "#e9e2cb" :background "#34495e" :inverse-video nil)
+  ;;          (powerline-active2    :foreground "#e9e2cb" :background "#34495e" :inverse-video nil)
+  ;;          (powerline-inactive1  :foreground "#34495e" :background "#2C3E50" :inverse-video nil)
+  ;;          (powerline-inactive2  :foreground "#34495e" :background "#2C3E50" :inverse-video nil)
+  ;;          (helm-selection :foreground "white" :background "#03A678" :inverse-video nil) ;; change helm selection
+  ;;          (cursor :background "#b58900"))
+  ;;         ))
 
 
 
@@ -400,7 +404,7 @@ values."
 
   (setq anzu-cons-mode-line-p t)
   (global-anzu-mode +1)
-  (setq-default spaceline-all-the-icons-separator-type 'cup)
+  (setq-default spaceline-all-the-icons-separator-type 'arrow)
 
   ;; ==========================================
   ;; Section: Mode settings ORG MODE
