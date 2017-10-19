@@ -61,7 +61,6 @@ values."
      sql
      syntax-checking
      theming
-     treemacs
      version-control
      yaml
      (auto-completion :variables
@@ -316,10 +315,14 @@ values."
    It is called immediately after `dotspacemacs/init', before layer configuration executes.
    Don't know what should go here? put it in `dospacemacs/user-config' first."
 
+  ;; might not be the right place for this.
+  (set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
+
   ;; SETUP DEFT
   (setq deft-auto-save-interval 20)         ; Prevent unecessary auto save / cursor movement
   (setq deft-extensions '("txt" "md" "org"))
   (setq deft-directory "~/Dropbox/notes/"))
+
 
 
 (defun dotspacemacs/user-config ()
@@ -364,7 +367,7 @@ values."
 
   (setq anzu-cons-mode-line-p t)
   (global-anzu-mode +1)
-  (setq-default spaceline-all-the-icons-separator-type 'cup)
+  (setq-default spaceline-all-the-icons-separator-type 'arrow)
 
   ;; ==========================================
   ;; Section: Mode settings ORG MODE
