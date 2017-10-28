@@ -24,7 +24,6 @@
 
 ;; DEFAULTS
 (setq-default
-
     ;; GENERAL STUFF
     line-spacing 0.8
     tab-width 2
@@ -107,4 +106,9 @@
    (:desc "eval" :prefix "e"
      :desc "Eval buffer"          :n "b" #'eval-buffer
      :desc "Eval region"          :n "r" #'eval-region)
+
+   (:desc "cursors" :prefix "d"
+     :desc "Make cursors"         :n "d" #'evil-mc-make-and-goto-next-match
+     :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors
+     )
 ))
