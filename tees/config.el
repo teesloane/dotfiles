@@ -7,11 +7,20 @@
 (def-package! prettier-js :mode "\\.js$" :config)
 (def-package! js-import :commands js-import :config)
 (def-package! rjsx-mode :commands rjsx-mode :config)
-(def-package! eyebrowse :demand t)
+;; (def-package! eyebrowse :demand t)
+(def-package! flx :demand t)
 
-(eyebrowse-mode)
+;; (eyebrowse-mode)
 (push '("\\.js\\'" . rjsx-mode) auto-mode-alist)
 
+;; MODELINE CHANGES
+(def-modeline-segment! eyebrowse
+  (when eyebrowse-mode
+    (eyebrowse-mode-line-indicator)))
+
+(def-modeline! main
+  (bar eyebrowse matches " " buffer-info "  %l:%c %p  " selection-info)
+  (buffer-encoding major-mode vcs flycheck))
 
 ;; DEFAULTS
 (setq-default
@@ -35,6 +44,8 @@
     evil-goggles-duration 0.100 ;; default is 0.200
     avy-all-windows t
 )
+
+(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))) ;; make ivy fuzzy search
 
 ;; KEYBINDINGS
 (map!

@@ -4,4 +4,5 @@
 (package! prettier-js)
 (package! js-import)
 (package! eyebrowse)
+(package! flx)
 
