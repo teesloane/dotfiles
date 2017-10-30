@@ -11,16 +11,10 @@
 (def-package! flx :demand t)
 
 ;; (eyebrowse-mode)
+;; Setup modes as necessary
 (push '("\\.js\\'" . rjsx-mode) auto-mode-alist)
+(push '("\\.css\\'" . web-mode) auto-mode-alist)
 
-;; MODELINE CHANGES
-(def-modeline-segment! eyebrowse
-  (when eyebrowse-mode
-    (eyebrowse-mode-line-indicator)))
-
-(def-modeline! main
-  (bar eyebrowse matches " " buffer-info "  %l:%c %p  " selection-info)
-  (buffer-encoding major-mode vcs flycheck))
 
 ;; DEFAULTS
 (setq-default
@@ -45,6 +39,18 @@
 )
 
 (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))) ;; make ivy fuzzy search
+
+
+;; hooks
+(defun my-web-mode-hook ()
+    "Hooks for Web mode."
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (setq web-mode-style-padding 2)
+    (setq web-mode-script-padding 2))
+
+(add-hook 'web-mode-hook  'my-web-mode-hook)
 
 ;; KEYBINDINGS
 (map!
