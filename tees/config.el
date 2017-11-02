@@ -6,15 +6,15 @@
 (load! +bindings)
 
 ;; MODES
-(def-package! prettier-js :mode "\\.js$" :config)
-(def-package! js-import :commands js-import :config)
-(def-package! rjsx-mode :commands rjsx-mode :config)
 (def-package! flx :demand t)
+(def-package! prettier-js    :mode "\\.js$"           :config)
+(def-package! js-import      :commands js-import      :config)
+(def-package! rjsx-mode      :commands rjsx-mode      :config)
 (def-package! writeroom-mode :commands writeroom-mode :config)
 
 ;; Setup modes as necessary (ugh)
-(push '("\\.js\\'" . rjsx-mode) auto-mode-alist)
-(push '("\\.css\\'" . web-mode) auto-mode-alist)
+(push '("\\.js\\'" . rjsx-mode)   auto-mode-alist)
+(push '("\\.css\\'" . web-mode)   auto-mode-alist)
 (push '("\\.sass\\'" . sass-mode) auto-mode-alist)
 
 
@@ -39,11 +39,10 @@
     web-mode-script-padding 2
 
     ;; PLUGINS
-    evil-goggles-duration 0.100
     avy-all-windows t
 )
 
-;; Other local vars?
+;; Local Vars?
 (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))) ;; make ivy fuzzy search
 
 
