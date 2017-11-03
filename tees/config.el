@@ -5,17 +5,19 @@
 ;; Other / Files to lad
 (load! +bindings)
 
-;; MODES
+;; Deterimine my personal packages
 (def-package! flx :demand t)
 (def-package! prettier-js    :mode "\\.js$"           :config)
 (def-package! js-import      :commands js-import      :config)
 (def-package! rjsx-mode      :commands rjsx-mode      :config)
 (def-package! writeroom-mode :commands writeroom-mode :config)
 
-;; Setup modes as necessary (ugh)
-(push '("\\.js\\'" . rjsx-mode)   auto-mode-alist)
-(push '("\\.css\\'" . web-mode)   auto-mode-alist)
-(push '("\\.sass\\'" . sass-mode) auto-mode-alist)
+;; Setup modes as necessary (ugh something should change here...)
+(push '("\\.js\\'"   . rjsx-mode)            auto-mode-alist)
+(push '("\\.css\\'"  . web-mode)             auto-mode-alist)
+(push '("\\.sass\\'" . sass-mode)            auto-mode-alist)
+(push '("\\.clj\\'"  . clojure-mode)         auto-mode-alist)
+(push '("\\.cljs\\'" . clojurescript-mode)   auto-mode-alist)
 
 
 ;; DEFAULTS
@@ -56,3 +58,13 @@
     (setq web-mode-script-padding 2))
 
 (add-hook 'web-mode-hook  'my-web-mode-hook)
+
+;; Edge Cases
+
+;; Don't use shackle popups for clojure cider repl
+(set! :popup "^\\*cider:" :regexp t :align 'right :size 80) ;; not doing anything yet.
+;; setup cider
+(setq cider-cljs-lein-repl
+	"(do (require 'figwheel-sidecar.repl-api)
+         (figwheel-sidecar.repl-api/start-figwheel!)
+         (figwheel-sidecar.repl-api/cljs-repl))")

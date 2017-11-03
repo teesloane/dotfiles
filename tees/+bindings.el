@@ -66,6 +66,7 @@
      :desc "Make cursors"         :n "d" #'evil-mc-make-and-goto-next-match
      :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors
      )
+
 ))
 
 
