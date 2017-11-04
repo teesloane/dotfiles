@@ -1,7 +1,9 @@
 ;;;; private/tees/config.el -*- lexical-binding: t; -*-
 
 (load! +bindings)
-(load! +fira)
+
+;; fira code ligatures seem to break org mode when using third level headers ("***")
+;; (load! +fira)
 
 ;;;; MODES
 (def-package! flx :demand t)
