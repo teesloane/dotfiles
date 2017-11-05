@@ -18,6 +18,7 @@
 (push '("\\.sass\\'" . sass-mode)            auto-mode-alist)
 (push '("\\.clj\\'"  . clojure-mode)         auto-mode-alist)
 (push '("\\.cljs\\'" . clojurescript-mode)   auto-mode-alist)
+(push '("\\.http\\'" . restclient-mode)      auto-mode-alist)
 
 
 ;; DEFAULTS
