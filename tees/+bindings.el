@@ -18,6 +18,7 @@
 
    (:desc "jump" :prefix "j"
      :desc "Jump to Char"         :n "j" #'avy-goto-char
+     :desc "Imenu anywhere"       :n "f" #'ivy-imenu-anywhere
      :desc "Google"               :n "g" #'+jump/online)
 
    (:desc "buffer" :prefix "b"
