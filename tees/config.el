@@ -47,7 +47,7 @@
 (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))) ;; make ivy fuzzy search
 ;; stop rg from crashing with loooooooooooooooooong files.
 (setq counsel-rg-base-command
-      "rg -i -M 120 --no-heading --line-number --color never %s .")
+      "rg -i -M 160 --no-heading --line-number --color never %s .")
 
 
 ;;;; hooks

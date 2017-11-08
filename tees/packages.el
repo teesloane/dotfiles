@@ -6,3 +6,4 @@
 (package! eyebrowse)
 (package! flx)
 (package! writeroom-mode)
+(package! paredit)
