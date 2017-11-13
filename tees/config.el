@@ -27,11 +27,24 @@
 (push '("\\.cljs\\'" . clojurescript-mode)   auto-mode-alist)
 (push '("\\.http\\'" . restclient-mode)      auto-mode-alist)
 
+;; Org setup
+;; doom stuff
+(setq org-fontify-whole-heading-line t
+      org-fontify-done-headline t
+      org-fontify-quote-and-verse-blocks t)
+
+;; make org headings all the same size.
+(defun my/org-mode-hook ()
+  (set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
+  (set-face-attribute 'org-ellipsis nil :height 1.0 :background nil))
+(add-hook 'org-load-hook #'my/org-mode-hook)
+
+
 
 ;; DEFAULTS
 (setq-default
  ;; GENERAL STUFF
- line-spacing 0.6
+ line-spacing 0.4
  tab-width 2
  indent-tab-mode nil
  which-key-idle-delay 0.3
