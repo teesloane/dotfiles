@@ -1,25 +1,23 @@
 ;;;; private/tees/config.el -*- lexical-binding: t; -*-
 
 (load! +bindings)
-;; set a default font
 
-(set-face-attribute 'default nil :font "Fantasque Sans Mono-13")
-;; (set-face-attribute 'default nil :font "Inconsolata-13")
+;; some fonts
+;; (set-face-attribute 'default nil :font "Fantasque Sans Mono-13")
+(set-face-attribute 'default nil :font "Inconsolata-14")
 ;; (set-face-attribute 'default nil :font "Fira Code-12")
 ;; (set-face-attribute 'default nil :font "Hack-12")
 
 
-;; fira code ligatures seem to break org mode when using third level headers ("***")
-;; (load! +fira)
 
-;;;; MODES
+;; MODES
 (def-package! flx :demand t)
 (def-package! prettier-js    :mode "\\.js$"           :config)
 (def-package! js-import      :commands js-import      :config)
 (def-package! rjsx-mode      :commands rjsx-mode      :config)
 (def-package! writeroom-mode :commands writeroom-mode :config)
 
-;;;; Setup modes as necessary (ugh something should change here...)
+;; Setup modes as necessary (ugh something should change here...)
 (push '("\\.js\\'"   . rjsx-mode)            auto-mode-alist)
 (push '("\\.css\\'"  . web-mode)             auto-mode-alist)
 (push '("\\.sass\\'" . sass-mode)            auto-mode-alist)
