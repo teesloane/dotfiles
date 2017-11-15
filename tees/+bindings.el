@@ -55,11 +55,9 @@
      :desc "Git status"           :n  "s" #'magit-status
      :desc "Git stage hunk"       :n  "S" #'git-gutter:stage-hunk
      :desc "Git checkout"         :n  "c" #'magit-branch-checkout
-     :desc "List gists"           :n  "g" #'+gist:list
-     :desc "Magit Popup"          :n  "g" #'magit-file-popup
-     :desc "Find file"            :n  "f" #'magit-find-file)
+     :desc "List gists"           :n  "g" #'+gist:list)
 
-   (:Desc "open" :prefix "o"
+   (:desc "open" :prefix "o"
      :desc "Eshell"               :n  "e" #'+eshell/open-popup)
 
    (:desc "eval" :prefix "e"
