@@ -38,6 +38,14 @@
 (add-hook 'org-load-hook #'my/org-mode-hook)
 
 
+;; NEOTREE ;;
+;; icon size
+(defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 1.0)))
+(add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'text-scale-twice)))
+;; window config
+(setq neo-window-width 30)
+(setq neo-window-fixed-size nil)
+
 
 ;; DEFAULTS
 (setq-default
