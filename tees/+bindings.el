@@ -17,8 +17,10 @@
      :desc "Comment line"         :n "l" #'comment-line)
 
    (:desc "jump" :prefix "j"
-     :desc "Jump to Char"         :n "j" #'avy-goto-char
+     :desc "Jump to Char"         :n "a" #'avy-goto-char
+     :desc "Jump to..."           :n "j" #'dumb-jump-go
      :desc "Imenu anywhere"       :n "f" #'ivy-imenu-anywhere
+     :desc "Jump back"            :n "b" #'dumb-jump-back
      :desc "Google"               :n "g" #'+jump/online)
 
    (:desc "buffer" :prefix "b"
@@ -43,6 +45,7 @@
      :desc "Load"                 :n "l" #'+workspace/load
      :desc "Load Session"         :n "L" #'+workspace/load-session
      :desc "New"                  :n "n" #'+workspace/new
+     :desc "Copy"                 :n "c" #'persp-copy
      :desc "Rename"               :n "r" #'+workspace/rename)
 
    (:desc "eyebrowse" :prefix "k"
