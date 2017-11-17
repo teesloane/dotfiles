@@ -42,11 +42,6 @@
   (set-face-attribute 'org-ellipsis nil :height 1.0 :background nil))
 (add-hook 'org-load-hook #'my/org-mode-hook)
 
-;;; To save the clock history across Emacs sessions, use
-(if (file-exists-p org-clock-persist-file)
-    ;; (setq org-clock-persist 'history)
-    (org-clock-persistence-insinuate)
-  (shell-command (concat "touch " org-clock-persist-file)))
 
 (add-to-list 'load-path "./stuff/orgmode-mediawiki")
 (load! +orgmode-mediawiki)
