@@ -20,6 +20,9 @@
      :desc "Jump to Char"         :n "a" #'avy-goto-char
      :desc "Jump to..."           :n "j" #'dumb-jump-go
      :desc "Imenu anywhere"       :n "f" #'ivy-imenu-anywhere
+     :desc "Imenu here"           :n "h" #'counsel-imenu
+     :desc "iMenu"                :n "i" #'imenu-list
+
      :desc "Jump back"            :n "b" #'dumb-jump-back
      :desc "Google"               :n "g" #'+jump/online)
 
