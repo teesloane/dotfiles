@@ -3,11 +3,8 @@
 (load! +bindings)
 
 ;; some fonts
-;; (set-face-attribute 'default nil :font "Fantasque Sans Mono-13")
-(set-face-attribute 'default nil :font "Inconsolata-14")
-;; (set-face-attribute 'default nil :font "Fira Code-12")
-;; (set-face-attribute 'default nil :font "Hack-12")
-
+(set-face-attribute 'default nil :font "IBM Plex Mono-12")
+(set-face-attribute 'font-lock-comment-face nil  :slant 'italic )
 
 
 ;; MODES
@@ -48,7 +45,7 @@
 
 ;; NEOTREE ;;
 ;; icon size
-(defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 1.0)))
+(defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 0.7)))
 (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'text-scale-twice)))
 ;; window config
 (setq neo-window-width 30)
