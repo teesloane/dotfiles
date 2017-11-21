@@ -36,18 +36,16 @@
 ;; make org headings all the same size.
 (defun my/org-mode-hook ()
   (set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
-  (set-face-attribute 'org-ellipsis nil :height 1.0 :background nil))
+  (set-face-attribute 'org-ellipsis nil :height 1.0 :background nil)
+  ;; this might be the right place for this.
+  (add-to-list 'load-path "./stuff/orgmode-mediawiki")
+  (load! +orgmode-mediawiki))
 (add-hook 'org-load-hook #'my/org-mode-hook)
-
-
-(add-to-list 'load-path "./stuff/orgmode-mediawiki")
-(load! +orgmode-mediawiki)
 
 
 ;;;;;;;;;
 ;; ERC ;;
 ;;;;;;;;;
-
 
 ;; it is not possible to set erc-log-mode variable directly
 (erc-log-mode)
@@ -60,16 +58,22 @@
 (setq erc-log-write-after-send t)
 
 
+;;;;;;;;;;;;;
 ;; NEOTREE ;;
-;; icon size
-(defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 0.7)))
+;;;;;;;;;;;;;
+
+;; change icon size. Possibly commented out for being weird / inefficient.
+(defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 0)))
 (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'text-scale-twice)))
 ;; window config
 (setq neo-window-width 30)
 (setq neo-window-fixed-size nil)
 
 
-;; DEFAULTS
+;;;;;;;;;;;;;;
+;; DEFAULTS ;;
+;;;;;;;;;;;;;;
+
 (setq-default
  ;; GENERAL STUFF
  line-spacing 0.4
@@ -92,21 +96,21 @@
  avy-all-windows t
 )
 
-;; Local Vars? ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LOCAL VARS SETQ STUFF ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
- ;; make ivy fuzzy search
-(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+(setq
+ ivy-re-builders-alist '((t . ivy--regex-fuzzy))                                      ;; Make ivy a fuzzy searcher.
+ counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
+ company-idle-delay 0.2
+ company-minimum-prefix-length 3)
 
-;; stop rg from crashing with loooooooooooooooooong files.
-(setq counsel-rg-base-command
-      "rg -i -M 160 --no-heading --line-number --color never %s .")
 
-;; Auto Completion
-(require 'company)
-(setq company-idle-delay 0.2
-      company-minimum-prefix-length 3)
+ ;;;;;;;;;;;;;;;;;;;
+ ;; MODES + HOOKS ;;
+ ;;;;;;;;;;;;;;;;;;;
 
-;;;; hooks
 (defun my-web-mode-hook ()
     "Hooks for Web mode."
     (setq web-mode-markup-indent-offset 2)
