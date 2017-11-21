@@ -120,3 +120,5 @@
     (setq web-mode-script-padding 2))
 
 (add-hook 'web-mode-hook  'my-web-mode-hook)
+(add-hook 'before-save-hook 'whitespace-cleanup)
+

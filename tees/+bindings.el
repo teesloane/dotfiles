@@ -61,6 +61,7 @@
      :desc "Git status"           :n  "s" #'magit-status
      :desc "Git stage hunk"       :n  "S" #'git-gutter:stage-hunk
      :desc "Git checkout"         :n  "c" #'magit-branch-checkout
+     :desc "merge-conflict"       :n  "m" #'+hydra-smerge/body
      :desc "List gists"           :n  "g" #'+gist:list)
 
    (:desc "open" :prefix "o"
