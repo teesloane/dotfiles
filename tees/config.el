@@ -42,22 +42,6 @@
   (load! +orgmode-mediawiki))
 (add-hook 'org-load-hook #'my/org-mode-hook)
 
-
-;;;;;;;;;
-;; ERC ;;
-;;;;;;;;;
-
-;; it is not possible to set erc-log-mode variable directly
-(erc-log-mode)
-;; The directory should be created by user.
-(setq erc-log-channels-directory "~/.erc/logs/")
-(setq erc-generate-log-file-name-function (quote erc-generate-log-file-name-with-date))
-(setq erc-save-buffer-on-part nil)
-(setq erc-save-queries-on-quit nil)
-(setq erc-log-write-after-insert t)
-(setq erc-log-write-after-send t)
-
-
 ;;;;;;;;;;;;;
 ;; NEOTREE ;;
 ;;;;;;;;;;;;;
@@ -103,8 +87,11 @@
 (setq
  ivy-re-builders-alist '((t . ivy--regex-fuzzy))                                      ;; Make ivy a fuzzy searcher.
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
- company-idle-delay 0.2
- company-minimum-prefix-length 3)
+ )
+
+(require 'company)
+(setq company-idle-delay 0.2
+      company-minimum-prefix-length 2)
 
 
  ;;;;;;;;;;;;;;;;;;;
