@@ -8,21 +8,10 @@
 
 
 ;; MODES
-(def-package! flx :demand t)
+(def-package! flx :demand t) ;; this is for fuzzy searching in ivy i think.
 (def-package! prettier-js    :mode "\\.js$"           :config)
 (def-package! js-import      :commands js-import      :config)
-(def-package! rjsx-mode      :commands rjsx-mode      :config)
 (def-package! writeroom-mode :commands writeroom-mode :config)
-
-;; Setup modes as necessary (ugh something should change here...)
-(push '("\\.js\\'"   . rjsx-mode)            auto-mode-alist)
-(push '("\\.css\\'"  . web-mode)             auto-mode-alist)
-(push '("\\.sass\\'" . sass-mode)            auto-mode-alist)
-(push '("\\.clj\\'"  . clojure-mode)         auto-mode-alist)
-(push '("\\.cljs\\'" . clojurescript-mode)   auto-mode-alist)
-(push '("\\.http\\'" . restclient-mode)      auto-mode-alist)
-
-;; Org setup
 
 ;;;;;;;;;;;;;;;
 ;; ORG STUFF ;;
@@ -37,10 +26,16 @@
 (defun my/org-mode-hook ()
   (set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
   (set-face-attribute 'org-ellipsis nil :height 1.0 :background nil)
-  ;; this might be the right place for this.
   (add-to-list 'load-path "./stuff/orgmode-mediawiki")
   (load! +orgmode-mediawiki))
 (add-hook 'org-load-hook #'my/org-mode-hook)
+
+
+;; setup deft
+(def-package! deft :after org-mode :demand t :config
+  (setq deft-extensions '("txt" "tex" "org" "md"))
+  (setq deft-use-filename-as-title t)
+  (setq deft-directory "~/Dropbox/notes"))
 
 ;;;;;;;;;;;;;
 ;; NEOTREE ;;

@@ -7,3 +7,4 @@
 (package! flx)
 (package! writeroom-mode)
 (package! paredit)
+(package! deft)

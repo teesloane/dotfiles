@@ -51,12 +51,6 @@
      :desc "Copy"                 :n "c" #'persp-copy
      :desc "Rename"               :n "r" #'+workspace/rename)
 
-   (:desc "eyebrowse" :prefix "k"
-     :desc "Switch to"            :n "k" #'eyebrowse-switch-to-window-config
-     :desc "Delete"               :n "d" #'eyebrowse-close-window-config
-     :desc "New"                  :n "n" #'eyebrowse-create-window-config
-     :desc "Rename"               :n "r" #'eyebrowse-rename-window-config)
-
    (:desc "git" :prefix "g"
      :desc "Git status"           :n  "s" #'magit-status
      :desc "Git stage hunk"       :n  "S" #'git-gutter:stage-hunk
@@ -65,7 +59,8 @@
      :desc "List gists"           :n  "g" #'+gist:list)
 
    (:desc "open" :prefix "o"
-     :desc "Eshell"               :n  "e" #'+eshell/open-popup)
+     :desc "Eshell"               :n  "e" #'+eshell/open-popup
+     :desc "APP: Deft"            :n  "D" #'deft)
 
    (:desc "eval" :prefix "e"
      :desc "Eval buffer"          :n "b" #'eval-buffer
