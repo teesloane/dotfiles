@@ -27,7 +27,11 @@
   (set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
   (set-face-attribute 'org-ellipsis nil :height 1.0 :background nil)
   (add-to-list 'load-path "./stuff/orgmode-mediawiki")
+  (setq org-tags-column 80)
+  (org-align-all-tags)
   (load! +orgmode-mediawiki))
+
+
 (add-hook 'org-load-hook #'my/org-mode-hook)
 
 
