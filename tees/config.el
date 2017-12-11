@@ -29,7 +29,9 @@
   (add-to-list 'load-path "./stuff/orgmode-mediawiki")
   (setq org-tags-column 80)
   (org-align-all-tags)
-  (load! +orgmode-mediawiki))
+  (load! +orgmode-mediawiki)
+)
+
 
 
 (add-hook 'org-load-hook #'my/org-mode-hook)
@@ -39,7 +41,7 @@
 (def-package! deft :after org-mode :demand t :config
   (setq deft-extensions '("txt" "tex" "org" "md"))
   (setq deft-use-filename-as-title t)
-  (setq deft-directory "~/Dropbox/notes"))
+  (setq deft-directory "~/Dropbox/notes/"))
 
 ;;;;;;;;;;;;;
 ;; NEOTREE ;;
@@ -77,6 +79,12 @@
 
  ;; PLUGINS
  avy-all-windows t
+
+ ;; ORG MODE
+ org-refile-targets (quote (("notes.org" :maxlevel . 1) ("learning.org" :maxlevel . 3)))
+ org-outline-path-complete-in-steps nil ; Refile in a single go
+ org-refile-use-outline-path t ; Show full paths for refiling
+ org-tags-column 80
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
