@@ -13,6 +13,12 @@
 (def-package! js-import      :commands js-import      :config)
 (def-package! writeroom-mode :commands writeroom-mode :config)
 
+
+;; Setup modes as necessary (ugh something should change here...)
+(push '("\\.js\\'"   . rjsx-mode)            auto-mode-alist) ;; bummer. should fix this someday
+(push '("\\.css\\'"  . web-mode)             auto-mode-alist)
+(push '("\\.sass\\'" . sass-mode)            auto-mode-alist)
+
 ;;;;;;;;;;;;;;;
 ;; ORG STUFF ;;
 ;;;;;;;;;;;;;;;
