@@ -12,7 +12,7 @@
 (def-package! prettier-js    :mode "\\.js$"           :config)
 (def-package! js-import      :commands js-import      :config)
 (def-package! writeroom-mode :commands writeroom-mode :config)
-(def-package! deft :after org-mode :demand t :config
+(def-package! deft :demand t :config
   (setq deft-extensions '("txt" "tex" "org" "md"))
   (setq deft-use-filename-as-title t)
   (setq deft-directory "~/Dropbox/notes/"))
