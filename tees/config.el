@@ -13,61 +13,14 @@
 (def-package! js-import      :commands js-import      :config)
 (def-package! writeroom-mode :commands writeroom-mode :config)
 
+(push '("\\.js\\'"   . rjsx-mode)   auto-mode-alist)
+(push '("\\.css\\'"  . web-mode)    auto-mode-alist)
+(push '("\\.sass\\'" . sass-mode)   auto-mode-alist)
 
-;; Setup modes as necessary (ugh something should change here...)
-(push '("\\.js\\'"   . rjsx-mode)            auto-mode-alist) ;; bummer. should fix this someday
-(push '("\\.css\\'"  . web-mode)             auto-mode-alist)
-(push '("\\.sass\\'" . sass-mode)            auto-mode-alist)
-
-;;;;;;;;;;;;;;;
-;; ORG STUFF ;;
-;;;;;;;;;;;;;;;
-
-;; doom stuff
-(setq org-fontify-whole-heading-line t
-      org-fontify-done-headline t
-      org-fontify-quote-and-verse-blocks t)
-
-;; make org headings all the same size.
-(defun my/org-mode-hook ()
-  (set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
-  (set-face-attribute 'org-ellipsis nil :height 1.0 :background nil)
-  (add-to-list 'load-path "./stuff/orgmode-mediawiki")
-  (setq org-tags-column 80)
-  (org-align-all-tags)
-  (load! +orgmode-mediawiki)
-)
-
-
-
-(add-hook 'org-load-hook #'my/org-mode-hook)
-
-
-;; setup deft
-(def-package! deft :after org-mode :demand t :config
-  (setq deft-extensions '("txt" "tex" "org" "md"))
-  (setq deft-use-filename-as-title t)
-  (setq deft-directory "~/Dropbox/notes/"))
-
-;;;;;;;;;;;;;
-;; NEOTREE ;;
-;;;;;;;;;;;;;
-
-;; change icon size. Possibly commented out for being weird / inefficient.
-(defun text-scale-twice ()(interactive)(progn(text-scale-adjust 0)(text-scale-decrease 0)))
-(add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'text-scale-twice)))
-;; window config
-(setq neo-window-width 30)
-(setq neo-window-fixed-size nil)
-
-
-;;;;;;;;;;;;;;
-;; DEFAULTS ;;
-;;;;;;;;;;;;;;
 
 (setq-default
  ;; GENERAL STUFF
- line-spacing 0.4
+ line-spacing 0.3
  tab-width 2
  indent-tab-mode nil
  which-key-idle-delay 0.3
@@ -85,40 +38,50 @@
 
  ;; PLUGINS
  avy-all-windows t
+ ivy-re-builders-alist '((t . ivy--regex-fuzzy))                                      ;; Make ivy a fuzzy searcher.
+ counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
+ company-idle-delay 0.2
+ company-minimum-prefix-length 2
+ neo-window-width 30
+ neo-window-fixed-size nil
 
  ;; ORG MODE
  org-refile-targets (quote (("notes.org" :maxlevel . 1) ("learning.org" :maxlevel . 3)))
  org-outline-path-complete-in-steps nil ; Refile in a single go
- org-refile-use-outline-path t ; Show full paths for refiling
+ org-refile-use-outline-path t          ; Show full paths for refiling
+ org-log-done 'time
+ org-agenda-files '("~/Dropbox/notes" "~/work/toda/notes")
  org-tags-column 80
 )
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; LOCAL VARS SETQ STUFF ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq
- ivy-re-builders-alist '((t . ivy--regex-fuzzy))                                      ;; Make ivy a fuzzy searcher.
- counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
- )
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;; MODES + HOOKS + FUNCTIONS ;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'company)
-(setq company-idle-delay 0.2
-      company-minimum-prefix-length 2)
+(defun neotree-text-size ()
+  "Change neotree textsize."
+  (interactive)
+  (progn (text-scale-adjust 0)(text-scale-decrease 0)))
 
-
- ;;;;;;;;;;;;;;;;;;;
- ;; MODES + HOOKS ;;
- ;;;;;;;;;;;;;;;;;;;
+(defun my/org-mode-hook ()
+  "Setup my org mode to do it's magic. Aligns tags, change heading sizes / backgrounds."
+  (load! +orgmode-mediawiki)
+  (org-align-all-tags)
+  (dolist (level '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5 org-level-6))
+    (set-face-attribute level nil :height 1.0 :background nil)))
 
 (defun my-web-mode-hook ()
-    "Hooks for Web mode."
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (setq web-mode-code-indent-offset 2)
-    (setq web-mode-style-padding 2)
-    (setq web-mode-script-padding 2))
+  "Hooks for Web mode."
+  (setq
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-style-padding 2
+   web-mode-script-padding 2))
+
 
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 (add-hook 'before-save-hook 'whitespace-cleanup)
-
+(add-hook 'org-load-hook #'my/org-mode-hook)
+(add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'neotree-text-size)))
