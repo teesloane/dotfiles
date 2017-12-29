@@ -6,6 +6,6 @@
 (package! eyebrowse)
 (package! flx)
 (package! writeroom-mode)
-(package! paredit)
+(package! parinfer)
 (package! deft)
 
