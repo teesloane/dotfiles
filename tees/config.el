@@ -12,6 +12,9 @@
 (def-package! prettier-js    :mode "\\.js$"           :config)
 (def-package! js-import      :commands js-import      :config)
 (def-package! writeroom-mode :commands writeroom-mode :config)
+(def-package! drag-stuff :config
+  (drag-stuff-define-keys)
+  (drag-stuff-global-mode 1))
 (def-package! deft :demand t :config
   (setq deft-extensions '("txt" "tex" "org" "md"))
   (setq deft-use-filename-as-title t)
@@ -20,6 +23,25 @@
 (push '("\\.js\\'"   . rjsx-mode)   auto-mode-alist)
 (push '("\\.css\\'"  . web-mode)    auto-mode-alist)
 (push '("\\.sass\\'" . sass-mode)   auto-mode-alist)
+
+
+
+ ;;;;;;;;;;;;;;;;;;;;
+ ;; SOME FUNCTIONS ;;
+ ;;;;;;;;;;;;;;;;;;;;
+
+;; Align funcs ripped from http://pragmaticemacs.com/emacs/aligning-text/
+(defun tees/align-whitespace (start end)
+  "Align columns by whitespace"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)\\s-" 1 0 t))
+
+(defun tees/align-& (start end)
+  "Align columns by ampersand"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)&" 1 1 t))
 
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;; MODES + HOOKS + FUNCTIONS ;;

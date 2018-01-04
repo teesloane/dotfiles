@@ -8,4 +8,5 @@
 (package! writeroom-mode)
 (package! parinfer)
 (package! deft)
+(package! drag-stuff)
 
