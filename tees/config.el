@@ -1,4 +1,4 @@
-;;;; private/tees/config.el -*- lexical-binding: t; -*-
+;;; private/tees/config.el -*- lexical-binding: t; -*-
 
 (load! +bindings)
 
@@ -24,13 +24,12 @@
 (push '("\\.css\\'"  . web-mode)    auto-mode-alist)
 (push '("\\.sass\\'" . sass-mode)   auto-mode-alist)
 
-
-
  ;;;;;;;;;;;;;;;;;;;;
  ;; SOME FUNCTIONS ;;
  ;;;;;;;;;;;;;;;;;;;;
 
 ;; Align funcs ripped from http://pragmaticemacs.com/emacs/aligning-text/
+
 (defun tees/align-whitespace (start end)
   "Align columns by whitespace"
   (interactive "r")

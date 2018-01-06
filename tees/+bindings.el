@@ -27,7 +27,8 @@
      :desc "Google"               :n "g" #'+jump/online)
 
    (:desc "buffer" :prefix "b"
-     :desc "kill buffer"          :n "d" #'doom/kill-this-buffer)
+     :desc "kill buffer"          :n "d" #'kill-this-buffer
+     :desc "kill buffer"          :n "k" #'kill-this-buffer)
 
    (:desc "file" :prefix "f"
      :desc "Find File"            :n "f" #'counsel-find-file
