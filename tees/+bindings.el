@@ -18,6 +18,7 @@
 
    (:desc "jump" :prefix "j"
      :desc "Jump to Char"         :n "a" #'avy-goto-char
+     :desc "Jump to Line"         :n "l" #'avy-goto-line
      :desc "Jump to..."           :n "j" #'dumb-jump-go
      :desc "Imenu anywhere"       :n "f" #'ivy-imenu-anywhere
      :desc "Imenu here"           :n "h" #'counsel-imenu

@@ -33,6 +33,8 @@
  company-minimum-prefix-length 2
  neo-window-width 30
  neo-window-fixed-size nil
+ deft-auto-save-interval 20
+ avy-all-windows 'all-frames
 
  ;; ORG MODE
  org-refile-targets (quote (("notes.org" :maxlevel . 1) ("learning.org" :maxlevel . 3)))
