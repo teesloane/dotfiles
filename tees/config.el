@@ -50,6 +50,15 @@
   (align-regexp start end
                 "\\(\\s-*\\)&" 1 1 t))
 
+(defun tees/max-buffer ()
+  "Current buffer becomes full width"
+  (interactive)
+  (if (= 1 (length (window-list)))
+      (jump-to-register '_)
+    (progn
+      (window-configuration-to-register '_)
+      (delete-other-windows))))
+
 ;; some cool defaults.
 
 (setq-default
