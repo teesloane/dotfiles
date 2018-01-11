@@ -107,12 +107,22 @@
   (interactive)
   (progn (text-scale-adjust 0)(text-scale-decrease 0)))
 
-(defun my/org-mode-hook ()
+(defun tees/org-mode-hook ()
   "Setup my org mode to do it's magic. Aligns tags, change heading sizes / backgrounds."
-  (load! +orgmode-mediawiki)
-  (org-align-all-tags)
+  (interactive)
   (dolist (level '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5 org-level-6))
     (set-face-attribute level nil :height 1.0 :background nil)))
+
+(defun shadow-cider (build-id)
+  "boot shadow-cljs magically, avoiding prompts and stuff;
+  should run from project file so cider boots into the project.
+  NOTE: you have to press `return' once inside the repl to trigger cider
+  recognizing you are now in a cljs repl."
+
+  (interactive "sEnter build id: ")
+  (cider-connect "localhost" "8202" (buffer-file-name))
+  (cider-read-and-eval (format "(shadow.cljs.devtools.api/nrepl-select :%s)" build-id))
+  )
 
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
@@ -126,5 +136,5 @@
 
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 (add-hook 'before-save-hook 'whitespace-cleanup)
-(add-hook 'org-load-hook #'my/org-mode-hook)
+(add-hook 'org-load-hook 'tees/org-mode-hook)
 (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'neotree-text-size)))
