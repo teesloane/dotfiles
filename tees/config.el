@@ -14,8 +14,7 @@
 (def-package! writeroom-mode :commands writeroom-mode :config)
 
 (def-package! drag-stuff :config
-  (drag-stuff-define-keys)
-  (drag-stuff-global-mode 1))
+  (drag-stuff-define-keys))
 
 (def-package! deft :demand t :config
   (setq deft-extensions '("txt" "tex" "org" "md"))
@@ -44,11 +43,6 @@
   (align-regexp start end
                 "\\(\\s-*\\)\\s-" 1 0 t))
 
-(defun tees/align-& (start end)
-  "Align columns by ampersand"
-  (interactive "r")
-  (align-regexp start end
-                "\\(\\s-*\\)&" 1 1 t))
 
 (defun tees/max-buffer ()
   "Current buffer becomes full width"
@@ -110,6 +104,7 @@
 (defun tees/org-mode-hook ()
   "Setup my org mode to do it's magic. Aligns tags, change heading sizes / backgrounds."
   (interactive)
+  (drag-stuff-global-mode nil)
   (dolist (level '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5 org-level-6))
     (set-face-attribute level nil :height 1.0 :background nil)))
 
