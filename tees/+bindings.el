@@ -41,6 +41,7 @@
    (:desc "window" :prefix "w"
      :desc "close window"         :n "d" #'+workspace/close-window-or-workspace
      :desc "split vert"           :n "-" #'split-window-vertically
+     :desc "max-buffer"           :n "m" #'tees/max-buffer
      :desc "split horiz"          :n "/" #'split-window-horizontally)
 
    (:desc "workspace" :prefix "l"

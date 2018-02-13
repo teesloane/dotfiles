@@ -12,9 +12,8 @@
 (def-package! prettier-js    :mode "\\.js$"           :config)
 (def-package! js-import      :commands js-import      :config)
 (def-package! writeroom-mode :commands writeroom-mode :config)
+(def-package! parinfer :commands parinfer-mode)
 
-(def-package! drag-stuff :config
-  (drag-stuff-define-keys))
 
 (def-package! deft :demand t :config
   (setq deft-extensions '("txt" "tex" "org" "md"))
@@ -57,7 +56,7 @@
 
 (setq-default
  ;; GENERAL STUFF
- line-spacing 0.2
+ line-spacing 0.1
  tab-width 2
  indent-tab-mode nil
  which-key-idle-delay 0.3
@@ -104,7 +103,7 @@
 (defun tees/org-mode-hook ()
   "Setup my org mode to do it's magic. Aligns tags, change heading sizes / backgrounds."
   (interactive)
-  (drag-stuff-global-mode nil)
+  (org-align-all-tags)
   (dolist (level '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5 org-level-6))
     (set-face-attribute level nil :height 1.0 :background nil)))
 
