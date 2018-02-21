@@ -1,7 +1,6 @@
-;; -*- no-byte-compile: t; -*-
-;;; private/tees/packages.el
+;;; packages.el --- description -*- lexical-binding: t; -*-
 
-;;; Code:
+
 (package! prettier-js)
 (package! js-import)
 (package! eyebrowse)
@@ -10,3 +9,5 @@
 (package! parinfer)
 (package! deft)
 
+(provide 'packages)
+;;; packages.el ends here
