@@ -106,8 +106,18 @@
   (dolist (level '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5 org-level-6))
     (set-face-attribute level nil :height 1.0 :background nil)))
 
+(defun tees/web-mode-hook ()
+  "Hooks for Web mode."
+  (interactive)
+  (setq
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-style-padding 2
+   web-mode-script-padding 2))
 
 
+(add-hook 'web-mode-hook  'tees/web-mode-hook)
 (add-hook 'before-save-hook 'whitespace-cleanup)
 (add-hook 'org-load-hook 'tees/org-mode-hook)
 (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'neotree-text-size)))
@@ -184,6 +194,7 @@
 
    (:desc "open" :prefix "o"
      :desc "Eshell"               :n  "e" #'+eshell/open-popup
+     :desc "Neotree"              :n  "n" #'neotree-find
      :desc "APP: Deft"            :n  "D" #'deft)
 
    (:desc "eval" :prefix "e"
