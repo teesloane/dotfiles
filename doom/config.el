@@ -1,5 +1,3 @@
-
-
 ;; lang/org
 ;; markdown style headings.
 (after! org-bullets (setq org-bullets-bullet-list '("#")))
@@ -10,6 +8,11 @@
 ;; UI
 (set-face-attribute 'default nil :font "IBM Plex Mono-12")
 (set-face-attribute 'font-lock-comment-face nil  :slant 'italic )
+
+(defun tees/home ()
+  "Make things ok on shitty monitor"
+  (interactive)
+  (set-frame-font "Inconsolata 18" nil t))
 
 
 ;; PACKAGES AND MODES
