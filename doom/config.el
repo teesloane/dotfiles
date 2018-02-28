@@ -15,6 +15,12 @@
   (set-frame-font "Inconsolata 18" nil t))
 
 
+(defun tees/nomad ()
+  "me and my paltop."
+  (interactive)
+  (set-frame-font "IBM Plex Mono-12" nil t))
+
+
 ;; PACKAGES AND MODES
 (def-package! flx :demand t) ;; this is for fuzzy searching in ivy i think.
 (def-package! prettier-js    :mode "\\.js$"           :config)
@@ -105,6 +111,7 @@
 (defun tees/org-mode-hook ()
   "Setup my org mode to do it's magic. Aligns tags, change heading sizes / backgrounds."
   (interactive)
+  (setq org-tags-column 80)
   (org-align-all-tags)
   (dolist (level '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5 org-level-6))
     (set-face-attribute level nil :height 1.0 :background nil)))
