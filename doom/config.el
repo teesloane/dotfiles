@@ -7,7 +7,7 @@
 
 ;; UI
 (set-face-attribute 'default nil :font "IBM Plex Mono-12")
-(set-face-attribute 'font-lock-comment-face nil  :slant 'italic )
+(set-face-attribute 'font-lock-comment-face nil  :slant 'italic)
 
 (defun tees/home ()
   "Make things ok on shitty monitor"
@@ -42,6 +42,26 @@
 (push '("\\.sass\\'" . sass-mode)   auto-mode-alist)
 
 
+(use-package parinfer
+  :ensure t
+  :bind
+  (("C-," . parinfer-toggle-mode))
+  :init
+  (progn
+    (setq parinfer-extensions
+          '(defaults       ; should be included.
+            pretty-parens  ; different paren styles for different modes.
+            evil           ; If you use Evil.
+            ; lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
+            paredit        ; Introduce some paredit commands.
+            smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+            smart-yank))   ; Yank behavior depend on mode.
+    (add-hook 'clojure-mode-hook     #'parinfer-mode)
+    (add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
+    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'scheme-mode-hook      #'parinfer-mode)
+    (add-hook 'lisp-mode-hook        #'parinfer-mode)))
+
 
 ;; DEFAULTS
 
@@ -51,8 +71,9 @@
  tab-width 2
  indent-tab-mode nil
  which-key-idle-delay 0.3
+ evil-ex-search-case 'sensitive
 
- ;;;; JAVASCRIPT STUFF
+ ;;;; WEB JS AND WHATEVER STUFF
  js2-bounce-indent-p nil
  js2-highlight-level 3
  js2-basic-offset 2
@@ -62,6 +83,7 @@
  web-mode-code-indent-offset 2
  web-mode-style-padding 2
  web-mode-script-padding 2
+ css-indent-offset 2
 
  ;; PLUGINS
  ivy-re-builders-alist '((t . ivy--regex-fuzzy))                                      ;; Make ivy a fuzzy searcher.
@@ -79,8 +101,8 @@
  org-refile-use-outline-path t          ; Show full paths for refiling
  org-log-done 'time
  org-agenda-files '("~/Dropbox/notes" "~/work/toda/notes")
- org-tags-column 80
-)
+ org-tags-column 80)
+
 
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;; MODES + HOOKS + FUNCTIONS ;;
@@ -179,6 +201,9 @@
    (:desc "project" :prefix "p"
      :desc "Find File in Project" :n "f" #'projectile-find-file)
 
+   (:desc "insert" :prefix "i"
+     :desc "kill-ring"            :n "y" #'counsel-yank-pop)
+
    (:desc "window" :prefix "w"
      :desc "close window"         :n "d" #'+workspace/close-window-or-workspace
      :desc "split vert"           :n "-" #'split-window-vertically
@@ -213,7 +238,7 @@
 
    (:desc "cursors" :prefix "d"
      :desc "Make cursors"         :n "d" #'evil-mc-make-and-goto-next-match
-     :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors
-     )
+     :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors)))
 
-))
+
+
