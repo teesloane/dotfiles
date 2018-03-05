@@ -22,6 +22,7 @@
 
 
 ;; PACKAGES AND MODES
+
 (def-package! flx :demand t) ;; this is for fuzzy searching in ivy i think.
 (def-package! prettier-js    :mode "\\.js$"           :config)
 (def-package! js-import      :commands js-import      :config)
@@ -36,6 +37,8 @@
   :demand t
   :config
   (setq avy-all-windows t avy-background t))
+
+(require 'company)
 
 (push '("\\.js\\'"   . rjsx-mode)   auto-mode-alist)
 (push '("\\.css\\'"  . web-mode)    auto-mode-alist)
