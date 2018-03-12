@@ -45,25 +45,25 @@
 (push '("\\.sass\\'" . sass-mode)   auto-mode-alist)
 
 
-(use-package parinfer
-  :ensure t
-  :bind
-  (("C-," . parinfer-toggle-mode))
-  :init
-  (progn
-    (setq parinfer-extensions
-          '(defaults       ; should be included.
-            pretty-parens  ; different paren styles for different modes.
-            evil           ; If you use Evil.
-            ; lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
-            paredit        ; Introduce some paredit commands.
-            smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
-            smart-yank))   ; Yank behavior depend on mode.
-    (add-hook 'clojure-mode-hook     #'parinfer-mode)
-    (add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
-    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
-    (add-hook 'scheme-mode-hook      #'parinfer-mode)
-    (add-hook 'lisp-mode-hook        #'parinfer-mode)))
+;; (use-package parinfer
+;;   :ensure t
+;;   :bind
+;;   (("C-," . parinfer-toggle-mode))
+;;   :init
+;;   (progn
+;;     (setq parinfer-extensions
+;;           '(defaults       ; should be included.
+;;              pretty-parens  ; different paren styles for different modes.
+;;              evil           ; If you use Evil.
+;;                                         ; lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
+;;              paredit        ; Introduce some paredit commands.
+;;              smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+;;              smart-yank))   ; Yank behavior depend on mode.
+;;     (add-hook 'clojure-mode-hook     #'parinfer-mode)
+;;     (add-hook 'emacs-lisp-mode-hook  #'parinfer-mode)
+;;     (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+;;     (add-hook 'scheme-mode-hook      #'parinfer-mode)
+;;     (add-hook 'lisp-mode-hook        #'parinfer-mode)))
 
 
 ;; DEFAULTS
@@ -239,9 +239,15 @@
      :desc "Eval buffer"          :n "b" #'eval-buffer
      :desc "Eval region"          :n "r" #'eval-region)
 
+   (:desc "lisp" :prefix "k"
+     :desc "sp-copy"              :n "c" #'sp-copy-sexp
+     :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+     :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+     :desc "sp-up"                :n "u" #'sp-up-sexp
+     :desc "sp-down"              :n "d" #'sp-down-sexp
+     :desc "sp-next"              :n "l" #'sp-next-sexp
+     :desc "sp-prev"              :n "h" #'sp-previous-sexp)
+
    (:desc "cursors" :prefix "d"
      :desc "Make cursors"         :n "d" #'evil-mc-make-and-goto-next-match
      :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors)))
-
-
-
