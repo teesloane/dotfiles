@@ -63,8 +63,9 @@
        evil-goggles      ; display visual hints when editing in evil
       ;unicode           ; extended unicode support for various languages
       ;tabbar            ; FIXME an (incomplete) tab bar for Emacs
-       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       ;; vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
+       posframe
 
        :tools
        dired             ; making dired pretty [functional]
@@ -137,7 +138,7 @@
       ;(write            ; emacs as a word processor (latex + org + markdown)
       ; +wordnut         ; wordnet (wn) search
       ; +langtool)       ; a proofreader (grammar/style check) for Emacs
-      
+
       ; :private a
 
        :config

@@ -12,7 +12,7 @@
 (defun tees/home ()
   "Make things ok on shitty monitor"
   (interactive)
-  (set-frame-font "Inconsolata 18" nil t))
+  (set-frame-font "IBM Plex Mono-14" nil t))
 
 
 (defun tees/nomad ()
@@ -75,6 +75,7 @@
  indent-tab-mode nil
  which-key-idle-delay 0.3
  evil-ex-search-case 'sensitive
+ auto-window-vscroll nil ;; apparently this slows down emacs if true
 
  ;;;; WEB JS AND WHATEVER STUFF
  js2-bounce-indent-p nil
@@ -245,6 +246,7 @@
      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
      :desc "sp-up"                :n "u" #'sp-up-sexp
      :desc "sp-down"              :n "d" #'sp-down-sexp
+     :desc "sp-kill"              :n "k" #'sp-kill-sexp
      :desc "sp-next"              :n "l" #'sp-next-sexp
      :desc "sp-prev"              :n "h" #'sp-previous-sexp)
 
