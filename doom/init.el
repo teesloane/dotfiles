@@ -75,6 +75,8 @@
        imenu             ; an imenu sidebar and searchable code index
        impatient-mode    ; show off code over HTTP
        macos             ; MacOS-specific commands
+
+       magit             ;
        make              ; run make tasks from Emacs
        neotree           ; a project drawer, like NERDTree for vim
        password-store    ; password manager for nerds
@@ -132,9 +134,9 @@
        ;; should be loaded late.
        :app
       ;(email +gmail)    ; emacs as an email client
-      ;irc               ; how neckbeards socialize
+       irc               ; how neckbeards socialize
       ;(rss +org)        ; emacs as an RSS reader
-      ;twitter           ; twitter client https://twitter.com/vnought
+       twitter           ; twitter client https://twitter.com/vnought
       ;(write            ; emacs as a word processor (latex + org + markdown)
       ; +wordnut         ; wordnet (wn) search
       ; +langtool)       ; a proofreader (grammar/style check) for Emacs

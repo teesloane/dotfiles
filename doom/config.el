@@ -129,6 +129,15 @@
       (window-configuration-to-register '_)
       (delete-other-windows))))
 
+(defun tees/clip-file ()
+  "Put the current file name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      (file-name-directory default-directory)
+                    (buffer-file-name))))
+    (when filename
+      (x-select-text filename))))
+
 (defun neotree-text-size ()
   "Change neotree textsize."
   (interactive)
@@ -181,7 +190,10 @@
      :desc "Load theme"           :n "s" #'load-theme)
 
    (:desc "code" :prefix "c"
-     :desc "Comment line"         :n "l" #'comment-line)
+     :desc "Comment dwim"         :n "L" #'comment-dwim
+     :desc "Comment line"         :n "l" #'comment-line
+     :desc "Comment region"       :n "v" #'comment-region
+     )
 
    (:desc "jump" :prefix "j"
      :desc "Jump to Char"         :n "a" #'avy-goto-char
@@ -239,6 +251,10 @@
    (:desc "eval" :prefix "e"
      :desc "Eval buffer"          :n "b" #'eval-buffer
      :desc "Eval region"          :n "r" #'eval-region)
+
+   (:desc "util" :prefix "U"
+     :desc "Copy buffer path"     :n "c" #'tees/clip-file
+     )
 
    (:desc "lisp" :prefix "k"
      :desc "sp-copy"              :n "c" #'sp-copy-sexp
