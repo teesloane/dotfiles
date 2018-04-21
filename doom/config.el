@@ -9,42 +9,61 @@
 (set-face-attribute 'default nil :font "IBM Plex Mono-12")
 (set-face-attribute 'font-lock-comment-face nil  :slant 'italic)
 
-(defun tees/home ()
-  "Make things ok on shitty monitor"
+;; PACKAGES AND MODES ----------------------------------------------------------
+
+(def-package! flx
+  :demand t) ;; this is for fuzzy searching in ivy i think.
+
+(defun +racket/repl ()
   (interactive)
-  (set-frame-font "IBM Plex Mono-14" nil t))
+  (run-racket)
+  (current-buffer))
+
+(defun pseudo-racket-mode ()
+  (set! :repl 'scheme-mode #'+racket/repl)
+  (set! :popup "^\\* Racket REPL *" nil '((quit) (select))))
 
 
-(defun tees/nomad ()
-  "me and my paltop."
-  (interactive)
-  (set-frame-font "IBM Plex Mono-12" nil t))
+(def-package! geiser
+  :config
+  (setq geiser-active-implementations '(racket))
+  (setq geiser-racket-binary "/Applications/Racket v6.12/bin/racket"))
 
+(def-package! prettier-js
+  :mode "\\.js$"
+  :config)
 
-;; PACKAGES AND MODES
+(def-package! js-import
+  :commands js-import
+  :config)
 
-(def-package! flx :demand t) ;; this is for fuzzy searching in ivy i think.
-(def-package! prettier-js    :mode "\\.js$"           :config)
-(def-package! js-import      :commands js-import      :config)
-(def-package! writeroom-mode :commands writeroom-mode :config)
-(def-package! parinfer :commands parinfer-mode)
-(def-package! deft :demand t :config
+(def-package! writeroom-mode
+  :commands writeroom-mode
+  :config)
+
+(def-package! deft
+  :demand t
+  :config
   (setq deft-extensions '("txt" "tex" "org" "md"))
   (setq deft-use-filename-as-title t)
   (setq deft-directory "~/Dropbox/notes/"))
+
 (def-package! avy
   :commands (avy-goto-char-2 avy-goto-line)
   :demand t
   :config
   (setq avy-all-windows t avy-background t))
 
+;; note to self: C-x C-f for company file auto complete
 (require 'company)
 
 (push '("\\.js\\'"   . rjsx-mode)   auto-mode-alist)
 (push '("\\.css\\'"  . web-mode)    auto-mode-alist)
 (push '("\\.sass\\'" . sass-mode)   auto-mode-alist)
+(push '("\\.rkt\\'" .  scheme-mode) auto-mode-alist)
 
-;; PACKAGE CHANGES
+;; -- PACKAGE CHANGES ----------------------------------------------------------
+
 (after! evil-mc
   ;; Make evil-mc resume its cursors when I switch to insert mode
   (add-hook! 'evil-mc-before-cursors-created
@@ -52,7 +71,7 @@
   (add-hook! 'evil-mc-after-cursors-deleted
     (remove-hook 'evil-insert-state-entry-hook #'evil-mc-resume-cursors t)))
 
-;; DEFAULTS
+;; DEFAULTS --------------------------------------------------------------------
 
 (setq-default
  ;; GENERAL STUFF
@@ -76,7 +95,7 @@
  css-indent-offset 2
 
  ;; PLUGINS
- ivy-re-builders-alist '((t . ivy--regex-fuzzy))                                      ;; Make ivy a fuzzy searcher.
+ ivy-re-builders-alist '((t . ivy--regex-fuzzy)) ; Make ivy a fuzzy searcher.
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
  company-idle-delay 0.2
  company-minimum-prefix-length 2
@@ -94,9 +113,28 @@
  org-tags-column 80)
 
 
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- ;; MODES + HOOKS + FUNCTIONS ;;
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;; MODES + HOOKS + FUNCTIONS --------------------------------------------------
+
+
+(defun tees/home ()
+  "Make things ok on shitty monitor"
+  (interactive)
+  (set-frame-font "IBM Plex Mono-14" nil t))
+
+
+(defun tees/nomad ()
+  "me and my paltop."
+  (interactive)
+  (set-frame-font "IBM Plex Mono-12" nil t))
+
+
+(defun tees/init-diff ()
+  "ediff the current `dotfile' with the template"
+  (interactive)
+  (ediff-files
+   "~/.config/doom/init.el"
+   "~/.emacs.d/init.example.el"))
+
 
 ;; Align funcs ripped from http://pragmaticemacs.com/emacs/aligning-text/
 
@@ -142,29 +180,26 @@
   (interactive)
   (setq
    web-mode-markup-indent-offset 2
-   web-mode-css-indent-offset 2
-   web-mode-code-indent-offset 2
-   web-mode-style-padding 2
-   web-mode-script-padding 2))
+   web-mode-css-indent-offset    2
+   web-mode-code-indent-offset   2
+   web-mode-style-padding        2
+   web-mode-script-padding       2))
 
 
-(add-hook 'web-mode-hook  'tees/web-mode-hook)
-(add-hook 'before-save-hook 'whitespace-cleanup)
-(add-hook 'org-load-hook 'tees/org-mode-hook)
+(add-hook 'web-mode-hook     'tees/web-mode-hook)
+;; (add-hook 'before-save-hook 'whitespace-cleanup)
+(add-hook 'org-load-hook     'tees/org-mode-hook)
+(add-hook 'scheme-mode-hook  'pseudo-racket-mode)
 (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'neotree-text-size)))
 
 
-
-;;;
-;;;
-;;; BINDINGS ---
-;;;
-;;;
+;;; BINDINGS -------------------------------------------------------------------
 
 (map!
- ;; --- <GLOBAL> -------------------------------------
+ ;; <GLOBAL>
+ ;; there appears to be nothing here...
 
- ;; --- <LEADER> -------------------------------------
+ ;; <LEADER>
  (:leader
    :desc "toggle last buffer"     :nv "TAB" #'evil-switch-to-windows-last-buffer
    :desc "project-search"         :nv "/" #'counsel-rg
@@ -254,13 +289,70 @@
 
    (:desc "cursors" :prefix "d"
      :desc "Make cursors"         :n "d" #'evil-mc-make-and-goto-next-match
-     :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors)
+     :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors))
 
-   (:map org-mode-map
+ ;; LOCAL LEADERS....
+
+ (:map org-mode-map
      :localleader
-     :desc "Insert heading above"          :n "O" #'org-insert-heading
-     :desc "Insert heading below"          :n "o" #'org-insert-heading-after-current
+     :desc "Insert heading above"          :n "N" #'org-insert-heading
+     :desc "Insert heading below"          :n "n" #'org-insert-heading-after-current
      :desc "Insert subheading"             :n "s" #'org-insert-subheading
      :desc "Todo Hydra"                    :n "t" #'org-todo
+     :desc "Clock in"                      :n "i" #'org-clock-in
+     :desc "Clock out"                     :n "o" #'org-clock-out
      :desc "Jump"                          :n "j" #'counsel-org-goto)
-   ))
+)
+
+
+
+;; stolen from : https://emacs.stackexchange.com/questions/32178/how-to-create-table-of-time-distribution-by-tags-in-org-mode/32182
+;; for clocking time by task.
+
+(require 'org-table)
+(require 'org-clock)
+
+(defun clocktable-by-tag/shift-cell (n)
+  (let ((str ""))
+    (dotimes (i n)
+      (setq str (concat str "| ")))
+    str))
+
+(defun clocktable-by-tag/insert-tag (params)
+  (let ((tag (plist-get params :tags)))
+    (insert "|--\n")
+    (insert (format "| %s | *Tag time* |\n" tag))
+    (let ((total 0))
+  (mapcar
+       (lambda (file)
+     (let ((clock-data (with-current-buffer (find-file-noselect file)
+                 (org-clock-get-table-data (buffer-name) params))))
+       (when (> (nth 1 clock-data) 0)
+         (setq total (+ total (nth 1 clock-data)))
+         (insert (format "| | File *%s* | %.2f |\n"
+                 (file-name-nondirectory file)
+                 (/ (nth 1 clock-data) 60.0)))
+         (dolist (entry (nth 2 clock-data))
+           (insert (format "| | . %s%s | %s %.2f |\n"
+                   (org-clocktable-indent-string (nth 0 entry))
+                   (nth 1 entry)
+                   (clocktable-by-tag/shift-cell (nth 0 entry))
+                   (/ (nth 3 entry) 60.0)))))))
+       (org-agenda-files))
+      (save-excursion
+    (re-search-backward "*Tag time*")
+    (org-table-next-field)
+    (org-table-blank-field)
+    (insert (format "*%.2f*" (/ total 60.0)))))
+    (org-table-align)))
+
+(defun org-dblock-write:clocktable-by-tag (params)
+  (insert "| Tag | Headline | Time (h) |\n")
+  (insert "|     |          | <r>  |\n")
+  (let ((tags (plist-get params :tags)))
+    (mapcar (lambda (tag)
+          (setq params (plist-put params :tags tag))
+          (clocktable-by-tag/insert-tag params))
+        tags)))
+
+(provide 'clocktable-by-tag)

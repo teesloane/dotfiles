@@ -8,6 +8,7 @@
 (package! writeroom-mode)
 (package! parinfer)
 (package! deft)
+(package! geiser)
 
 (provide 'packages)
 ;;; packages.el ends here
