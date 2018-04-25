@@ -185,6 +185,13 @@
    web-mode-style-padding        2
    web-mode-script-padding       2))
 
+(defun tees/clojure-indent ()
+  (interactive)
+  (setq clojure-defun-style-default-indent
+        (if (eq t clojure-defun-style-default-indent) nil 't))
+  (message "Clojure default indent set to: %s"
+           (if (eq t clojure-defun-style-default-indent) "true" "false")))
+
 
 (add-hook 'web-mode-hook     'tees/web-mode-hook)
 ;; (add-hook 'before-save-hook 'whitespace-cleanup)
@@ -291,18 +298,21 @@
      :desc "Make cursors"         :n "d" #'evil-mc-make-and-goto-next-match
      :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors))
 
- ;; LOCAL LEADERS....
 
- (:map org-mode-map
-     :localleader
-     :desc "Insert heading above"          :n "N" #'org-insert-heading
-     :desc "Insert heading below"          :n "n" #'org-insert-heading-after-current
-     :desc "Insert subheading"             :n "s" #'org-insert-subheading
-     :desc "Todo Hydra"                    :n "t" #'org-todo
-     :desc "Clock in"                      :n "i" #'org-clock-in
-     :desc "Clock out"                     :n "o" #'org-clock-out
-     :desc "Jump"                          :n "j" #'counsel-org-goto)
-)
+ ;; -- LOCAL LEADERS --
+
+ ;; (:map org-mode-map
+ ;;   :localleader
+ ;;   :desc "Insert heading above"          :n "N" #'org-insert-heading
+ ;;   :desc "Insert heading below"          :n "n" #'org-insert-heading-after-current
+ ;;   :desc "Insert subheading"             :n "s" #'org-insert-subheading
+ ;;   :desc "Todo Hydra"                    :n "t" #'org-todo
+ ;;   :desc "Clock in"                      :n "i" #'org-clock-in
+ ;;   :desc "Clock out"                     :n "o" #'org-clock-out
+ ;;   :desc "Jump"                          :n "j" #'counsel-org-goto)
+
+ )
+
 
 
 
