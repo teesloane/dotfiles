@@ -265,11 +265,13 @@
      :desc "Rename"               :n "r" #'+workspace/rename)
 
    (:desc "git" :prefix "g"
-     :desc "Git status"           :n  "s" #'magit-status
+     :desc "Status"                :n  "s" #'magit-status
      :desc "Git stage hunk"       :n  "S" #'git-gutter:stage-hunk
-     :desc "Git checkout"         :n  "c" #'magit-branch-checkout
+     :desc "Checkout"             :n  "c" #'magit-branch-checkout
+     :desc "Branch"               :n  "b" #'magit-branch-popup
+     :desc "Blame"                :n  "B" #'magit-blame
      :desc "merge-conflict"       :n  "m" #'+hydra-smerge/body
-     :desc "List gists"           :n  "g" #'+gist:list)
+     :desc "Gists"                :n  "g" #'+gist:list)
 
    (:desc "open" :prefix "o"
      :desc "Eshell"               :n  "e" #'+eshell/open-popup
