@@ -114,5 +114,6 @@ chunkc tiling::rule --owner Ableton --state float
 chunkc tiling::rule --owner Sketch --state float
 chunkc tiling::rule --owner Mail --state float
 chunkc tiling::rule --owner Reason --state float
+chunkc tiling::rule --owner Godot --state float
 chunkc tiling::rule --owner \"App Store\" --state float
 chunkc tiling::rule --owner \"System Preferences\" --state float

@@ -6,7 +6,8 @@
 
 
 ;; UI
-(set-face-attribute 'default nil :font "IBM Plex Mono-12")
+;; (set-face-attribute 'default nil :font "IBM Plex Mono-12")
+(set-face-attribute 'default nil :font "Iosevka-13")
 (set-face-attribute 'font-lock-comment-face nil  :slant 'italic)
 
 ;; PACKAGES AND MODES ----------------------------------------------------------
@@ -97,7 +98,7 @@
  ;; PLUGINS
  ivy-re-builders-alist '((t . ivy--regex-fuzzy)) ; Make ivy a fuzzy searcher.
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
- company-idle-delay 0.2
+ company-idle-delay 0.3
  company-minimum-prefix-length 2
  neo-window-width 30
  neo-window-fixed-size nil
@@ -134,6 +135,17 @@
   (ediff-files
    "~/.config/doom/init.el"
    "~/.emacs.d/init.example.el"))
+
+(defun cljfmt ()
+  "require cljfmt binary from graalvm. Doesn't really work that well..."
+  (interactive)
+  (when (or (eq major-mode 'clojure-mode)
+            (eq major-mode 'clojurescript-mode))
+    (exec-path-from-shell-initialize)
+    (shell-command-to-string (format "cljfmt %s" buffer-file-name))
+    (revert-buffer :ignore-auto :noconfirm)))
+
+
 
 
 ;; Align funcs ripped from http://pragmaticemacs.com/emacs/aligning-text/
@@ -195,6 +207,7 @@
 
 (add-hook 'web-mode-hook     'tees/web-mode-hook)
 ;; (add-hook 'before-save-hook 'whitespace-cleanup)
+;; (add-hook 'after-save-hook #'cljfmt)
 (add-hook 'org-load-hook     'tees/org-mode-hook)
 (add-hook 'scheme-mode-hook  'pseudo-racket-mode)
 (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'neotree-text-size)))
