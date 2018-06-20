@@ -4,16 +4,12 @@
 (setq +org-dir "~/Dropbox/notes/")
 (setq org-default-notes-file "~/Desktop/notes/organizer.org")
 
-
 ;; UI
-;; (set-face-attribute 'default nil :font "IBM Plex Mono-12")
-(set-face-attribute 'default nil :font "Iosevka-13")
 (set-face-attribute 'font-lock-comment-face nil  :slant 'italic)
 
 ;; PACKAGES AND MODES ----------------------------------------------------------
 
-(def-package! flx
-  :demand t) ;; this is for fuzzy searching in ivy i think.
+;; (def-package! flx :demand t) ;; this is for fuzzy searching in ivy i think.
 
 (defun +racket/repl ()
   (interactive)
@@ -21,26 +17,18 @@
   (current-buffer))
 
 (defun pseudo-racket-mode ()
-  (set! :repl 'scheme-mode #'+racket/repl)
-  (set! :popup "^\\* Racket REPL *" nil '((quit) (select))))
-
+  (set-repl-handler! 'scheme-mode #'+racket/repl)
+  (set-popup-rule! "^\\*Racket REPL" :quit nil :select nil)
+  (set-eval-handler! 'scheme-mode #'geiser-eval-definition))
 
 (def-package! geiser
   :config
   (setq geiser-active-implementations '(racket))
   (setq geiser-racket-binary "/Applications/Racket v6.12/bin/racket"))
 
-(def-package! prettier-js
-  :mode "\\.js$"
-  :config)
-
-(def-package! js-import
-  :commands js-import
-  :config)
-
-(def-package! writeroom-mode
-  :commands writeroom-mode
-  :config)
+(def-package! prettier-js :mode "\\.js$" :config)
+(def-package! js-import :commands js-import :config)
+(def-package! writeroom-mode :commands writeroom-mode :config)
 
 (def-package! deft
   :demand t
@@ -74,12 +62,16 @@
 
 ;; DEFAULTS --------------------------------------------------------------------
 
+;; menu bar thing.
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . dark))
+
 (setq-default
  ;; GENERAL STUFF
  line-spacing 0.1
  tab-width 2
  indent-tab-mode nil
- which-key-idle-delay 0.3
+ which-key-idle-delay 0.2
  evil-ex-search-case 'sensitive
  auto-window-vscroll nil ;; apparently this slows down emacs if true
 
@@ -96,17 +88,17 @@
  css-indent-offset 2
 
  ;; PLUGINS
- ivy-re-builders-alist '((t . ivy--regex-fuzzy)) ; Make ivy a fuzzy searcher.
+ ;; ivy-re-builders-alist '((t . ivy--regex-fuzzy)) ; Make ivy a fuzzy searcher.
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
- company-idle-delay 0.3
- company-minimum-prefix-length 2
+ company-idle-delay 0.2
+ company-minimum-prefix-length 3
  neo-window-width 30
  neo-window-fixed-size nil
  deft-auto-save-interval 20
  avy-all-windows 'all-frames
 
  ;; ORG MODE
- org-refile-targets (quote (("notes.org" :maxlevel . 1) ("learning.org" :maxlevel . 3)))
+ org-refile-targets (quote (("notes.org" :maxlevel . 1) ("todo.org" :maxlevel . 1)))
  org-outline-path-complete-in-steps nil ; Refile in a single go
  org-refile-use-outline-path t          ; Show full paths for refiling
  org-log-done 'time
@@ -207,7 +199,6 @@
 
 (add-hook 'web-mode-hook     'tees/web-mode-hook)
 ;; (add-hook 'before-save-hook 'whitespace-cleanup)
-;; (add-hook 'after-save-hook #'cljfmt)
 (add-hook 'org-load-hook     'tees/org-mode-hook)
 (add-hook 'scheme-mode-hook  'pseudo-racket-mode)
 (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'neotree-text-size)))
@@ -222,7 +213,7 @@
  ;; <LEADER>
  (:leader
    :desc "toggle last buffer"     :nv "TAB" #'evil-switch-to-windows-last-buffer
-   :desc "project-search"         :nv "/" #'counsel-rg
+;   :desc "project-search"         :nv "/" #'counsel-rg
 
    (:desc "toggle" :prefix "t"
      :desc "Flycheck"             :n "x" #'flycheck-mode
@@ -273,7 +264,8 @@
      :desc "Save session"         :n "S" #'+workspace/save
      :desc "Load"                 :n "l" #'+workspace/load
      :desc "Load Session"         :n "L" #'+workspace/load-session
-     :desc "New"                  :n "n" #'+workspace/new
+     :desc "New"                  :n "N" #'+workspace/new
+     :desc "New+name"             :n "n" (lambda! () (+workspace/new (read-string "Enter workspace name: ")))
      :desc "Copy"                 :n "c" #'persp-copy
      :desc "Rename"               :n "r" #'+workspace/rename)
 
@@ -283,12 +275,14 @@
      :desc "Checkout"             :n  "c" #'magit-branch-checkout
      :desc "Branch"               :n  "b" #'magit-branch-popup
      :desc "Blame"                :n  "B" #'magit-blame
+     :desc "Issues"               :n  "I" #'magithub-issue-view
      :desc "merge-conflict"       :n  "m" #'+hydra-smerge/body
      :desc "Gists"                :n  "g" #'+gist:list)
 
    (:desc "open" :prefix "o"
      :desc "Eshell"               :n  "e" #'+eshell/open-popup
-     :desc "Neotree"              :n  "n" #'neotree-find
+     :desc "Neotree"              :n  "N" #'neotree-find
+     :desc "Treemacs"             :n  "n" #'treemacs
      :desc "APP: Deft"            :n  "D" #'deft)
 
    (:desc "eval" :prefix "e"
@@ -298,6 +292,9 @@
    (:desc "util" :prefix "U"
      :desc "Copy buffer path"     :n "c" #'tees/clip-file
      )
+
+   (:desc "+search" :prefix "/"
+     :desc "RG everywhere" :n "/" #'counsel-rg)
 
    (:desc "lisp" :prefix "k"
      :desc "sp-copy"              :n "c" #'sp-copy-sexp
@@ -327,8 +324,6 @@
  ;;   :desc "Jump"                          :n "j" #'counsel-org-goto)
 
  )
-
-
 
 
 ;; stolen from : https://emacs.stackexchange.com/questions/32178/how-to-create-table-of-time-distribution-by-tags-in-org-mode/32182
