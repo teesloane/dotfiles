@@ -28,11 +28,13 @@
 ;;; License: MIT
 
 ; (require 'core (concat user-emacs-directory "core/core"))
-(setq ;; doom-nord-region-highlight 'frost
+(setq
+      ;; doom-nord-region-highlight 'frost
       ;; doom-nord-comment-brightness 15
-      doom-theme 'doom-nord
+      ;; doom-theme 'doom-nord
       doom-font (font-spec :family "Iosevka" :size 13 :weight 'regular)
-      doom-localleader-key ",")
+      ;; doom-localleader-key "SPC m"
+      )
 
 
 (doom! :feature
@@ -47,7 +49,6 @@
        spellcheck        ; tasing you for misspelling mispelling
        (syntax-checker   ; tasing you for every semicolon you forget
         +childframe)     ; use childframes for error popups (Emacs 26+ only)
-       version-control   ; remember, remember that commit in November
        workspaces        ; tab emulation, persistence & separate workspaces
 
        :completion
@@ -70,7 +71,7 @@
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
       neotree           ; a project drawer, like NERDTree for vim
-      treemacs          ; a project drawer, like neotree but cooler
+      ;treemacs          ; a project drawer, like neotree but cooler
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
@@ -79,31 +80,35 @@
       ;tabbar            ; FIXME an (incomplete) tab bar for Emacs
       ;unicode           ; extended unicode support for various languages
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       vc-gutter         ; vcs diff in the fringe
        window-select     ; visually switch windows
 
        :editor
+       multiple-cursors  ; editing in many places at once
       ;parinfer          ; turn lisp into python, sort of
+       rotate-text       ; cycle region at point between text candidates
 
        :emacs
        dired             ; making dired pretty [functional]
        ediff             ; comparing files in Emacs
        electric          ; smarter, keyword-based electric-indent
        eshell            ; a consistent, cross-platform shell (WIP)
+       hideshow          ; basic code-folding support
        imenu             ; an imenu sidebar and searchable code index
-      ;term              ; terminals in Emacs
+       term              ; terminals in Emacs
+       vc                ; version-control and Emacs, sitting in a tree
 
        :tools
        editorconfig      ; let someone else argue about tabs vs spaces
       ;ein               ; tame Jupyter notebooks with emacs
       gist              ; interacting with github gists
       macos             ; MacOS-specific commands
-      ;make              ; run make tasks from Emacs
+      make              ; run make tasks from Emacs
       magit             ;
       ;password-store    ; password manager for nerds
       pdf               ; pdf enhancements
       ;prodigy           ; FIXME managing external services & code builders
       rgb               ; creating color strings
-       rotate-text       ; cycle region at point between text candidates
       ;tmux              ; an API for interacting with tmux
       ;upload            ; map local to remote projects via ssh/ftp
       ;wakatime
@@ -118,7 +123,7 @@
        data              ; config/data formats
       ;erlang            ; an elegant language for a more civilized age
       ;elixir            ; erlang done right
-      ;elm               ; care for a cup of TEA?
+       elm               ; care for a cup of TEA?
        emacs-lisp        ; drown in parentheses
       ;ess               ; emacs speaks statistics
        go                ; the hipster dialect
@@ -129,11 +134,11 @@
       ;julia             ; a better, faster MATLAB
       ;latex             ; writing papers in Emacs has never been so fun
       ;ledger            ; an accounting system in Emacs
-      ;lua               ; one-based indices? one-based indices
+      lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
       ;nim               ; python + lisp at the speed of c
       ;nix               ; I hereby declare "nix geht mehr!"
-      ;ocaml             ; an objective camel
+      ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
         +attach          ; custom attachment system
         +babel           ; running code in org
@@ -146,9 +151,10 @@
       ;purescript        ; javascript, but functional
       ;python            ; beautiful is better than ugly
       ;qt                ; the 'cutest' gui framework ever
+      racket            ; a DSL for DSLs
       ;rest              ; Emacs as a REST client
       ;ruby              ; 1.step do {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-      ;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
       ;scala             ; java, but good
        sh                ; she sells (ba|z)sh shells on the C xor
       ;swift             ; who asked for emoji variables?
