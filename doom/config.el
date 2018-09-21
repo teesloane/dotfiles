@@ -1,6 +1,4 @@
 ;; lang/org
-;; markdown style headings.
-
 
 ;; UI
 (set-face-attribute 'font-lock-comment-face nil  :slant 'italic)
@@ -31,15 +29,6 @@
 (push '("\\.css\\'"  . web-mode)    auto-mode-alist)
 (push '("\\.sass\\'" . sass-mode)   auto-mode-alist)
 (push '("\\.rkt\\'" .  scheme-mode) auto-mode-alist)
-
-;; -- PACKAGE CHANGES ----------------------------------------------------------
-
-(after! evil-mc
-  ;; Make evil-mc resume its cursors when I switch to insert mode
-  (add-hook! 'evil-mc-before-cursors-created
-    (add-hook 'evil-insert-state-entry-hook #'evil-mc-resume-cursors nil t))
-  (add-hook! 'evil-mc-after-cursors-deleted
-    (remove-hook 'evil-insert-state-entry-hook #'evil-mc-resume-cursors t)))
 
 
 ;; DEFAULTS --------------------------------------------------------------------
@@ -82,15 +71,11 @@
  )
 
 
-
  ;; MODES + HOOKS + FUNCTIONS --------------------------------------------------
 
 (load! "+funcs")
 
-
-
 (add-hook 'web-mode-hook     'tees/web-mode-hook)
-;; (add-hook 'before-save-hook 'whitespace-cleanup)
 (add-hook 'org-load-hook     'tees/org-mode-hook)
 (add-hook 'neo-after-create-hook (lambda (_)(call-interactively 'neotree-text-size)))
 

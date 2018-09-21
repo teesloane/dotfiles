@@ -62,6 +62,7 @@
         +fuzzy)     ; uses childframes for popups (Emacs 26+ only)
 
        :ui
+       deft
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
        doom-modeline     ; a snazzy Atom-inspired mode-line
@@ -70,7 +71,7 @@
       ;fci               ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
-      neotree           ; a project drawer, like NERDTree for vim
+       neotree           ; a project drawer, like NERDTree for vim
       ;treemacs          ; a project drawer, like neotree but cooler
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
@@ -79,8 +80,8 @@
 
       ;tabbar            ; FIXME an (incomplete) tab bar for Emacs
       ;unicode           ; extended unicode support for various languages
-       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        vc-gutter         ; vcs diff in the fringe
+       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
 
        :editor
@@ -117,12 +118,12 @@
       ;assembly          ; assembly for fun or debugging
       ;(cc +irony +rtags); C/C++/Obj-C madness
       ;common-lisp       ; if you've seen one lisp, you've seen them all
-      ;crystal           ; ruby at the speed of c
+      crystal           ; ruby at the speed of c
       clojure           ; java with a lisp
       ;csharp            ; unity, .NET, and mono shenanigans
        data              ; config/data formats
-      ;erlang            ; an elegant language for a more civilized age
-      ;elixir            ; erlang done right
+     ; erlang            ; an elegant language for a more civilized age
+       elixir            ; erlang done right
        elm               ; care for a cup of TEA?
        emacs-lisp        ; drown in parentheses
       ;ess               ; emacs speaks statistics
@@ -167,10 +168,10 @@
       ;(email +gmail)    ; emacs as an email client
       irc               ; how neckbeards socialize
       ;(rss +org)        ; emacs as an RSS reader
-       twitter           ; twitter client https://twitter.com/vnought
-      (write            ; emacs as a word processor (latex + org + markdown)
-       +wordnut         ; wordnet (wn) search
-       +langtool)       ; a proofreader (grammar/style check) for Emacs
+      ; twitter           ; twitter client https://twitter.com/vnought
+      ;(write            ; emacs as a word processor (latex + org + markdown)
+      ; +wordnut         ; wordnet (wn) search
+      ; +langtool)       ; a proofreader (grammar/style check) for Emacs
 
        :collab
       ;floobits          ; peer programming for a price

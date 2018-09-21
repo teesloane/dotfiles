@@ -3,18 +3,22 @@
 
 (map!
  ;; <GLOBAL>
- ;; there appears to be nothing here...
+ :n "C-h" #'evil-window-left
+ :n "C-l" #'evil-window-right
+ :n "C-j" #'evil-window-down
+ :n "C-k" #'evil-window-up
 
  ;; <LEADER>
  (:leader
    :desc "toggle last buffer"     :n [tab] #'evil-switch-to-windows-last-buffer
-;   :desc "project-search"         :nv "/" #'counsel-rg
+   :desc "project-search"         :nv "/" #'counsel-rg
 
    (:desc "toggle" :prefix "t"
      :desc "Flycheck"             :n "x" #'flycheck-mode
      :desc "Line-wrap"            :n "l" #'toggle-truncate-lines
      :desc "Line-numbers"         :n "n" #'doom/toggle-line-numbers
      :desc "Load theme"           :n "s" #'load-theme)
+
 
    (:desc "code" :prefix "c"
      :desc "Comment dwim"         :n "L" #'comment-dwim
@@ -107,18 +111,4 @@
    (:desc "cursors" :prefix "d"
      :desc "Make cursors"         :n "d" #'evil-mc-make-and-goto-next-match
      :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors))
-
-
- ;; -- LOCAL LEADERS --
-
- ;; (:map org-mode-map
- ;;   :localleader
- ;;   :desc "Insert heading above"          :n "N" #'org-insert-heading
- ;;   :desc "Insert heading below"          :n "n" #'org-insert-heading-after-current
- ;;   :desc "Insert subheading"             :n "s" #'org-insert-subheading
- ;;   :desc "Todo Hydra"                    :n "t" #'org-todo
- ;;   :desc "Clock in"                      :n "i" #'org-clock-in
- ;;   :desc "Clock out"                     :n "o" #'org-clock-out
- ;;   :desc "Jump"                          :n "j" #'counsel-org-goto)
-
  )

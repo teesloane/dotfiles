@@ -1,16 +1,4 @@
 
-(defun tees/home ()
-  "Make things ok on shitty monitor"
-  (interactive)
-  (set-frame-font "IBM Plex Mono-14" nil t))
-
-
-(defun tees/nomad ()
-  "me and my paltop."
-  (interactive)
-  (set-frame-font "IBM Plex Mono-12" nil t))
-
-
 (defun tees/init-diff ()
   "ediff the current `dotfile' with the template"
   (interactive)
@@ -55,7 +43,9 @@
   (setq org-tags-column 80)
   (org-align-all-tags)
   (dolist (level '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5 org-level-6))
-    (set-face-attribute level nil :height 1.0 :background nil)))
+    (set-face-attribute level nil :height 1.0 :background nil))
+  (set-face-attribute 'org-level-1 nil :height 0.8 :background nil)
+  )
 
 (defun tees/web-mode-hook ()
   "Hooks for Web mode."
