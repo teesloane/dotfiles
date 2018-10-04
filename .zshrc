@@ -1,17 +1,10 @@
 # PATHS
-export ZSH=~/.oh-my-zsh
-export GOPATH=~/Development/go
-export PATH=$PATH:/usr/local/go/bin
-
 #ZSH_THEME="robbyrusssel"
 
-export EDITOR='nvim'
-export GIT_EDITOR=nvim
+## ZSH SETTINGS ##
+ENABLE_CORRECTION="false"
 
-## ZSH SETTINGS ## 
-ENABLE_CORRECTION="true"
-
-# let tmux rename it's windows 
+# let tmux rename it's windows
 DISABLE_AUTO_TITLE="true"
 
 ## PLUGINS AND JUNK
@@ -23,7 +16,25 @@ alias zshconfig="nvim ~/.zshrc"
 alias subl="open -a /Applications/Sublime\ Text.app"
 alias rm=trash
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# window manager
+alias wms="brew services start chunkwm; brew services start skhd"
+alias wmk="brew services stop chunkwm; brew services stop skhd"
+
+
+## Enable some vimness
+# ripped from https://dougblack.io/words/zsh-vi-mode.html
+
+bindkey -v
+
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
+export KEYTIMEOUT=1
+
+## End vimness
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -31,7 +42,13 @@ export NVM_DIR="$HOME/.nvm"
 
 # tools and stuffs
 alias ls=exa -bghHliS
-
+alias cat=bat
 
 ### DEPS ###
-# exa, neovim
+export GOPATH=$HOME/Development/go                              # go
+export PATH=~/Development/go/bin:$PATH                          # go bin
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+export PATH=/Users/tees/.local/bin:$PATH
