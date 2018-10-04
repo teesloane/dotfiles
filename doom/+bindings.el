@@ -95,8 +95,7 @@
      :desc "make choice..."       :n "x" #'makefile-executor-execute-project-target
      )
 
-   (:desc "+search" :prefix "/"
-     :desc "RG everywhere" :n "/" #'counsel-rg)
+ 
 
    (:desc "lisp" :prefix "k"
      :desc "sp-copy"              :n "c" #'sp-copy-sexp
