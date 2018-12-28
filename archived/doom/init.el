@@ -29,13 +29,13 @@
 
 ; (require 'core (concat user-emacs-directory "core/core"))
 (setq
-      ;; doom-nord-region-highlight 'frost
-      ;; doom-nord-comment-brightness 15
-      doom-theme 'doom-nord
-      doom-font (font-spec :family "Iosevka" :size 15 :weight 'regular)
-      ;; doom-font (font-spec :family "IBM Plex Mono" :size 14 :weight 'regular)
-      ;; doom-localleader-key "SPC m"
-      )
+ ;; doom-nord-region-highlight 'frost
+ ;; doom-nord-comment-brightness 15
+ doom-theme 'doom-nord
+ doom-font (font-spec :family "Iosevka" :size 15 :weight 'regular)
+ ;; doom-font (font-spec :family "IBM Plex Mono" :size 14 :weight 'regular)
+ ;; doom-localleader-key "SPC m"
+ )
 
 
 (doom! :feature

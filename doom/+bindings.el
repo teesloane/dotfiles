@@ -6,6 +6,18 @@
  :n "C-l" #'evil-window-right
  :n "C-j" #'evil-window-down
  :n "C-k" #'evil-window-up
+
+ ;; Switching workspaces / Workspace commans
+ "s-1"   (λ! (+workspace/switch-to 0))
+ "s-2"   (λ! (+workspace/switch-to 1))
+ "s-3"   (λ! (+workspace/switch-to 2))
+ "s-4"   (λ! (+workspace/switch-to 3))
+ "s-5"   (λ! (+workspace/switch-to 4))
+ "s-6"   (λ! (+workspace/switch-to 5))
+ "s-7"   (λ! (+workspace/switch-to 6))
+ "s-8"   (λ! (+workspace/switch-to 7))
+ "s-9"   (λ! (+workspace/switch-to 8))
+ :n "s-T" #'+workspace/display
  :n "s-t" (lambda! () (+workspace/new (read-string "Enter workspace name: ")))
 
  ;; <LEADER>
@@ -18,6 +30,9 @@
      :desc "Line-wrap"            :n "l" #'toggle-truncate-lines
      :desc "Line-numbers"         :n "n" #'doom/toggle-line-numbers
      :desc "Load theme"           :n "s" #'load-theme)
+
+   (:desc "search" :prefix "/"
+     :desc "RG"           :nv "/" #'counsel-rg)
 
    (:desc "code" :prefix "c"
      :desc "Comment dwim"         :n "L" #'comment-dwim
@@ -105,6 +120,4 @@
      :desc "sp-down"              :n "d" #'sp-down-sexp
      :desc "sp-kill"              :n "k" #'sp-kill-sexp
      :desc "sp-next"              :n "l" #'sp-next-sexp
-     :desc "sp-prev"              :n "h" #'sp-previous-sexp)
-
-   ))
+     :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
