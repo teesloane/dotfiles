@@ -8,7 +8,7 @@ ENABLE_CORRECTION="false"
 DISABLE_AUTO_TITLE="true"
 
 ## PLUGINS AND JUNK
-plugins=(git z zsh-autosuggestions)
+plugins=(git z )
 source $ZSH/oh-my-zsh.sh
 
 ##  ALIASES ##
@@ -43,6 +43,8 @@ export NVM_DIR="$HOME/.nvm"
 # tools and stuffs
 alias ls=exa -bghHliS
 alias cat=bat
+setopt HIST_IGNORE_SPACE
+alias jrnl=" jrnl"
 
 ### DEPS ###
 export GOPATH=$HOME/Development/go                              # go
@@ -51,4 +53,7 @@ export PATH=~/Development/go/bin:$PATH                          # go bin
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
+
 export PATH=/Users/tees/.local/bin:$PATH
+export PATH=$PATH:~/Development/flutter/bin
+export PATH="/usr/local/opt/llvm/bin:$PATH"

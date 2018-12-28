@@ -1,17 +1,17 @@
 ;;; ~/Development/dotfiles/doom/+bindings.el -*- lexical-binding: t; -*-
 
+
 (map!
  ;; <GLOBAL>
  :n "C-h" #'evil-window-left
  :n "C-l" #'evil-window-right
  :n "C-j" #'evil-window-down
  :n "C-k" #'evil-window-up
- :n "s-t" (lambda! () (+workspace/new (read-string "Enter workspace name: ")))
 
  ;; <LEADER>
  (:leader
-   ;; :desc "toggle last buffer"     :n [tab] #'evil-switch-to-windows-last-buffer
-   ;; :desc "project-search"         :nv "/" #'counsel-rg
+   :desc "toggle last buffer"     :n [tab] #'evil-switch-to-windows-last-buffer
+   :desc "project-search"         :nv "/" #'counsel-rg
 
    (:desc "toggle" :prefix "t"
      :desc "Flycheck"             :n "x" #'flycheck-mode
@@ -19,11 +19,12 @@
      :desc "Line-numbers"         :n "n" #'doom/toggle-line-numbers
      :desc "Load theme"           :n "s" #'load-theme)
 
+
    (:desc "code" :prefix "c"
      :desc "Comment dwim"         :n "L" #'comment-dwim
      :desc "Comment line"         :n "l" #'comment-line
-     :desc "Comment region"       :n "v" #'comment-region)
-
+     :desc "Comment region"       :n "v" #'comment-region
+     )
 
    (:desc "jump" :prefix "j"
      :desc "Jump to Char"         :n "a" #'avy-goto-char
@@ -34,7 +35,19 @@
      :desc "Imenu anywhere"       :n "f" #'ivy-imenu-anywhere
      :desc "Imenu here"           :n "h" #'counsel-imenu
      :desc "iMenu"                :n "i" #'imenu-list
-     :desc "Jump back"            :n "b" #'dumb-jump-back)
+     :desc "Jump back"            :n "b" #'dumb-jump-back
+     )
+
+   (:desc "buffer" :prefix "b"
+     :desc "kill buffer"          :n "d" #'kill-this-buffer
+     :desc "kill buffer"          :n "k" #'kill-this-buffer)
+
+   (:desc "file" :prefix "f"
+     :desc "Find File"            :n "f" #'counsel-find-file
+     :desc "Save buffer"          :n "s" #'save-buffer)
+
+   (:desc "project" :prefix "p"
+     :desc "Find File in Project" :n "f" #'projectile-find-file)
 
    (:desc "insert" :prefix "i"
      :desc "kill-ring"            :n "y" #'counsel-yank-pop)
@@ -43,37 +56,18 @@
      :desc "close window"         :n "d" #'+workspace/close-window-or-workspace
      :desc "split vert"           :n "-" #'split-window-vertically
      :desc "max-buffer"           :n "m" #'tees/max-buffer
-     :desc "previous buff"        :n "w" #'evil-switch-to-windows-last-buffer
      :desc "split horiz"          :n "/" #'split-window-horizontally)
 
    (:desc "workspace" :prefix "l"
-     :desc "New+name"                  "n"   (lambda! () (+workspace/new (read-string "Enter workspace name: ")))
-     :desc "Copy"                      "c"   #'persp-copy
-     :desc "Rename"                    "r"   #'+workspace/rename
-     :desc "Display tab bar"           "TAB" #'+workspace/display
-     :desc "New workspace"             "n"   #'+workspace/new
-     :desc "Load workspace from file"  "l"   #'+workspace/load
-     :desc "Load a past session"       "L"   #'+workspace/load-session
-     :desc "Save workspace to file"    "s"   #'+workspace/save
-     :desc "Autosave current session"  "S"   #'+workspace/save-session
-     :desc "Switch workspace"          "."   #'+workspace/switch-to
-     :desc "Delete session"            "x"   #'+workspace/kill-session
-     :desc "Delete this workspace"     "d"   #'+workspace/delete
-     :desc "Rename workspace"          "r"   #'+workspace/rename
-     :desc "Restore last session"      "R"   #'+workspace/load-last-session
-     :desc "Next workspace"            "]"   #'+workspace/switch-right
-     :desc "Previous workspace"        "["   #'+workspace/switch-left
-     :desc "Switch to 1st workspace"   "1"   (λ! (+workspace/switch-to 0))
-     :desc "Switch to 2nd workspace"   "2"   (λ! (+workspace/switch-to 1))
-     :desc "Switch to 3rd workspace"   "3"   (λ! (+workspace/switch-to 2))
-     :desc "Switch to 4th workspace"   "4"   (λ! (+workspace/switch-to 3))
-     :desc "Switch to 5th workspace"   "5"   (λ! (+workspace/switch-to 4))
-     :desc "Switch to 6th workspace"   "6"   (λ! (+workspace/switch-to 5))
-     :desc "Switch to 7th workspace"   "7"   (λ! (+workspace/switch-to 6))
-     :desc "Switch to 8th workspace"   "8"   (λ! (+workspace/switch-to 7))
-     :desc "Switch to 9th workspace"   "9"   (λ! (+workspace/switch-to 8))
-     :desc "Switch to last workspace"  "0"   #'+workspace/switch-to-last)
-
+     :desc "Switch to"            :n "f" #'+workspace/switch-to
+     :desc "Save as"              :n "s" #'+workspace/save
+     :desc "Save session"         :n "S" #'+workspace/save
+     :desc "Load"                 :n "l" #'+workspace/load
+     :desc "Load Session"         :n "L" #'+workspace/load-session
+     :desc "New"                  :n "N" #'+workspace/new
+     :desc "New+name"             :n "n" (lambda! () (+workspace/new (read-string "Enter workspace name: ")))
+     :desc "Copy"                 :n "c" #'persp-copy
+     :desc "Rename"               :n "r" #'+workspace/rename)
 
    (:desc "git" :prefix "g"
      :desc "Status"                :n  "s" #'magit-status
@@ -87,15 +81,21 @@
 
    (:desc "open" :prefix "o"
      :desc "Eshell"               :n  "e" #'+eshell/open-popup
-     ;; :desc "Neotree"              :n  "n" #'neotree-find
-     :desc "Treemacs"             :n  "n" #'+treemacs/toggle
+     :desc "Neotree"              :n  "n" #'neotree-find
+     ;; :desc "Treemacs"             :n  "n" #'treemacs-find-file
      :desc "APP: Deft"            :n  "D" #'deft)
 
+   (:desc "eval" :prefix "e"
+     :desc "Eval buffer"          :n "b" #'eval-buffer
+     :desc "Eval region"          :n "r" #'eval-region)
 
-   ;; (:desc "util" :prefix "z"
-   ;;   :desc "Copy buffer path"     :n "c" #'tees/clip-file
-   ;;   :desc "make last"            :n "z" #'makefile-executor-execute-last
-   ;;   :desc "make choice..."       :n "x" #'makefile-executor-execute-project-target)
+   (:desc "util" :prefix "z"
+     :desc "Copy buffer path"     :n "c" #'tees/clip-file
+     :desc "make last"            :n "z" #'makefile-executor-execute-last
+     :desc "make choice..."       :n "x" #'makefile-executor-execute-project-target
+     )
+
+
 
    (:desc "lisp" :prefix "k"
      :desc "sp-copy"              :n "c" #'sp-copy-sexp
@@ -107,4 +107,7 @@
      :desc "sp-next"              :n "l" #'sp-next-sexp
      :desc "sp-prev"              :n "h" #'sp-previous-sexp)
 
-   ))
+   (:desc "cursors" :prefix "d"
+     :desc "Make cursors"         :n "d" #'evil-mc-make-and-goto-next-match
+     :desc "Remove cursors"       :n "c" #'evil-mc-undo-all-cursors))
+ )

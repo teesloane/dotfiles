@@ -1,17 +1,2 @@
-;;; packages.el --- description -*- lexical-binding: t; -*-
-
-
-(package! prettier-js)
-(package! js-import)
-(package! eyebrowse)
-(package! flx)
-(package! writeroom-mode)
-(package! parinfer)
-(package! deft)
-(package! geiser)
-(package! reason-mode)
-(package! slack)
-(package! alert)
-
-(provide 'packages)
-;;; packages.el ends here
+;;; Temp fixer. Remove soon-ish.
+(package! evil-matchit :recipe (:fetcher github :repo "redguardtoo/evil-matchit" :commit "7d65b4167b1f0086c2b42b3aec805e47a0d355c4"))
