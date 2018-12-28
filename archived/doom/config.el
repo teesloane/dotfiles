@@ -80,7 +80,7 @@
 ;; (add-to-list 'custom-theme-load-path "~/.emacs/doom/themes/")
 
 
- ;; MODES + HOOKS + FUNCTIONS --------------------------------------------------
+;; MODES + HOOKS + FUNCTIONS --------------------------------------------------
 
 (load! "+funcs")
 
