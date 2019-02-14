@@ -17,13 +17,22 @@
  "s-7"   (λ! (+workspace/switch-to 6))
  "s-8"   (λ! (+workspace/switch-to 7))
  "s-9"   (λ! (+workspace/switch-to 8))
- :n "s-T" #'+workspace/display
- :n "s-t" (lambda! () (+workspace/new (read-string "Enter workspace name: ")))
+ :n "M-T" #'+workspace/display
+ :n "M-t" #'+workspace/new
+
+ ;; HIDING / SHOWING STUFF
+ (:desc "hideshow" :prefix "z"
+   :desc "hs-toggle" :n "a" #'hs-toggle-hiding
+   :desc "hs-hide-all" :n "m" #'hs-hide-all
+   :desc "hs-show-all" :n "o" #'hs-show-all)
+
+
 
  ;; <LEADER>
  (:leader
    ;; :desc "toggle last buffer"     :n [tab] #'evil-switch-to-windows-last-buffer
    ;; :desc "project-search"         :nv "/" #'counsel-rg
+   :desc "Recent buffers" :nv "<" #'ivy-switch-buffer
 
    (:desc "toggle" :prefix "t"
      :desc "Flycheck"             :n "x" #'flycheck-mode
@@ -102,8 +111,8 @@
 
    (:desc "open" :prefix "o"
      :desc "Eshell"               :n  "e" #'+eshell/open-popup
-     ;; :desc "Neotree"              :n  "n" #'neotree-find
-     :desc "Treemacs"             :n  "n" #'+treemacs/toggle
+     :desc "Neotree"              :n  "n" #'neotree-find
+     ;; :desc "Treemacs"             :n  "n" #'+treemacs/toggle
      :desc "APP: Deft"            :n  "D" #'deft)
 
 

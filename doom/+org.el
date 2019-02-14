@@ -69,6 +69,7 @@
     (org-table-align)))
 
 (defun org-dblock-write:clocktable-by-tag (params)
+  (interactive)
   (insert "| Tag | Headline | Time (h) |\n")
   (insert "|     |          | <r>  |\n")
   (let ((tags (plist-get params :tags)))
