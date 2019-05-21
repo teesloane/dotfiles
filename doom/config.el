@@ -41,9 +41,9 @@
 
 (defun tees/write ()
   (interactive)
-  (setq buffer-face-mode-face '(:family "iA Writer Duospace" :height 128)) ; set the font
-  (setq writeroom-width 90)                                                ; set width of writeroom mode
-  (set-fill-column 90)                                                     ; set width of fill column (for text wrapping.)
+  (setq buffer-face-mode-face '(:family "iA Writer Duospace" :height 124)) ; set the font
+  (setq writeroom-width 80)                                                ; set width of writeroom mode
+  (set-fill-column 80)                                                     ; set width of fill column (for text wrapping.)
   (setq-default indent-tabs-mode t)                                        ; use tabs for indentation
   (setq-default tab-width 1)                                               ; set tab width to 2 FIXME
   (setq writeroom-mode-line nil)                                          ; don't show the modeline
@@ -61,5 +61,11 @@
   (visual-line-mode 1)                                                     ; don't know.
   (run-at-time "1 sec" nil #'turn-off-solaire-mode)                        ; lol basically set timeout b/c a hook somewhere is turning on solaire mode
   (hl-line-mode 0)                                                         ; I said stop highlighting stuff!
-  (load-theme 'doom-solarized-light)                                       ; make it dark.
+  (load-theme 'doom-one)                                       ; make it dark.
   )
+
+(defun tees/todays-date (arg)
+  (interactive "P")
+  (insert (if arg
+              (format-time-string "%d-%m-%Y")
+            (format-time-string "%Y-%m-%d"))))
