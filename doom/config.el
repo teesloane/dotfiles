@@ -12,3 +12,4 @@
 (require 'epa-file)
 (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
 (epa-file-enable)
+(setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
