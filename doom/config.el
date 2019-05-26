@@ -1,3 +1,5 @@
+;; -- General variables --
+
 (setq-default
  avy-all-windows        'all-frames
  doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
@@ -5,10 +7,13 @@
  which-key-idle-delay   0.2
  )
 
-;; Local file requires:
-(load! "+funcs")
+;; -- Local file requires --
 
-;; Enable gpg stuff...
+(load! "+funcs")
+(load! "+org")
+
+;; -- Enable gpg stuff --
+
 (require 'epa-file)
 (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
 (epa-file-enable)
