@@ -2,25 +2,25 @@
 
 
 (defun tees/align-& (start end)
-  "Align columns by ampersand"
-  (interactive "r")
-  (align-regexp start end
-                "\\(\\s-*\\)&" 1 1 t))
+		"Align columns by ampersand"
+		(interactive "r")
+		(align-regexp start end
+																"\\(\\s-*\\)&" 1 1 t))
 
 (defun tees/align-whitespace (start end)
-  "Align columns by whitespace"
-  (interactive "r")
-  (align-regexp start end
-                "\\(\\s-*\\)\\s-" 1 0 t))
+		"Align columns by whitespace"
+		(interactive "r")
+		(align-regexp start end
+																"\\(\\s-*\\)\\s-" 1 0 t))
 
 (defun tees/max-buffer ()
-  "Current buffer becomes full width"
-  (interactive)
-  (if (= 1 (length (window-list)))
-      (jump-to-register '_)
-    (progn
-      (window-configuration-to-register '_)
-      (delete-other-windows))))
+		"Current buffer becomes full width"
+		(interactive)
+		(if (= 1 (length (window-list)))
+						(jump-to-register '_)
+				(progn
+						(window-configuration-to-register '_)
+						(delete-other-windows))))
 
 ;; (add-hook 'markdown-mode-hook 'tees/write)
 
@@ -58,8 +58,6 @@
 
 (defun tees/org-hook ()
 		(interactive)
-		(set-face-attribute 'org-level-1 nil :height 1.0 :background nil)
-		)
-
+		(set-face-attribute 'org-level-1 nil :height 1.0 :background nil))
 
 (add-hook 'org-load-hook #'tees/org-hook)
