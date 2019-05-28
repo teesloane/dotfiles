@@ -56,5 +56,7 @@
   )
 
 
+(add-hook 'org-mode-hook #'toggle-word-wrap) ; get line wrapping working
+
 ;; Clock time keeping stuff --
 ;; stolen from : https://emacs.stackexchange.com/questions/32178/how-to-create-table-of-time-distribution-by-tags-in-org-mode/32182
