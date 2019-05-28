@@ -24,57 +24,34 @@
 			org-refile-use-outline-path        t            ; Show/full/paths for refiling
 			org-agenda-files                   (list wiki-path)
 			org-fontify-whole-heading-line     nil
-			org-tags-column 80
-			org-ellipsis " ↴ "
+			org-tags-column                    80
+			org-startup-truncated              t
+			org-log-into-drawer                t
+			org-ellipsis " ▼ "
 			)
 
 		;; ---- CUSTOM CAPTURE TEMPLATES
 		(add-to-list 'org-capture-templates
-															'("nB" "New Book"
-																	table-line  ; type
+															'("b" "New Book"
+																	entry  ; type
 																	(file "books.org") ; target
-																	"|%U||XXXXXXXX|%^{pages}|%^{comment}|" ; template
-																	:prepend t)) ; properties
+																	"* %^{Author} - %^{Title}
+:PROPERTIES:
+:author: %\\1
+:title: %\\2
+:pages: %^{Pages}
+:page: 0
+:date_started: %U
+:date_completed:
+:genre:
+:type: %^{Type|Novel|Graphic Novel|Manga|Short Stories|Poetry|Other}
+:rating: 0
+:END:
+"
+																	:prepend t :kill-buffer t))
 
-		;; SELL     (k) Sell template
-		;; (add-to-list 'org-capture-templates
-		;; 													("s" "SELL      (k) Sell" entry (file "inbox.org")
-		;; 														"* SELL %?
-		;; :PROPERTIES:
-		;; :Cost:
-		;; :Paid:
-		;; :Method:   [[fin:%^{Method|Wells Fargo Credit Account|Wells Fargo Checking Account|Wells Fargo Debit Account|GE Capital Credit Card}][%\\1]]
-		;; :Merchant: [[peo:%^{Merchant}][%\\2]]
-		;; :Link:
-		;; :Quantity:
-		;; :Via:
-		;; :Note:
-		;; :END:
-		;; :LOGBOOK:
-		;; - State \"SELL\"       from \"\"           %U
-		;; :END:" :empty-lines 1)
-		;; 													)
-
-
-		;; (add-to-list 'org-capture-templates
-  ;; ;; CONSUME  (r) Consume template
-  ;;  ("mr" "CONSUME   (r) Consume org-protocol" entry (file "inbox.org")
-  ;;   "* CONSUME [[%:link][%:description]]
-  ;; :PROPERTIES:
-  ;; :Creator:  %:creator
-  ;; :Created:  %:description
-  ;; :Source:   %:source
-  ;; :Via:      %:via
-  ;; :Link:     %:link
-  ;; :Date:     %:date
-  ;; :Note:     %:note
-  ;; :END:
-  ;; :LOGBOOK:
-  ;; - State \"CONSUME\"    from \"\"           %U
-  ;; :END:
-  ;; %:initial" :empty-lines 1)
-
-		;; 													)
+		(add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
+		(add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?"))
 
 		(custom-set-faces '(org-level-1 ((t (:background nil :bold t)))))
 
