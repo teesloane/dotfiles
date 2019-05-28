@@ -3,3 +3,4 @@
 
 
 (package! writeroom-mode)
+(package! olivetti)
