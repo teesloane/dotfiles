@@ -50,8 +50,9 @@
 "
 																	:prepend t :kill-buffer t))
 
-		(add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
-		(add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?"))
+(add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
+(add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?"))
+(add-to-list 'org-capture-templates '("w" "Work todo" entry  (file+headline "work.org" "Inbox") "* TODO %?\n%i\n" :prepend t :kill-buffer t))
 
 		(custom-set-faces '(org-level-1 ((t (:background nil :bold t)))))
 
