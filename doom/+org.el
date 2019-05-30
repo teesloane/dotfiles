@@ -12,30 +12,40 @@
         :desc "Tag          heading" :nve "t" #'org-set-tags-command)
 
   (setq wiki-path "~/Dropbox/wiki/")
+  (setq agenda-and-refile-targets
+        '(("wiki.org" :maxlevel . 1)
+          ("todo.org"  :maxlevel . 1)
+          ("someday.org" :maxlevel . 1)
+          ("calendar.org" :maxlevel . 1)
+          ("projects.org" :maxlevel . 1)))
+
   (toggle-truncate-lines)
 
   (setq
    org-directory                      wiki-path
    org-default-notes-file             (concat wiki-path "index.org")
-   org-refile-targets                 '(("wiki.org" :maxlevel . 1) ("todo.org"  :maxlevel . 1))
+   ;; org refile things
+   org-refile-targets                 agenda-and-refile-targets
    org-outline-path-complete-in-steps nil          ; Refile in a single go
-   org-refile-use-outline-path        t            ; Show/full/paths for refiling
-   org-agenda-files                   (list wiki-path)
-   org-fontify-whole-heading-line     nil
-   org-tags-column                    80
-   org-startup-truncated              t
-   org-log-into-drawer                t
-   org-ellipsis " ▼ "
-   org-log-done                       t
-   )
+   org-refile-allow-creating-parent-nodes 'confirm)
+  org-refile-use-outline-path        'file            ; Show/full/paths for refiling
+  ;;
+  org-agenda-files                   agenda-and-refile-targets
+  org-fontify-whole-heading-line     nil
+  org-tags-column                    80
+  org-startup-truncated              t
+  org-log-into-drawer                t
+  org-ellipsis " ▼ "
+  org-log-done                       t
+  )
 
-  ;; ---- CUSTOM CAPTURE TEMPLATES ------------------------------------------------
+;; ---- CUSTOM CAPTURE TEMPLATES ------------------------------------------------
 
-  (add-to-list 'org-capture-templates
-               '("b" "New Book"
-                 entry  ; type
-                 (file "books.org") ; target
-                 "* %^{Author} - %^{Title}
+(add-to-list 'org-capture-templates
+             '("b" "New Book"
+               entry  ; type
+               (file "books.org") ; target
+               "* %^{Author} - %^{Title}
 :PROPERTIES:
 :author: %\\1
 :title: %\\2
@@ -48,12 +58,12 @@
 :rating: 0
 :END:
 "
-                 :prepend t :kill-buffer t))
+               :prepend t :kill-buffer t))
 
-  (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
-  (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?"))
+(add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
+(add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
 
-  )
+
 
 
 (add-hook 'org-mode-hook #'toggle-word-wrap) ; get line wrapping working

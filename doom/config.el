@@ -3,9 +3,12 @@
 (setq-default
  avy-all-windows        'all-frames
  doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-theme             'doom-nord
+ doom-theme             'doom-solarized-light
  which-key-idle-delay   0.2
  )
+
+
+(toggle-frame-maximized)
 
 ;; -- Local file requires --
 
