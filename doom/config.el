@@ -8,7 +8,6 @@
  )
 
 
-(toggle-frame-maximized)
 
 ;; -- Local file requires --
 
