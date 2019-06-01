@@ -1,6 +1,7 @@
 ;;; ~/Development/dotfiles/doom/+org.el -*- lexical-binding: t; -*-
 
 (after! org
+  ;; Org mode mapping
   (map! :map evil-org-mode-map
         :localleader
         :desc "Create_Todo" :nve     "o"  #'org-todo
@@ -9,7 +10,6 @@
         :desc "Refile"      :nve     "r"  #'org-refile
         :desc "Filter"      :nve     "f"  #'org-match-sparse-tree
         :desc "Log"         :nve     "l"  #'org-add-note
-        ;; :desc "Agenda Hydra" :nm     "f" #'+tees@org-hydra/body
         :desc "Tag          heading" :nve "t" #'org-set-tags-command)
 
   (org-super-agenda-mode)
@@ -47,43 +47,36 @@
    org-agenda-span 'day
    org-agenda-start-day "+0d"
    org-agenda-use-time-grid nil
+    org-agenda-skip-scheduled-if-done t
    )
 
   ;; super agenda configuration
   (setq org-super-agenda-groups
         '(
-          (:name "Schedule"
-                 :time-grid t
-                 :scheduled today
-                 :deadline today)
+          (:name "Schedule" :time-grid t :scheduled today :deadline today)
+          (:name "Overdue" :deadline past)
+          (:name "Due soon" :deadline future)
+          (:name "Waiting..." :todo "WAITING")
           ;; (:habit t)
-          (:name "Overdue"
-                 :deadline past)
-          (:name "Due soon"
-                 :deadline future)
-          (:name "Waiting..."
-                 :todo "WAITING"
-                 )
           ))
 
-  ;; stolen https://github.com/fuxialexander/doom-emacs-private-xfu/blob/233edd6c6538db852ddf3012d676120991627cb1/modules/lang/org-private/%2Btodo.el
+  ;; borrowed https://github.com/fuxialexander/doom-emacs-private-xfu/blob/233edd6c6538db852ddf3012d676120991627cb1/modules/lang/org-private/%2Btodo.el
 (after! org-agenda
   (org-super-agenda-mode)
-
-  (defhydra +tees/org-hydra (:color pink :hint nil)
-    "
-_;_ tag      _h_ headline      _c_ category     _r_ regexp     _d_ remove    "
-    (";" org-agenda-filter-by-tag)
-    ("h" org-agenda-filter-by-top-headline)
-    ("c" org-agenda-filter-by-category)
-    ("r" org-agenda-filter-by-regexp)
-    ("d" org-agenda-filter-remove-all)
-    ("q" nil "cancel" :color blue))
+  (map! :map org-agenda-mode-map
+        ;; :localleader
+        :desc "Forward" :nve   "]"  #'org-agenda-later
+        :desc "Backward" :nve   "["  #'org-agenda-earlier
+        :desc "Month View" :nve   "m"  #'org-agenda-month-view
+        :desc "Week View" :nve   "w"  #'org-agenda-week-view
+        :desc "Day View" :nve   "d"  #'org-agenda-day-view
+        :desc "Filter by tag" :nve   "f"  #'org-agenda-filter-by-tag
+        )
 
   (set-popup-rule! "^\\*Org Agenda.*" :slot -1 :size 190  :select t)
-  (after! evil-snipe
-    (push 'org-agenda-mode evil-snipe-disabled-modes))
-  (set-evil-initial-state! 'org-agenda-mode 'normal))
+  (after! evil-snipe (push 'org-agenda-mode evil-snipe-disabled-modes))
+  (set-evil-initial-state! 'org-agenda-mode 'normal)
+  )
 
 
   ;; ---- CUSTOM CAPTURE TEMPLATES ------------------------------------------------
