@@ -3,7 +3,7 @@
 (setq-default
  avy-all-windows        'all-frames
  doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-theme             'doom-solarized-light
+ doom-theme             'doom-tomorrow-day
  which-key-idle-delay   0.2
  )
 

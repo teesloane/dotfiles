@@ -4,3 +4,4 @@
 
 (package! writeroom-mode)
 (package! olivetti)
+(package! org-super-agenda)
