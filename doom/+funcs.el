@@ -4,14 +4,12 @@
 (defun tees/align-& (start end)
 		"Align columns by ampersand"
 		(interactive "r")
-		(align-regexp start end
-																"\\(\\s-*\\)&" 1 1 t))
+		(align-regexp start end "\\(\\s-*\\)&" 1 1 t))
 
 (defun tees/align-whitespace (start end)
 		"Align columns by whitespace"
 		(interactive "r")
-		(align-regexp start end
-																"\\(\\s-*\\)\\s-" 1 0 t))
+		(align-regexp start end "\\(\\s-*\\)\\s-" 1 0 t))
 
 (defun tees/max-buffer ()
 		"Current buffer becomes full width"
@@ -47,7 +45,8 @@
   (run-at-time "1 sec" nil #'turn-off-solaire-mode)   ; lol basically set timeout b/c a hook somewhere is turning on solaire mode
   (hl-line-mode 0)                                    ; I said stop highlighting stuff!
   (load-theme 'doom-one)                              ; make it dark.
-		(auto-fill-mode)
+		(auto-fill-mode nil)
+
   )
 
 (defun tees/todays-date (arg)

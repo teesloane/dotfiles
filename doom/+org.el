@@ -15,9 +15,9 @@
   (org-super-agenda-mode)
   (setq wiki-path "~/Dropbox/wiki/")
   (setq agenda-and-refile-targets
-        '(("wiki.org" :maxlevel . 1)
-          ("todo.org"  :maxlevel . 1)
-          ("someday.org" :maxlevel . 1)
+        '(("wiki.org"     :maxlevel . 1)
+          ("todo.org"     :maxlevel . 1)
+          ("someday.org"  :maxlevel . 1)
           ("calendar.org" :maxlevel . 1)
           ("projects.org" :maxlevel . 1)))
 
@@ -52,24 +52,22 @@
 
   ;; super agenda configuration
   (setq org-super-agenda-groups
-        '(
-          (:name "Schedule" :time-grid t :scheduled today :deadline today)
-          (:name "Overdue" :deadline past)
-          (:name "Due soon" :deadline future)
+        '((:name "Schedule"   :time-grid t :scheduled today :deadline today)
+          (:name "Overdue"    :deadline past)
+          (:name "Due soon"   :deadline future)
           (:name "Waiting..." :todo "WAITING")
-          ;; (:habit t)
+          (:name "Habits"     :habit t)
           ))
 
-  ;; borrowed https://github.com/fuxialexander/doom-emacs-private-xfu/blob/233edd6c6538db852ddf3012d676120991627cb1/modules/lang/org-private/%2Btodo.el
 (after! org-agenda
   (org-super-agenda-mode)
   (map! :map org-agenda-mode-map
         ;; :localleader
-        :desc "Forward" :nve   "]"  #'org-agenda-later
-        :desc "Backward" :nve   "["  #'org-agenda-earlier
-        :desc "Month View" :nve   "m"  #'org-agenda-month-view
-        :desc "Week View" :nve   "w"  #'org-agenda-week-view
-        :desc "Day View" :nve   "d"  #'org-agenda-day-view
+        :desc "Forward"       :nve   "]"  #'org-agenda-later
+        :desc "Backward"      :nve   "["  #'org-agenda-earlier
+        :desc "Month View"    :nve   "m"  #'org-agenda-month-view
+        :desc "Week View"     :nve   "w"  #'org-agenda-week-view
+        :desc "Day View"      :nve   "d"  #'org-agenda-day-view
         :desc "Filter by tag" :nve   "f"  #'org-agenda-filter-by-tag
         )
 
@@ -103,10 +101,6 @@
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   )
-
-;; Clock time keeping stuff --
-;; stolen from : https://emacs.stackexchange.com/questions/32178/how-to-create-table-of-time-distribution-by-tags-in-org-mode/32182
-
 
 
 ;; ;; HOOKS ------------------------
