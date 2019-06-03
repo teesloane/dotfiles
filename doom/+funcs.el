@@ -45,8 +45,9 @@
   (run-at-time "1 sec" nil #'turn-off-solaire-mode)   ; lol basically set timeout b/c a hook somewhere is turning on solaire mode
   (hl-line-mode 0)                                    ; I said stop highlighting stuff!
   (load-theme 'doom-one)                              ; make it dark.
-		(auto-fill-mode nil)
-
+		(auto-fill-mode 0)
+		(company-mode 0)
+	
   )
 
 (defun tees/todays-date (arg)

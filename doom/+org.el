@@ -52,11 +52,12 @@
 
   ;; super agenda configuration
   (setq org-super-agenda-groups
-        '((:name "Schedule"   :time-grid t :scheduled today :deadline today)
+        '((:name "Today"   :time-grid t :scheduled today :deadline today)
           (:name "Overdue"    :deadline past)
           (:name "Due soon"   :deadline future)
           (:name "Waiting..." :todo "WAITING")
           (:name "Habits"     :habit t)
+										(:habit t)
           ))
 
 (after! org-agenda
@@ -104,4 +105,7 @@
 
 
 ;; ;; HOOKS ------------------------
-(add-hook 'org-mode-hook #'toggle-word-wrap) ; get line wrapping working
+;; get line wrapping working
+(add-hook 'org-mode-hook #'toggle-word-wrap)
+;; Save archive file after something is archived. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=887332
+(advice-add 'org-archive-default-command :after #'org-save-all-org-buffers)
