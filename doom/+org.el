@@ -13,7 +13,7 @@
         :desc "Tag          heading" :nve "t" #'org-set-tags-command)
 
   (org-super-agenda-mode)
-  (setq wiki-path "~/Dropbox/wiki/")
+  (setq wiki-path "~/Development/wiki/")
   (setq agenda-and-refile-targets
         '(("wiki.org"     :maxlevel . 1)
           ("todo.org"     :maxlevel . 1)
@@ -27,7 +27,7 @@
    org-directory                      wiki-path
    org-default-notes-file             (concat wiki-path "index.org")
    ;; org refile things
-   org-refile-targets                 '(("wiki.org" :maxlevel . 1) ("todo.org"  :maxlevel . 1) ("projects.org" :maxlevel . 1))
+   org-refile-targets                 '(("wiki.org" :maxlevel . 1) ("todo.org"  :maxlevel . 1) ("projects.org" :maxlevel . 1) ("someday.org" :maxlevel . 1))
    org-outline-path-complete-in-steps nil          ; Refile in a single go
    org-refile-allow-creating-parent-nodes 'confirm
    org-refile-use-outline-path        'file            ; Show/full/paths for refiling
