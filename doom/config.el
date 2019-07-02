@@ -2,7 +2,8 @@
 
 (setq-default
  avy-all-windows        'all-frames
- doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ ;; doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-font              (font-spec :family "Inconsolata" :size 14 :weight 'regular)
  doom-theme             'doom-vibrant
  which-key-idle-delay   0.2
 

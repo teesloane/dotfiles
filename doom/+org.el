@@ -2,18 +2,18 @@
 
 (after! org
   ;; Org mode mapping
-  (map! :map evil-org-mode-map
-        :localleader
-        :desc "Create_Todo" :nve     "o"  #'org-todo
-        :desc "Schedule"    :nve     "s"  #'org-schedule
-        :desc "Deadline"    :nve     "d"  #'org-deadline
-        :desc "Refile"      :nve     "r"  #'org-refile
-        :desc "Filter"      :nve     "f"  #'org-match-sparse-tree
-        :desc "Log"         :nve     "l"  #'org-add-note
-        :desc "Tag          heading" :nve "t" #'org-set-tags-command)
+  ;; (map! :map evil-org-mode-map
+  ;;       :localleader
+  ;;       :desc "Create_Todo" :nve     "o"  #'org-todo
+  ;;       :desc "Schedule"    :nve     "s"  #'org-schedule
+  ;;       :desc "Deadline"    :nve     "d"  #'org-deadline
+  ;;       :desc "Refile"      :nve     "r"  #'org-refile
+  ;;       :desc "Filter"      :nve     "f"  #'org-match-sparse-tree
+  ;;       :desc "Log"         :nve     "l"  #'org-add-note
+  ;;       :desc "Tag          heading" :nve "t" #'org-set-tags-command)
 
   (org-super-agenda-mode)
-  (setq wiki-path "~/Development/wiki/")
+  (setq wiki-path "~/Dropbox/wiki/")
   (setq agenda-and-refile-targets
         '(("wiki.org"     :maxlevel . 1)
           ("todo.org"     :maxlevel . 1)
@@ -39,6 +39,10 @@
    org-log-into-drawer                t
    org-ellipsis " ▼ "
    org-log-done                       t
+
+   ;; elfeed things
+   elfeed-search-filter "@1-week-ago"
+
    )
 
 ;; -- org agenda -----------------------------------------------------------------------------------------
@@ -101,6 +105,7 @@
 
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
+  (add-to-list 'org-capture-templates '("t" "Todo" entry (file+datetree "todo.org") "* TODO %?\n%i" :prepend t))
   )
 
 

@@ -24,9 +24,9 @@
 
 (defun tees/write ()
   (interactive)
-  (setq buffer-face-mode-face '(:family "iA Writer Duospace" :height 140)) ; set the font
-  (setq writeroom-width             100)                    ; set width of writeroom mode
-  (set-fill-column                  100)                    ; set width of fill column (for text wrapping.)
+  ;; (setq buffer-face-mode-face '(:family "iA Writer Duospace" :height 140)) ; set the font
+  (setq writeroom-width             90)                    ; set width of writeroom mode
+  (set-fill-column                  90)                    ; set width of fill column (for text wrapping.)
   (setq-default indent-tabs-mode    t)                      ; use tabs for indentation
   (setq-default tab-width           1)                      ; set tab width to 2 FIXME
   (setq writeroom-mode-line         nil)                    ; don't show the modeline
