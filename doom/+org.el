@@ -16,7 +16,7 @@
   ;;       :desc "Tag          heading" :nve "t" #'org-set-tags-command)
 
   (org-super-agenda-mode)
-  (setq wiki-path "~/Development/wiki/")
+  (setq wiki-path "~/Dropbox/wiki/")
   (setq agenda-and-refile-targets
         '(("wiki.org"     :maxlevel . 1)
           ("todo.org"     :maxlevel . 1)
