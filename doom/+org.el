@@ -1,4 +1,7 @@
 ;;; ~/Development/dotfiles/doom/+org.el -*- lexical-binding: t; -*-
+;;;
+
+
 
 (after! org
   ;; Org mode mapping
@@ -13,13 +16,12 @@
   ;;       :desc "Tag          heading" :nve "t" #'org-set-tags-command)
 
   (org-super-agenda-mode)
-  (setq wiki-path "~/Dropbox/wiki/")
+  (setq wiki-path "~/Development/wiki/")
   (setq agenda-and-refile-targets
         '(("wiki.org"     :maxlevel . 1)
           ("todo.org"     :maxlevel . 1)
           ("someday.org"  :maxlevel . 1)
-          ("calendar.org" :maxlevel . 1)
-          ("projects.org" :maxlevel . 1)))
+          ("calendar.org" :maxlevel . 1)))
 
   (toggle-truncate-lines)
 
@@ -31,7 +33,7 @@
    org-outline-path-complete-in-steps nil          ; Refile in a single go
    org-refile-allow-creating-parent-nodes 'confirm
    org-refile-use-outline-path        'file            ; Show/full/paths for refiling
-   ;;
+   org-fontify-whole-heading-line     -1
    org-agenda-files                   (list wiki-path)
    org-fontify-whole-heading-line     nil
    org-tags-column                    80
@@ -40,6 +42,7 @@
    org-cycle-separator-lines          -1
    org-ellipsis " ▼ "
    org-log-done                       t
+   ;; org-level-color-stars-only         t
 
    ;; elfeed things
    elfeed-search-filter "@1-week-ago"
