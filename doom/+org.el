@@ -56,13 +56,13 @@
 
   ;; super agenda configuration
   (setq org-super-agenda-groups
-        '((:name "Today"      :time-grid t :scheduled today :deadline today)
+        '(
           (:name "Overdue"    :deadline past)
-          (:name "Important"  :priority "A")
+          (:name "Today"      :time-grid t :scheduled today :deadline today)
+          (:name "Important"  :priority "A") ;; Doesn't work.
           (:name "Due soon"   :deadline future)
-          (:name "Waiting..." :todo ("WAIT" "HOLD" "WAITING"))
           (:name "Habits"     :habit t)
-          (:name "Quick Picks" :effort< "1:00")
+          (:name "Quick Picks" :effort< "1:00") ;; doesn't work.
           (:habit t)
           ))
 
