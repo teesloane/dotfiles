@@ -37,6 +37,7 @@
    org-tags-column                    80
    org-startup-truncated              t
    org-log-into-drawer                t
+   org-cycle-separator-lines          -1
    org-ellipsis " ▼ "
    org-log-done                       t
 
