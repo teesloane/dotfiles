@@ -21,6 +21,12 @@
 
  )
 
+;; -- Hooks ------------------------
+
+(add-hook! 'doom-load-theme-hook
+  (after! outline
+    (set-face-attribute 'outline-1 nil :height 1.0 :background nil)))
+
 
 ;; -- Local file requires --
 

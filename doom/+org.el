@@ -1,62 +1,42 @@
 ;;; ~/Development/dotfiles/doom/+org.el -*- lexical-binding: t; -*-
 ;;;
 
+(setq refile-targets '("wiki.org" "todo.org" "projects.org" "someday.org"))
 
 
 (after! org
-  ;; Org mode mapping
-  ;; (map! :map evil-org-mode-map
-  ;;       :localleader
-  ;;       :desc "Create_Todo" :nve     "o"  #'org-todo
-  ;;       :desc "Schedule"    :nve     "s"  #'org-schedule
-  ;;       :desc "Deadline"    :nve     "d"  #'org-deadline
-  ;;       :desc "Refile"      :nve     "r"  #'org-refile
-  ;;       :desc "Filter"      :nve     "f"  #'org-match-sparse-tree
-  ;;       :desc "Log"         :nve     "l"  #'org-add-note
-  ;;       :desc "Tag          heading" :nve "t" #'org-set-tags-command)
-
   (org-super-agenda-mode)
-  (setq wiki-path "~/Dropbox/wiki/")
-  (setq agenda-and-refile-targets
-        '(("wiki.org"     :maxlevel . 1)
-          ("todo.org"     :maxlevel . 1)
-          ("someday.org"  :maxlevel . 1)
-          ("calendar.org" :maxlevel . 1)))
-
   (toggle-truncate-lines)
 
   (setq
-   org-directory                      wiki-path
-   org-default-notes-file             (concat wiki-path "index.org")
-   ;; org refile things
-   org-refile-targets                 '(("wiki.org" :maxlevel . 1) ("todo.org"  :maxlevel . 1) ("projects.org" :maxlevel . 1) ("someday.org" :maxlevel . 1))
-   org-outline-path-complete-in-steps nil          ; Refile in a single go
-   org-refile-allow-creating-parent-nodes 'confirm
-   org-refile-use-outline-path        'file            ; Show/full/paths for refiling
-   org-fontify-whole-heading-line     -1
-   org-agenda-files                   (list wiki-path)
-   org-fontify-whole-heading-line     nil
-   org-tags-column                    80
-   org-startup-truncated              t
-   org-log-into-drawer                t
-   org-cycle-separator-lines          -1
-   org-ellipsis " ▼ "
-   org-log-done                       t
-   ;; org-level-color-stars-only         t
-
-   ;; elfeed things
-   elfeed-search-filter "@1-week-ago"
-
-   )
-
-  ;; -- org agenda -----------------------------------------------------------------------------------------
-
-  (setq
+   wiki-path "~/Dropbox/wiki/"
+   elfeed-search-filter                   "@1-week-ago"
+   org-agenda-files                       (list wiki-path)
    org-agenda-span 'day
    org-agenda-start-day "+0d"
-   ;; org-agenda-use-time-grid nil
-   ;; org-agenda-skip-scheduled-if-done t
+   org-agenda-skip-scheduled-if-done t
+   org-agenda-skip-deadline-if-done t
+   org-cycle-separator-lines              -1
+	 ;; org-habit-show-all-today               t
+	 ;; org-habit-show-habits-only-for-today   nil
+   org-habit-today-glyph ?‖
+   org-habit-completed-glyph ?✓
+   org-default-notes-file                 (concat wiki-path "index.org")
+   org-directory                          wiki-path
+   org-ellipsis                           " ▼ "
+   org-fontify-whole-heading-line         nil
+   org-log-done                           t
+   org-log-into-drawer                    t
+   org-outline-path-complete-in-steps     nil  ; refile easy
+   org-refile-allow-creating-parent-nodes 'confirm
+   org-refile-targets                     (mapcar (lambda (l) `(,l :maxlevel . 1)) refile-targets)
+   org-refile-use-outline-path            'file ; Show/full/paths for refiling
+   org-startup-truncated                  t
+   org-tags-column                        80
+
    )
+
+
 
   ;; super agenda configuration
   (setq org-super-agenda-groups
@@ -66,6 +46,7 @@
           (:name "Important"  :priority "A") ;; Doesn't work.
           (:name "Due soon"   :deadline future)
           (:name "Habits"     :habit t)
+          (:name "Habitszz"     :tag "habit")
           (:name "Quick Picks" :effort< "1:00") ;; doesn't work.
           (:habit t)
           ))

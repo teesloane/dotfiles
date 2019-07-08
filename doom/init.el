@@ -181,11 +181,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-	 (quote
-		("10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
+   (quote
+    ("6d589ac0e52375d311afaa745205abb6ccb3b21f6ba037104d71111e7e76a3fc" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default)))
  '(elfeed-feeds
-	 (quote
-		("http://blog.fogus.me/feed/" "https://wiki.xxiivv.com/links/rss.xml")))
+   (quote
+    ("http://blog.fogus.me/feed/" "https://wiki.xxiivv.com/links/rss.xml")))
  '(epg-gpg-program "/usr/local/bin/gpg"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
