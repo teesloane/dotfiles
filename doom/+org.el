@@ -17,8 +17,8 @@
    org-agenda-skip-scheduled-if-done t
    org-agenda-skip-deadline-if-done t
    org-cycle-separator-lines              -1
-	 ;; org-habit-show-all-today               t
 	 ;; org-habit-show-habits-only-for-today   nil
+   org-habit-show-all-today t
    org-habit-today-glyph ?‖
    org-habit-completed-glyph ?✓
    org-default-notes-file                 (concat wiki-path "index.org")
@@ -41,14 +41,14 @@
   ;; super agenda configuration
   (setq org-super-agenda-groups
         '(
-          (:name "Overdue"    :deadline past)
-          (:name "Today"      :time-grid t :scheduled today :deadline today)
-          (:name "Important"  :priority "A") ;; Doesn't work.
-          (:name "Due soon"   :deadline future)
-          (:name "Habits"     :habit t)
-          (:name "Habitszz"     :tag "habit")
+          (:name "Overdue"     :deadline past)
+          (:name "Active"      :todo "NEXT")
+          (:name "Today"       :time-grid t :scheduled today :deadline today)
+          (:name "Important"   :priority "A") ;; Doesn't work.
+          (:name "Due soon"    :deadline future)
+          (:name "Habits"      :habit t)
           (:name "Quick Picks" :effort< "1:00") ;; doesn't work.
-          (:habit t)
+          ;; (:habit t)
           ))
 
   (after! org-agenda
