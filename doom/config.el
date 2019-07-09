@@ -4,7 +4,7 @@
  avy-all-windows        'all-frames
  ;; doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-font              (font-spec :family "Inconsolata" :size 14 :weight 'regular)
- doom-theme             'doom-vibrant
+ doom-theme             'doom-nord
  which-key-idle-delay   0.2
 
  ;;;; WEB JS AND WHATEVER STUFF

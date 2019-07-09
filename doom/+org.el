@@ -47,9 +47,10 @@
           (:name "Important"   :priority "A") ;; Doesn't work.
           (:name "Due soon"    :deadline future)
           (:name "Habits"      :habit t)
+          (:name "Goals"       :tag ("goal") :scheduled past) ; goals in 'projects.org'
           (:name "Quick Picks" :effort< "1:00") ;; doesn't work.
-          ;; (:habit t)
           ))
+
 
   (after! org-agenda
     (org-super-agenda-mode)
