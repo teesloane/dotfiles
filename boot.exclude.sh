@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Update submodules etc etc
-init () {
+update () {
 	echo "updating submodules..."
   	git submodule update --init --recursive
   	echo "done!"
@@ -33,7 +33,7 @@ install_tools () {
 		# TODO - regex here?
 		if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
 			echo "Installing useful stuff using brew. This may take a while..."
-			sh brewin.exclude.sh
+			sh brew.exclude.sh
 		else
 			echo "Brew installation cancelled by user"
 		fi
@@ -42,6 +42,22 @@ install_tools () {
 	fi
 }
 
-init
-link
-install_tools
+
+ 
+if [ "$1" == "update" ] 
+then
+	update
+elif [ "$1" == "link" ] 
+then
+	link
+elif [ "$1" == "install" ]
+then
+	install_tools
+elif [ "$1" == "all" ]
+then
+	update
+	link
+	install_tools
+else
+	echo "Gimme a command: 'update', 'link', 'install', or 'all' "
+fi
