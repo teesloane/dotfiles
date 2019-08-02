@@ -8,6 +8,5 @@ alias cat=bat                        # nice cat.
 alias rm="DONT USE RM. USE `trash` " # a nice reminder.
 
 
-
 # applications
 alias subl="open -a /Applications/Sublime\ Text.app" 
