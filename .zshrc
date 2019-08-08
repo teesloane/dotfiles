@@ -10,5 +10,6 @@ export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 [[ -s ${ZIM_HOME}/init.zsh ]] && source ${ZIM_HOME}/init.zsh
 
 source $HOME/.tools/z.sh
-
 source $HOME/.aliases
+
+export PATH=~/Development/flutter/bin:$PATH
