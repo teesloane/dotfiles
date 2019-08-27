@@ -3,7 +3,6 @@
 
 (setq refile-targets '("wiki.org" "todo.org" "projects.org" "someday.org"))
 
-
 (after! org
   (org-super-agenda-mode)
   (toggle-truncate-lines)
@@ -33,42 +32,7 @@
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-startup-truncated                  t
    org-tags-column                        80
-
    )
-
-
-
-  ;; super agenda configuration
-  (setq org-super-agenda-groups
-        '(
-          (:name "Overdue"     :deadline past)
-          (:name "Active"      :todo "NEXT")
-          (:name "Today"       :time-grid t :scheduled today :deadline today)
-          (:name "Important"   :priority "A") ;; Doesn't work.
-          (:name "Due soon"    :deadline future)
-          (:name "Habits"      :habit t)
-          (:name "Goals"       :tag ("goal") :scheduled past) ; goals in 'projects.org'
-          (:name "Quick Picks" :effort< "1:00") ;; doesn't work.
-          ))
-
-
-  (after! org-agenda
-    (org-super-agenda-mode)
-    (map! :map org-agenda-mode-map
-          ;; :localleader
-          :desc "Forward"       :nve   "]"  #'org-agenda-later
-          :desc "Backward"      :nve   "["  #'org-agenda-earlier
-          :desc "Month View"    :nve   "m"  #'org-agenda-month-view
-          :desc "Week View"     :nve   "w"  #'org-agenda-week-view
-          :desc "Day View"      :nve   "d"  #'org-agenda-day-view
-          :desc "Filter by tag" :nve   "f"  #'org-agenda-filter-by-tag
-          )
-
-    (set-popup-rule! "^\\*Org Agenda.*" :slot -1 :size 190  :select t)
-    (after! evil-snipe (push 'org-agenda-mode evil-snipe-disabled-modes))
-    (set-evil-initial-state! 'org-agenda-mode 'normal)
-    )
-
 
   ;; ---- CUSTOM CAPTURE TEMPLATES ------------------------------------------------
 

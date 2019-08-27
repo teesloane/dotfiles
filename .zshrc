@@ -12,4 +12,4 @@ export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 source $HOME/.tools/z.sh
 source $HOME/.aliases
 
-export PATH=~/Development/flutter/bin:$PATH
+export PATH=~/Development/flutter/bin:~/.nimble/bin:$PATH

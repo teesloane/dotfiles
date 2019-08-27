@@ -123,7 +123,7 @@
        ;;ledger            ; an accounting system in Emacs
        ;;lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
-       ;;nim               ; python + lisp at the speed of c
+       nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
@@ -186,8 +186,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   (quote
-    ("34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" default)))
+	 (quote
+		("cb477d192ee6456dc2eb5ca5a0b7bd16bdb26514be8f8512b937291317c7b166" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" default)))
  '(epg-gpg-program "/usr/local/bin/gpg")
  '(package-selected-packages (quote (undo-tree))))
 (custom-set-faces
