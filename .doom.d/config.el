@@ -4,9 +4,10 @@
  avy-all-windows        'all-frames
  ;; doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-font              (font-spec :family "Inconsolata" :size 14 :weight 'regular)
- doom-theme             'doom-spacegrey
+ doom-theme             'doom-one
  which-key-idle-delay   0.2
- global-whitespace-mode nil
+ global-whitespace-mode 0
+ whitespace-mode 0
 
  ;;;; WEB JS AND WHATEVER STUFF
  js2-bounce-indent-p nil
