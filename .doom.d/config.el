@@ -4,8 +4,9 @@
  avy-all-windows        'all-frames
  ;; doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-font              (font-spec :family "Inconsolata" :size 14 :weight 'regular)
- doom-theme             'doom-nord
+ doom-theme             'doom-spacegrey
  which-key-idle-delay   0.2
+ global-whitespace-mode nil
 
  ;;;; WEB JS AND WHATEVER STUFF
  js2-bounce-indent-p nil
@@ -20,6 +21,32 @@
  css-indent-offset 2
 
  )
+
+;; -- Custom Bindings ----------------------------------------------------------
+;;
+;;
+
+(map!
+ ;; --- <GLOBAL> -------------------------------------
+
+ ;; --- <LEADER> -------------------------------------
+ (:leader
+   (:desc "tees" :prefix "v"
+     :desc "M-X Alt"             :n "v" #'execute-extended-command
+		 )
+
+   (:desc "lisp" :prefix "k"
+     :desc "sp-copy"              :n "c" #'sp-copy-sexp
+		 :desc "sp-kill"              :n "k" #'sp-kill-sexp
+     :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+     :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+     :desc "sp-up"                :n "u" #'sp-up-sexp
+     :desc "sp-down"              :n "d" #'sp-down-sexp
+     :desc "sp-next"              :n "l" #'sp-next-sexp
+     :desc "sp-prev"              :n "h" #'sp-previous-sexp)
+
+   ))
+
 
 ;; -- Hooks ------------------------
 
