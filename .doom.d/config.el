@@ -4,7 +4,7 @@
  avy-all-windows        'all-frames
  ;; doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-font              (font-spec :family "Inconsolata" :size 14 :weight 'regular)
- doom-theme             'doom-one
+ doom-theme             'zaiste
  which-key-idle-delay   0.2
  global-whitespace-mode 0
  whitespace-mode 0
@@ -20,17 +20,16 @@
  web-mode-style-padding 2
  web-mode-script-padding 2
  css-indent-offset 2
-
  )
 
-;; -- Custom Bindings ----------------------------------------------------------
 ;;
+;; -- Custom Bindings ----------------------------------------------------------
 ;;
 
 (map!
- ;; --- <GLOBAL> -------------------------------------
+ -;; -- <GLOBAL> ---------------------------------------------------------------
 
- ;; --- <LEADER> -------------------------------------
+ ;; -- <LEADER> ----------------------------------------------------------------
  (:leader
    (:desc "tees" :prefix "v"
      :desc "M-X Alt"             :n "v" #'execute-extended-command
@@ -45,23 +44,20 @@
      :desc "sp-down"              :n "d" #'sp-down-sexp
      :desc "sp-next"              :n "l" #'sp-next-sexp
      :desc "sp-prev"              :n "h" #'sp-previous-sexp)
-
    ))
 
-
-;; -- Hooks ------------------------
+;; -- Hooks --------------------------------------------------------------------
 
 (add-hook! 'doom-load-theme-hook
   (after! outline
     (set-face-attribute 'outline-1 nil :height 1.0 :background nil)))
-
 
 ;; -- Local file requires --
 
 (load! "+funcs")
 (load! "+org")
 
-;; -- Enable gpg stuff --
+;; -- Enable gpg stuff ---------------------------------------------------------
 
 (require 'epa-file)
 (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))

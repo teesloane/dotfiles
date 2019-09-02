@@ -22,7 +22,8 @@
    org-habit-completed-glyph ?✓
    org-default-notes-file                 (concat wiki-path "index.org")
    org-directory                          wiki-path
-   org-ellipsis                           " ▼ "
+   ;; org-ellipsis                           " ▼ "
+   org-bullets-bullet-list '("⁖")
    org-fontify-whole-heading-line         nil
    org-log-done                           t
    org-log-into-drawer                    t

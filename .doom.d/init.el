@@ -185,12 +185,41 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#f0f0f0" "#e45649" "#50a14f" "#bda800" "#0098dd" "#a626a4" "#0184bc" "#383a42"])
  '(custom-safe-themes
-	 (quote
-		("cb477d192ee6456dc2eb5ca5a0b7bd16bdb26514be8f8512b937291317c7b166" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" default)))
+   (quote
+    ("5a49f1e3f31e3e8808d534e62f79e1e7ca992a48139e328116350909b98b5437" "90b96e09aad55faa3ded08123b37857e20c9237a36f3dfd6cbb275d73bdb115e" "5e24011e21c792545a2709838e0e31a7fd4812326d5569f97d3e2bdd74b2b0c7" "ea0157ec6bc7d0babdaff0db874070ac379cf567d4e68d89835d513720178c24" "427fa665823299f8258d8e27c80a1481edbb8f5463a6fb2665261e9076626710" "cdb3e7a8864cede434b168c9a060bf853eeb5b3f9f758310d2a2e23be41a24ae" "cb477d192ee6456dc2eb5ca5a0b7bd16bdb26514be8f8512b937291317c7b166" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" default)))
  '(epg-gpg-program "/usr/local/bin/gpg")
  '(erc-truncate-mode t)
- '(package-selected-packages (quote (undo-tree))))
+ '(fci-rule-color "#484a42")
+ '(jdee-db-active-breakpoint-face-colors (cons "#efefef" "#0098dd"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#efefef" "#50a14f"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#efefef" "#a0a1a7"))
+ '(objed-cursor-color "#e45649")
+ '(package-selected-packages (quote (undo-tree)))
+ '(vc-annotate-background "#f0f0f0")
+ '(vc-annotate-color-map
+   (list
+    (cons 20 "#50a14f")
+    (cons 40 "#74a334")
+    (cons 60 "#98a51a")
+    (cons 80 "#bda800")
+    (cons 100 "#c69c18")
+    (cons 120 "#d09030")
+    (cons 140 "#da8548")
+    (cons 160 "#c86566")
+    (cons 180 "#b74585")
+    (cons 200 "#a626a4")
+    (cons 220 "#ba3685")
+    (cons 240 "#cf4667")
+    (cons 260 "#e45649")
+    (cons 280 "#d36860")
+    (cons 300 "#c27b78")
+    (cons 320 "#b18e8f")
+    (cons 340 "#484a42")
+    (cons 360 "#484a42")))
+ '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

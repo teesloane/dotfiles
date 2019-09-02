@@ -11,6 +11,7 @@
 		(interactive "r")
 		(align-regexp start end "\\(\\s-*\\)\\s-" 1 0 t))
 
+
 (defun tees/max-buffer ()
 		"Current buffer becomes full width"
 		(interactive)
