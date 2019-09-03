@@ -105,8 +105,8 @@
    (mmm-default-submode-face :background base1)
 
    (org-block            :background base0)
-   (org-level-1          :foreground base6 :weight 'bold :height 1.15)
-   (org-level-2          :foreground base5 :weight 'bold :height 1.04)
+   (org-level-1          :foreground base5 :weight 'bold :height 1.0)
+   (org-level-2          :foreground base5 :weight 'bold :height 1.0)
    (org-level-3          :foreground base5 :bold bold :height 1.0)
    (org-level-4          :foreground base4 :bold bold :height 1.0)
    (org-ellipsis         :underline nil :background bg-alt     :foreground grey)
@@ -117,11 +117,11 @@
    (org-headline-done :foreground base3 :weight 'normal :strike-through t)
    (org-date :foreground orange)
    (org-code :foreground dark-blue)
-   (org-special-keyword :foreground base8 :underline t)
-   (org-document-title :foreground base8 :weight 'bold :height 1.1)
-   (org-document-info-keyword :foreground base4 :height 0.75)
-   (org-block-begin-line :foreground base4 :height 0.65)
-   (org-meta-line :foreground base4 :height 0.65)
+   (org-special-keyword :foreground base4 :underline nil)
+   (org-document-title :foreground base5 :weight 'bold :height 1.0)
+   (org-document-info-keyword :foreground base4 :height 0.85)
+   (org-block-begin-line :foreground base4 :height 0.85)
+   (org-meta-line :foreground base4 :height 0.85)
    (org-list-dt :foreground magenta)
 
    (org-todo-keyword-faces
@@ -165,8 +165,8 @@
 (after! org
   (setq
    org-bullets-bullet-list '("⁖")
-   org-ellipsis " ... "
-   line-spacing 5
+   ;; org-ellipsis " ... "
+   line-spacing 3
    org-todo-keyword-faces
    '(
      ("TODO"       :foreground "#7c7c75" :weight normal :underline t)
