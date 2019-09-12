@@ -20,6 +20,9 @@
  web-mode-style-padding 2
  web-mode-script-padding 2
  css-indent-offset 2
+
+ counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
+
  )
 
 ;;
