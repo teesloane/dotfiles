@@ -37,6 +37,7 @@ brew install fzf                      # Nice CTRL-R. And like, other stuff.
 brew install mpw                      # Speak Friend and Enter
 brew install trash                    # Protect RM.
 brew install watch                    # Who's on lookout?
+brew install fish
 
 # UI FOR AN UI
 brew cask install visual-studio-code  # Big'un. 
@@ -44,6 +45,11 @@ brew cask install spectacle           # Snappy windows
 brew cask install anki                # Ultra Lapsus memoriae
 brew cask install emacs               # DOOM...
 brew cask install anybar              # Menubar dots
+brew cask install google-chrome
+brew cask install anybar
+brew cask install firefox
+brew cask install iterm2
+brew cask install telegram
 
 # Other
 brew tap caskroom/fonts
