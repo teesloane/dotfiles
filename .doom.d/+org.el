@@ -64,8 +64,40 @@
   )
 
 
-;; ;; HOOKS ------------------------
+;; HOOKS -----------------------------------------------------------------------
+
+
+;;
+;; Hook funcs
+;;
+
+
+(defun tees/org-clock-query-out ()
+  "Ask the user before clocking out.
+	This is a useful function for adding to `kill-emacs-query-functions'."
+	(if (and
+       (featurep 'org-clock)
+       (funcall 'org-clocking-p)
+       (y-or-n-p "You are currently clocking time, clock out? "))
+      (org-clock-out)
+    t)) ;; only fails on keyboard quit or error
+
+(defun tees/org-on-clock-in ()
+	(message "Launching anybar and init'ing clock reminder")
+	(async-shell-command "~/.teescripts/org-clock-check.sh run")
+	)
+
+(defun tees/org-on-clock-out ()
+  "Kill the org-clock-check"
+	(async-shell-command "~/.teescripts/org-clock-check.sh stop")
+  )
+
+;; -- Hooks
+
 ;; get line wrapping working
 (add-hook 'org-mode-hook #'toggle-word-wrap)
+(add-hook 'kill-emacs-query-functions 'tees/org-clock-query-out)
+(add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
+
 ;; Save archive file after something is archived. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=887332
 (advice-add 'org-archive-default-command :after #'org-save-all-org-buffers)

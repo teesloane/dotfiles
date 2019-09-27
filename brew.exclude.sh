@@ -36,12 +36,14 @@ brew install exa                      # LS replacement.
 brew install fzf                      # Nice CTRL-R. And like, other stuff.
 brew install mpw                      # Speak Friend and Enter
 brew install trash                    # Protect RM.
+brew install watch                    # Who's on lookout?
 
 # UI FOR AN UI
 brew cask install visual-studio-code  # Big'un. 
 brew cask install spectacle           # Snappy windows
 brew cask install anki                # Ultra Lapsus memoriae
 brew cask install emacs               # DOOM...
+brew cask install anybar              # Menubar dots
 
 # Other
 brew tap caskroom/fonts
