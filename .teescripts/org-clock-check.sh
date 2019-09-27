@@ -23,12 +23,10 @@ function runLight() {
 	checkAnybar
 
 	while [ true ]; do
-		if [[ $(emacsclient -e '(org-clocking-p)') = "t" ]]; then
+		if [[ $(/usr/local/bin/emacsclient -e '(org-clocking-p)') = "t" ]]; then
 			anybar green
-			# echo -n "green" | nc -4u -w0 localhost 1738;
 		else
 			anybar red
-			# echo -n "red" | nc -4u -w0 localhost 1738
 		fi
 		sleep 1
 	done
@@ -38,10 +36,11 @@ function killProcess() {
 	local SCRIPT_ID = pgrep -f org-clock-check.sh
 	local ANYBAR_ID = pgrep -f AnyBar
 	anybar red
-	sleep 1
+	# sleep 1
 
-	echo "Ending process id: script: $(SCRIPT_ID) and anybar: $(ANYBAR_ID)"
-	kill SCRIPT_ID
+	# These don't seem to do anything, comment out for now?
+	# echo "Ending process id: script: $(SCRIPT_ID) and anybar: $(ANYBAR_ID)"
+	# kill SCRIPT_ID
 }
 
 
