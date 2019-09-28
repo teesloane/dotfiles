@@ -98,6 +98,7 @@
 (add-hook 'org-mode-hook #'toggle-word-wrap)
 (add-hook 'kill-emacs-query-functions 'tees/org-clock-query-out)
 (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
+(add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
 
 ;; Save archive file after something is archived. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=887332
 (advice-add 'org-archive-default-command :after #'org-save-all-org-buffers)

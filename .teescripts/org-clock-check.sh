@@ -33,13 +33,13 @@ function runLight() {
 }
 
 function killProcess() {
-	local SCRIPT_ID = pgrep -f org-clock-check.sh
-	local ANYBAR_ID = pgrep -f AnyBar
+	# local SCRIPT_ID = pgrep -f org-clock-check.sh
+	# local ANYBAR_ID = pgrep -f AnyBar
 	anybar red
 	# sleep 1
-
 	# These don't seem to do anything, comment out for now?
 	# echo "Ending process id: script: $(SCRIPT_ID) and anybar: $(ANYBAR_ID)"
+	# It doesn't seem like the script keeps running...
 	# kill SCRIPT_ID
 }
 
