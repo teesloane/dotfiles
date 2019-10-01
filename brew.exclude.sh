@@ -47,7 +47,7 @@ brew cask install anki                # Ultra Lapsus memoriae
 brew cask install emacs               # DOOM...
 brew cask install anybar              # Menubar dots
 brew cask install google-chrome       # Everything is shiney.
-brew cask install openinterminal      # Finder -> Terminal
+brew cask install openinterminal-lite # Finder -> Terminal
 brew cask install anybar              # Little dots.
 brew cask install firefox             # Fast Little Fox
 brew cask install iterm2              # I...Term...too?
