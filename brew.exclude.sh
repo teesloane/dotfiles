@@ -37,7 +37,8 @@ brew install fzf                      # Nice CTRL-R. And like, other stuff.
 brew install mpw                      # Speak Friend and Enter
 brew install trash                    # Protect RM.
 brew install watch                    # Who's on lookout?
-brew install fish
+brew install fish                     # Goodbye zsh
+brew install ranger                   # Everyone's Favourite Park Ranger
 
 # UI FOR AN UI
 brew cask install visual-studio-code  # Big'un. 
@@ -45,11 +46,12 @@ brew cask install spectacle           # Snappy windows
 brew cask install anki                # Ultra Lapsus memoriae
 brew cask install emacs               # DOOM...
 brew cask install anybar              # Menubar dots
-brew cask install google-chrome
-brew cask install anybar
-brew cask install firefox
-brew cask install iterm2
-brew cask install telegram
+brew cask install google-chrome       # Everything is shiney.
+brew cask install openinterminal      # Finder -> Terminal
+brew cask install anybar              # Little dots.
+brew cask install firefox             # Fast Little Fox
+brew cask install iterm2              # I...Term...too?
+brew cask install telegram            # Greetings STOP
 
 # Other
 brew tap caskroom/fonts
