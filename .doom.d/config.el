@@ -3,11 +3,12 @@
 (setq-default
  avy-all-windows        'all-frames
  ;; doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-font              (font-spec :family "Inconsolata" :size 14 :weight 'regular)
- doom-theme             'zaiste
+ doom-font              (font-spec :family "Inconsolata" :size 15 :weight 'regular)
+ doom-theme             'doom-gruvbox
  which-key-idle-delay   0.2
  global-whitespace-mode 0
  whitespace-mode 0
+ global-whitespace-mode 0
 
  ;;;; WEB JS AND WHATEVER STUFF
  js2-bounce-indent-p nil
@@ -26,7 +27,7 @@
  )
 
 ;;
-;; -- Custom Bindings ----------------------------------------------------------
+;; -- Custom Bindings ----------------------------------------------------------doom-one
 ;;
 
 (map!
@@ -47,7 +48,8 @@
      :desc "sp-down"              :n "d" #'sp-down-sexp
      :desc "sp-next"              :n "l" #'sp-next-sexp
      :desc "sp-prev"              :n "h" #'sp-previous-sexp)
-   ))
+   )
+ )
 
 ;; -- Hooks --------------------------------------------------------------------
 

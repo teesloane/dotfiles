@@ -52,6 +52,7 @@ brew cask install anybar              # Little dots.
 brew cask install firefox             # Fast Little Fox
 brew cask install iterm2              # I...Term...too?
 brew cask install telegram            # Greetings STOP
+brew cask install michaelvillar-timer # Time TIME TIME
 
 # Other
 brew tap caskroom/fonts

@@ -34,7 +34,7 @@
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
-       ;;pretty-code       ; replace bits of code with pretty symbols
+       pretty-code       ; replace bits of code with pretty symbols
        ;;tabbar            ; FIXME an (incomplete) tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
@@ -85,7 +85,7 @@
        ;;lsp
        macos             ; MacOS-specific commands
        magit             ; a git porcelain for Emacs
-       ;;make              ; run make tasks from Emacs
+       make                ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        ;;pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
@@ -186,10 +186,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
-	 ["#21242b" "#e45649" "#50a14f" "#bda800" "#0098dd" "#a626a4" "#0184bc" "#383a42"])
+   ["#272C36" "#e45649" "#50a14f" "#bda800" "#0098dd" "#a626a4" "#0184bc" "#383a42"])
  '(custom-safe-themes
-	 (quote
-		("428754d8f3ed6449c1078ed5b4335f4949dc2ad54ed9de43c56ea9b803375c23" "0d087b2853473609d9efd2e9fbeac088e89f36718c4a4c89c568dd1b628eae41" "70ed3a0f434c63206a23012d9cdfbe6c6d4bb4685ad64154f37f3c15c10f3b90" "7a2335afbfabba219b7cad9c350ba0eafd21ca9823ce6a4a8860c33bd5c8ff84" "66d53738cc824d0bc5b703276975581b8de2b903d6ce366cd62207b5dd6d3d13" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "b8c53d83f28e94f1d4817f5fc5151fdc658c5779f176b0f0a2b4fb678f253a94" "9d1cb46123d227b06a4243d773542b064c8b5b35625d62879073dbf985d89f4b" "4ea0aa360264ff861fb0212abe4161b83ad1d8c8b74d8a04bcd1baf0ebdceeae" "5a49f1e3f31e3e8808d534e62f79e1e7ca992a48139e328116350909b98b5437" "90b96e09aad55faa3ded08123b37857e20c9237a36f3dfd6cbb275d73bdb115e" "5e24011e21c792545a2709838e0e31a7fd4812326d5569f97d3e2bdd74b2b0c7" "ea0157ec6bc7d0babdaff0db874070ac379cf567d4e68d89835d513720178c24" "427fa665823299f8258d8e27c80a1481edbb8f5463a6fb2665261e9076626710" "cdb3e7a8864cede434b168c9a060bf853eeb5b3f9f758310d2a2e23be41a24ae" "cb477d192ee6456dc2eb5ca5a0b7bd16bdb26514be8f8512b937291317c7b166" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" default)))
+   (quote
+    ("f951343d4bbe5a90dba0f058de8317ca58a6822faa65d8463b0e751a07ec887c" "071f5702a5445970105be9456a48423a87b8b9cfa4b1f76d15699b29123fb7d8" "423435c7b0e6c0942f16519fa9e17793da940184a50201a4d932eafe4c94c92d" "428754d8f3ed6449c1078ed5b4335f4949dc2ad54ed9de43c56ea9b803375c23" "0d087b2853473609d9efd2e9fbeac088e89f36718c4a4c89c568dd1b628eae41" "70ed3a0f434c63206a23012d9cdfbe6c6d4bb4685ad64154f37f3c15c10f3b90" "7a2335afbfabba219b7cad9c350ba0eafd21ca9823ce6a4a8860c33bd5c8ff84" "66d53738cc824d0bc5b703276975581b8de2b903d6ce366cd62207b5dd6d3d13" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "b8c53d83f28e94f1d4817f5fc5151fdc658c5779f176b0f0a2b4fb678f253a94" "9d1cb46123d227b06a4243d773542b064c8b5b35625d62879073dbf985d89f4b" "4ea0aa360264ff861fb0212abe4161b83ad1d8c8b74d8a04bcd1baf0ebdceeae" "5a49f1e3f31e3e8808d534e62f79e1e7ca992a48139e328116350909b98b5437" "90b96e09aad55faa3ded08123b37857e20c9237a36f3dfd6cbb275d73bdb115e" "5e24011e21c792545a2709838e0e31a7fd4812326d5569f97d3e2bdd74b2b0c7" "ea0157ec6bc7d0babdaff0db874070ac379cf567d4e68d89835d513720178c24" "427fa665823299f8258d8e27c80a1481edbb8f5463a6fb2665261e9076626710" "cdb3e7a8864cede434b168c9a060bf853eeb5b3f9f758310d2a2e23be41a24ae" "cb477d192ee6456dc2eb5ca5a0b7bd16bdb26514be8f8512b937291317c7b166" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" default)))
  '(default-input-method "TeX")
  '(epg-gpg-program "/usr/local/bin/gpg")
  '(erc-truncate-mode t)
@@ -201,25 +201,25 @@
  '(package-selected-packages (quote (undo-tree)))
  '(vc-annotate-background "#f0f0f0")
  '(vc-annotate-color-map
-	 (list
-		(cons 20 "#50a14f")
-		(cons 40 "#74a334")
-		(cons 60 "#98a51a")
-		(cons 80 "#bda800")
-		(cons 100 "#c69c18")
-		(cons 120 "#d09030")
-		(cons 140 "#da8548")
-		(cons 160 "#c86566")
-		(cons 180 "#b74585")
-		(cons 200 "#a626a4")
-		(cons 220 "#ba3685")
-		(cons 240 "#cf4667")
-		(cons 260 "#e45649")
-		(cons 280 "#d36860")
-		(cons 300 "#c27b78")
-		(cons 320 "#b18e8f")
-		(cons 340 "#484a42")
-		(cons 360 "#484a42")))
+   (list
+    (cons 20 "#50a14f")
+    (cons 40 "#74a334")
+    (cons 60 "#98a51a")
+    (cons 80 "#bda800")
+    (cons 100 "#c69c18")
+    (cons 120 "#d09030")
+    (cons 140 "#da8548")
+    (cons 160 "#c86566")
+    (cons 180 "#b74585")
+    (cons 200 "#a626a4")
+    (cons 220 "#ba3685")
+    (cons 240 "#cf4667")
+    (cons 260 "#e45649")
+    (cons 280 "#d36860")
+    (cons 300 "#c27b78")
+    (cons 320 "#b18e8f")
+    (cons 340 "#484a42")
+    (cons 360 "#484a42")))
  '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
