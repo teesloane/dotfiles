@@ -33,16 +33,16 @@
 (map!
  ;; -- <GLOBAL> ---------------------------------------------------------------
 
- :desc "Switch to 1st workspace"   "s-1"   (λ! (+workspace/switch-to 0))
- :desc "Switch to 2nd workspace"   "s-2"   (λ! (+workspace/switch-to 1))
- :desc "Switch to 3rd workspace"   "s-3"   (λ! (+workspace/switch-to 2))
- :desc "Switch to 4th workspace"   "s-4"   (λ! (+workspace/switch-to 3))
- :desc "Switch to 5th workspace"   "s-5"   (λ! (+workspace/switch-to 4))
- :desc "Switch to 6th workspace"   "s-6"   (λ! (+workspace/switch-to 5))
- :desc "Switch to 7th workspace"   "s-7"   (λ! (+workspace/switch-to 6))
- :desc "Switch to 8th workspace"   "s-8"   (λ! (+workspace/switch-to 7))
- :desc "Switch to 9th workspace"   "s-9"   (λ! (+workspace/switch-to 8))
- :desc "Create workspace"          "s-t"   (λ! (+workspace/new))
+ :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
+ :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
+ :desc "Switch to 3rd workspace" :n  "s-3"   (λ! (+workspace/switch-to 2))
+ :desc "Switch to 4th workspace" :n  "s-4"   (λ! (+workspace/switch-to 3))
+ :desc "Switch to 5th workspace" :n  "s-5"   (λ! (+workspace/switch-to 4))
+ :desc "Switch to 6th workspace" :n  "s-6"   (λ! (+workspace/switch-to 5))
+ :desc "Switch to 7th workspace" :n  "s-7"   (λ! (+workspace/switch-to 6))
+ :desc "Switch to 8th workspace" :n  "s-8"   (λ! (+workspace/switch-to 7))
+ :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
+ :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
 
  ;; -- <LEADER> ----------------------------------------------------------------
  (:leader
