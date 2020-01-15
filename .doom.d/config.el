@@ -3,12 +3,14 @@
 (setq-default
  avy-all-windows        'all-frames
  ;; doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-font              (font-spec :family "Inconsolata" :size 15 :weight 'regular)
+ doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
+ ;; doom-font              (font-spec :family "Inconsolata" :size 15 :weight 'regular)
  doom-theme             'doom-gruvbox
  which-key-idle-delay   0.2
  global-whitespace-mode 0
  whitespace-mode 0
  global-whitespace-mode 0
+ line-spacing 2
 
  ;;;; WEB JS AND WHATEVER STUFF
  js2-bounce-indent-p nil
