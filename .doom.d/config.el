@@ -3,14 +3,15 @@
 (setq-default
  avy-all-windows        'all-frames
  ;; doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
  ;; doom-font              (font-spec :family "Inconsolata" :size 15 :weight 'regular)
+ doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
  doom-theme             'doom-gruvbox
  which-key-idle-delay   0.2
  global-whitespace-mode 0
  whitespace-mode 0
  global-whitespace-mode 0
  line-spacing 2
+ which-key-idle-delay   0.2
 
  ;;;; WEB JS AND WHATEVER STUFF
  js2-bounce-indent-p nil
@@ -24,11 +25,9 @@
  web-mode-script-padding 2
  css-indent-offset 2
 
- counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
+ counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s .") ;; stop rg crashing on long files.
 
- )
 
-;;
 ;; -- Custom Bindings ----------------------------------------------------------doom-one
 ;;
 
@@ -49,22 +48,19 @@
  ;; -- <LEADER> ----------------------------------------------------------------
  (:leader
    (:desc "tees" :prefix "v"
-     :desc "M-X Alt"             :n "v" #'execute-extended-command
-		 )
+     :desc "M-X Alt"             :n "v" #'execute-extended-command)
 
 
-
-	 (:desc "lisp" :prefix "k"
-		 :desc "sp-copy"              :n "c" #'sp-copy-sexp
-		 :desc "sp-kill"              :n "k" #'sp-kill-sexp
+   (:desc "lisp" :prefix "k"
+     :desc "sp-copy"              :n "c" #'sp-copy-sexp
+     :desc "sp-kill"              :n "k" #'sp-kill-sexp
      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
      :desc "sp-up"                :n "u" #'sp-up-sexp
      :desc "sp-down"              :n "d" #'sp-down-sexp
      :desc "sp-next"              :n "l" #'sp-next-sexp
-     :desc "sp-prev"              :n "h" #'sp-previous-sexp)
-   )
- )
+     :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+
 
 ;; -- Hooks --------------------------------------------------------------------
 

@@ -1,13 +1,18 @@
-
 ;;; init.el -*- lexical-binding: t; -*-
 
-;; Copy this file to ~/.doom.d/init.el or ~/.config/doom/init.el ('doom
-;; quickstart' will do this for you). The `doom!' block below controls what
-;; modules are enabled and in what order they will be loaded. Remember to run
-;; 'doom refresh' after modifying it.
+;; This file controls what Doom modules are enabled and what order they load in.
+;; Remember to run 'doom sync' after modifying it!
+
+;; NOTE Press 'SPC h d h' (or 'C-h d h' for non-vim users) to access Doom's
+;;      documentation. There you'll find information about all of Doom's modules
+;;      and what flags they support.
+
+;; NOTE Move your cursor over a module's name (or its flags) and press 'K' (or
+;;      'C-c g k' for non-vim users) to view its documentation. This works on
+;;      flags as well (those symbols that start with a plus).
 ;;
-;; More information about these modules (and what flags they support) can be
-;; found in modules/README.org.
+;;      Alternatively, press 'gd' (or 'C-c g d') on a module to browse its
+;;      directory (for easy access to its source code).
 
 (doom! :input
        ;;chinese
@@ -17,7 +22,7 @@
        company           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       (ivy +childframe +fuzzy)               ; a search engine for love and life
+       (ivy +fuzzy +childframe +icons)               ; a search engine for love and life
 
        :ui
        ;;deft              ; notational velocity for Emacs
@@ -25,7 +30,8 @@
        doom-dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;;fill-column       ; a `fill-column' indicator
-       hl-todo           ; highlight TODO/FIXME/NOTE tags
+       hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       ;;hydra
        ;;indent-guides     ; highlighted indent columns
        modeline          ; snazzy, Atom-inspired modeline, plus API
        nav-flash         ; blink the current line after jumping
@@ -34,33 +40,37 @@
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
-       pretty-code       ; replace bits of code with pretty symbols
-       ;;tabbar            ; FIXME an (incomplete) tab bar for Emacs
+       ;;pretty-code       ; replace bits of code with pretty symbols
+       ;;tabs              ; an tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
+       ;;zen               ; distraction-free coding or writing
 
        :editor
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
        (format )  ; automated prettiness
-       ;;lispy             ; vim for lisp, for people who dont like vim
+       ;;god               ; run Emacs commands without modifier keys
+       ;;lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors  ; editing in many places at once
        ;;objed             ; text object editing for the innocent
-       ;;parinfer          ; turn lisp into python, sort of
+       parinfer          ; turn lisp into python, sort of
        rotate-text       ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
+       word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       (dired            ; making dired pretty [functional]
- 				+ranger         ; bringing the goodness of ranger to dired
-			 +icons          ; colorful icons for dired-mode
-        )
-       electric          ; smarter, keyword-based electric-indent
+			 (dired            ; making dired pretty [functional]
+				+ranger          ; bringing the goodness of ranger to dired
+				+icons           ; colorful icons for dired-mode
+				)
+			 electric          ; smarter, keyword-based electric-indent
+       ibuffer           ; interactive buffer management
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
@@ -69,6 +79,11 @@
        ;;term              ; terminals in Emacs
        ;;vterm             ; another terminals in Emacs
 
+       :checkers
+       syntax              ; tasing you for every semicolon you forget
+       ;;spell             ; tasing you for misspelling mispelling
+       ;;grammar           ; tasing grammar mistake every you make
+
        :tools
        ;;ansible
        ;;debugger          ; FIXME stepping through code, to help you add bugs
@@ -76,24 +91,21 @@
        ;;docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
-       eval              ; run code, run (also, repls)
-       flycheck          ; tasing you for every semicolon you forget
-       ;;flyspell          ; tasing you for misspelling mispelling
+       (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        (lookup           ; helps you navigate your code and documentation
         +docsets)        ; ...or in Dash docsets locally
        ;;lsp
        macos             ; MacOS-specific commands
        magit             ; a git porcelain for Emacs
-       make                ; run make tasks from Emacs
+       ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        ;;pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
-       rgb               ; creating color strings
+       ;;rgb               ; creating color strings
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
-       ;;wakatime
 
        :lang
        ;;agda              ; types of types of types of types...
@@ -105,125 +117,67 @@
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
        data              ; config/data formats
-       ;;erlang            ; an elegant language for a more civilized age
-       elixir            ; erlang done right
+       ;;elixir            ; erlang done right
        elm               ; care for a cup of TEA?
        emacs-lisp        ; drown in parentheses
+       ;;erlang            ; an elegant language for a more civilized age
        ;;ess               ; emacs speaks statistics
+       ;;faust             ; dsp, but you get to keep your soul
        ;;fsharp           ; ML stands for Microsoft's Language
        go                ; the hipster dialect
-       ;;(haskell +intero) ; a language that's lazier than I am
-       ;;hy                ; readability of scheme w/ speed of python
+       ;;(haskell +dante)  ; a language that's lazier than I am
+       hy                ; readability of scheme w/ speed of python
        ;;idris             ;
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
        javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
+       ;;lean
+       ;;factor
        ;;ledger            ; an accounting system in Emacs
-       ;;lua               ; one-based indices? one-based indices
+       lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
        nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
-        +dragndrop       ; file drag & drop support
-        +ipython         ; ipython support for babel
-        +pandoc          ; pandoc integration into org's exporter
-        +present)        ; using Emacs for presentations
+        +dragndrop       ; drag & drop files/images into org buffers
+        ;;+hugo            ; use Emacs for hugo blogging
+        ;;+jupyter        ; ipython/jupyter support for babel
+        +pandoc          ; export-with-pandoc support
+        +pomodoro        ; be fruitful with the tomato technique
+        +present)        ; using org-mode for presentations
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       python            ; beautiful is better than ugly
+       ;;python            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        racket            ; a DSL for DSLs
        ;;rest              ; Emacs as a REST client
-       ruby              ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+       ;;rst               ; ReST in peace
+       ;;ruby              ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        ;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
-       ;;scheme            ; a fully conniving family of lisps
+       scheme            ; a fully conniving family of lisps
        sh                ; she sells {ba,z,fi}sh shells on the C xor
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
-       web               ; the tubes
-       ;;vala              ; GObjective-C
+       ;;web               ; the tubes
 
        :email
-       ;;(mu4e +gmail)       ; WIP
-       ;;notmuch             ; WIP
-       ;;(wanderlust +gmail) ; WIP
+       ;;(mu4e +gmail)
+       ;;notmuch
+       ;;(wanderlust +gmail)
 
-       ;; Applications are complex and opinionated modules that transform Emacs
-       ;; toward a specific purpose. They may have additional dependencies and
-       ;; should be loaded late.
        :app
        ;;calendar
-       ;;irc              ; how neckbeards socialize
-       (rss +org)        ; emacs as an RSS reader
-       ;;twitter           ; twitter client https://twitter.com/vnought
-       (write            ; emacs as a word processor (latex + org + markdown)
-        +wordnut         ; wordnet (wn) search
-        +langtool)       ; a proofreader (grammar/style check) for Emacs
-
-       :collab
-       ;;floobits          ; peer programming for a price
-       ;;impatient-mode    ; show off code over HTTP
+       ;;irc               ; how neckbeards socialize
+       ;;(rss +org)        ; emacs as an RSS reader
+			 twitter           ; twitter client https://twitter.com/vnought
 
        :config
-       ;; For literate config users. This will tangle+compile a config.org
-       ;; literate config in your `doom-private-dir' whenever it changes.
        ;;literate
-
-       ;; The default module sets reasonable defaults for Emacs. It also
-       ;; provides a Spacemacs-inspired keybinding scheme and a smartparens
-       ;; config. Use it as a reference for your own modules.
        (default +bindings +smartparens))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-	 ["#21242b" "#e45649" "#50a14f" "#bda800" "#0098dd" "#a626a4" "#0184bc" "#383a42"])
- '(custom-safe-themes
-	 (quote
-		("e47c0abe03e0484ddadf2ae57d32b0f29f0b2ddfe7ec810bd6d558765d9a6a6c" "a9c619535d63719a15f22e3c450a03062d3fed1e356ef96d33015849c4c43946" "7f74a3b9a1f5e3d31358b48b8f8a1154aab2534fae82c9e918fb389fca776788" "001c2ff8afde9c3e707a2eb3e810a0a36fb2b466e96377ac95968e7f8930a7c5" "cd804722c524c1fdd4740a67b53adaba3b0581543d1a3f436e960d479f9820a0" "728eda145ad16686d4bbb8e50d540563573592013b10c3e2defc493f390f7d83" "f951343d4bbe5a90dba0f058de8317ca58a6822faa65d8463b0e751a07ec887c" "071f5702a5445970105be9456a48423a87b8b9cfa4b1f76d15699b29123fb7d8" "423435c7b0e6c0942f16519fa9e17793da940184a50201a4d932eafe4c94c92d" "428754d8f3ed6449c1078ed5b4335f4949dc2ad54ed9de43c56ea9b803375c23" "0d087b2853473609d9efd2e9fbeac088e89f36718c4a4c89c568dd1b628eae41" "70ed3a0f434c63206a23012d9cdfbe6c6d4bb4685ad64154f37f3c15c10f3b90" "7a2335afbfabba219b7cad9c350ba0eafd21ca9823ce6a4a8860c33bd5c8ff84" "66d53738cc824d0bc5b703276975581b8de2b903d6ce366cd62207b5dd6d3d13" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "b8c53d83f28e94f1d4817f5fc5151fdc658c5779f176b0f0a2b4fb678f253a94" "9d1cb46123d227b06a4243d773542b064c8b5b35625d62879073dbf985d89f4b" "4ea0aa360264ff861fb0212abe4161b83ad1d8c8b74d8a04bcd1baf0ebdceeae" "5a49f1e3f31e3e8808d534e62f79e1e7ca992a48139e328116350909b98b5437" "90b96e09aad55faa3ded08123b37857e20c9237a36f3dfd6cbb275d73bdb115e" "5e24011e21c792545a2709838e0e31a7fd4812326d5569f97d3e2bdd74b2b0c7" "ea0157ec6bc7d0babdaff0db874070ac379cf567d4e68d89835d513720178c24" "427fa665823299f8258d8e27c80a1481edbb8f5463a6fb2665261e9076626710" "cdb3e7a8864cede434b168c9a060bf853eeb5b3f9f758310d2a2e23be41a24ae" "cb477d192ee6456dc2eb5ca5a0b7bd16bdb26514be8f8512b937291317c7b166" "10461a3c8ca61c52dfbbdedd974319b7f7fd720b091996481c8fb1dded6c6116" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" default)))
- '(default-input-method "TeX")
- '(epg-gpg-program "/usr/local/bin/gpg")
- '(erc-truncate-mode t)
- '(fci-rule-color "#484a42")
- '(jdee-db-active-breakpoint-face-colors (cons "#efefef" "#0098dd"))
- '(jdee-db-requested-breakpoint-face-colors (cons "#efefef" "#50a14f"))
- '(jdee-db-spec-breakpoint-face-colors (cons "#efefef" "#a0a1a7"))
- '(objed-cursor-color "#e45649")
- '(package-selected-packages (quote (undo-tree)))
- '(vc-annotate-background "#f0f0f0")
- '(vc-annotate-color-map
-	 (list
-		(cons 20 "#50a14f")
-		(cons 40 "#74a334")
-		(cons 60 "#98a51a")
-		(cons 80 "#bda800")
-		(cons 100 "#c69c18")
-		(cons 120 "#d09030")
-		(cons 140 "#da8548")
-		(cons 160 "#c86566")
-		(cons 180 "#b74585")
-		(cons 200 "#a626a4")
-		(cons 220 "#ba3685")
-		(cons 240 "#cf4667")
-		(cons 260 "#e45649")
-		(cons 280 "#d36860")
-		(cons 300 "#c27b78")
-		(cons 320 "#b18e8f")
-		(cons 340 "#484a42")
-		(cons 360 "#484a42")))
- '(vc-annotate-very-old-color nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
