@@ -1,5 +1,6 @@
 > Dotfile Scrapheap
 
+![](./docs/screenshot.png)
 
 **Installation**
 
