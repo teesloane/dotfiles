@@ -1,11 +1,11 @@
 ;; -- General variables --
+;;
+(menu-bar-mode t)
 
 (setq-default
  avy-all-windows        'all-frames
- ;; doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
- ;; doom-font              (font-spec :family "Inconsolata" :size 15 :weight 'regular)
  doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
- doom-theme             'doom-gruvbox
+ doom-theme             'doom-tomorrow-night
  which-key-idle-delay   0.2
  global-whitespace-mode 0
  whitespace-mode 0
@@ -24,6 +24,7 @@
  web-mode-style-padding 2
  web-mode-script-padding 2
  css-indent-offset 2
+ writeroom-width 90
 
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s .") ;; stop rg crashing on long files.
 
