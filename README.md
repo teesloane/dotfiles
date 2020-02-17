@@ -13,3 +13,10 @@
 
 There are submodules in this repo (doom-emacs and zim as of now). 
 Run: `boot.exclude.sh update`
+
+
+**Stuff**
+
+- Menubar - Ubersicht - [Pecan](https://github.com/zzzeyez/pecan)
+- WM - [Yabai](https://github.com/koekeishiya/yabai)
+- emacs - [doom-emacs](https://github.com/hlissner/doom-emacs/)
