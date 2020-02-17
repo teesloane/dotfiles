@@ -5,7 +5,7 @@
 (setq-default
  avy-all-windows        'all-frames
  doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
- doom-theme             'doom-tomorrow-night
+ doom-theme             'doom-gruvbox
  which-key-idle-delay   0.2
  global-whitespace-mode 0
  whitespace-mode 0
