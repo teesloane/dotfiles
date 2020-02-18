@@ -40,6 +40,8 @@ brew install watch                    # Who's on lookout?
 brew install fish                     # Goodbye zsh
 brew install ranger                   # Everyone's Favourite Park Ranger
 
+brew install koekeishiya/formulae/skhd
+brew install koekeishiya/formulae/yabai #nees additional installation
 # UI FOR AN UI
 brew cask install visual-studio-code  # Big'un. 
 brew cask install spectacle           # Snappy windows
