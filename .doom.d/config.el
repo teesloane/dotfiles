@@ -1,19 +1,21 @@
 ;; -- General variables --
 ;;
 (menu-bar-mode t)
+(fringe-mode 0)
 
 (setq-default
  avy-all-windows        'all-frames
  doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
- doom-theme             'doom-gruvbox
+ doom-theme             'doom-nord
  which-key-idle-delay   0.2
- global-whitespace-mode 0
- whitespace-mode 0
  global-whitespace-mode 0
  line-spacing 2
  which-key-idle-delay   0.2
 
- ;;;; WEB JS AND WHATEVER STUFF
+ ;; Org mode stuff
+ deft-directory         "~/Dropbox/wiki"
+
+ ;; Web stuff
  js2-bounce-indent-p nil
  js2-highlight-level 3
  js2-basic-offset 2
@@ -26,8 +28,51 @@
  css-indent-offset 2
  writeroom-width 90
 
+ ;; Tool stuff
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s .") ;; stop rg crashing on long files.
 
+;;
+;; -- Custom Packages
+;;
+
+;; TODO THIS NEEDS TO RETURN A FUNCTION because :file expects a single param func
+(defun org-roam--title-maker (title)
+  (let ((timestamp     (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
+        (slug (org-roam--title-to-slug title)))
+      (format "FIXME____%s_%s" timestamp slug)))
+
+(use-package! org-roam
+  :after org
+  :config
+  (setq-default
+   org-roam-directory "~/Dropbox/wiki"
+   org-roam-link-title-format "%sº"
+   org-roam-templates
+   ;; templates for creating a new note!
+   (let* ((timestamp     (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
+          (title         "#+TITLE: ${title}")
+          (slug          (lambda (title) (org-roam--title-to-slug title)))
+          (nl            "\n")
+          (section       "#+SECTION: nil")
+          (date_created  (concat "#+DATE_CREATED: " timestamp))
+          (template      (concat title nl section nl date_created)) ;; FIXME: handle file name depending on template
+          (title-maker   (lambda (title) (format "FIXME-%s_%s" timestamp "fixme"))))
+
+      (list (list "default" (list :file #'org-roam--file-name-timestamp-title
+                                  :content template))
+            (list "private" (list :file  #'org-roam--title-maker
+                                  :content template)))))
+
+  (org-roam-mode)
+  (org-roam--build-cache-async)
+
+  (map! :map org-mode-map
+        :localleader
+        (:prefix ("R" . "Org Roam")
+          "o"   #'org-roam
+          "f"   #'org-roam-find-file
+          "g"   #'org-roam-show-graph
+          "i"   #'org-roam-insert)))
 
 ;; -- Custom Bindings ----------------------------------------------------------doom-one
 ;;

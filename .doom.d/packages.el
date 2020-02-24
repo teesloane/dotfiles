@@ -3,5 +3,9 @@
 
 
 (package! writeroom-mode)
-(package! olivetti)
 (package! org-super-agenda)
+(package! solaire-mode :disable t)
+
+(package! org-roam
+  :recipe (:host github :repo "jethrokuan/org-roam" :branch "develop"))
+
