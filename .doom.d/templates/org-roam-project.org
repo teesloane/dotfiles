@@ -1,0 +1,16 @@
+#+STATUS: active
+
+* Meta
+:PROPERTIES:
+:date_completed: ?
+:date_started: ?
+:intent: ?
+:link: ?
+:related: ?
+:slug: ?
+:state: ?
+:under: ?
+:END:
+* Resources
+* Tasks
+* Notes

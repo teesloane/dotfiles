@@ -35,49 +35,67 @@
 ;; -- Custom Packages
 ;;
 
-;; TODO THIS NEEDS TO RETURN A FUNCTION because :file expects a single param func
-(defun org-roam--title-maker (title)
-  (let ((timestamp     (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
-        (slug (org-roam--title-to-slug title)))
-      (format "FIXME____%s_%s" timestamp slug)))
+
+;; ----- ORG ROAM STUFF ----------------------------------------------------------------
+
+(defun org-roam--title-maker (project-type)
+  "Is used to create the FILE NAME for an org-roam-file.
+   Returns a func: used by the org-roam-template '(list :file <FUNC>)
+   @param - project-type"
+  (lambda (title)
+    (let ((timestamp     (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
+          (slug (org-roam--title-to-slug title)))
+      (if project-type
+          (format "%s_%s_%s" project-type slug timestamp)
+          (format "%s_%s" slug timestamp)))))
+
+(defun get-string-from-file (filePath)
+  "Return filePath's file content."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (buffer-string)))
+
+(defun org-roam--content-template (project-type)
+  "Generates the 'front-matter' of the org files for org-roam"
+   (let* ((timestamp       (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
+          (nl              "\n")
+          (title           "#+TITLE: ${title}")
+          (section         (concat "#+FILE_UNDER: " project-type))
+          (date_created    (concat "#+DATE_CREATED: " timestamp))
+          (base-template   (concat title nl section nl date_created nl))
+          (adv-template    (cond
+                            ((string= project-type "project") (get-string-from-file "~/.doom.d/templates/org-roam-project.org"))
+                            ((string= project-type "research") (get-string-from-file "~/.doom.d/templates/org-roam-research.org"))
+                            (t "")))
+          (template         (concat base-template adv-template)))
+     template))
+
 
 (use-package! org-roam
   :after org
   :config
   (setq-default
    org-roam-directory "~/Dropbox/wiki"
-   org-roam-link-title-format "%sº"
+   org-roam-link-title-format "%sº" ;; appends a  `º` to each Roam link.
    org-roam-templates
-   ;; templates for creating a new note!
-   (let* ((timestamp     (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
-          (title         "#+TITLE: ${title}")
-          (slug          (lambda (title) (org-roam--title-to-slug title)))
-          (nl            "\n")
-          (section       "#+SECTION: nil")
-          (date_created  (concat "#+DATE_CREATED: " timestamp))
-          (template      (concat title nl section nl date_created)) ;; FIXME: handle file name depending on template
-          (title-maker   (lambda (title) (format "FIXME-%s_%s" timestamp "fixme"))))
-
-      (list (list "default" (list :file #'org-roam--file-name-timestamp-title
-                                  :content template))
-            (list "private" (list :file  #'org-roam--title-maker
-                                  :content template)))))
+   ;; templates for creating a new note.
+   ;; FIXME: mapcar / macroize this
+    (list (list "default"   (list :file (org-roam--title-maker nil)
+                                  :content (org-roam--content-template nil)))
+          (list "proj"      (list :file  (org-roam--title-maker "proj")
+                                  :content (org-roam--content-template "project")))
+          (list "research"  (list :file  (org-roam--title-maker "research")
+                                  :content (org-roam--content-template "research")))
+          (list "priv"      (list :file  (org-roam--title-maker "priv")
+                                  :content (org-roam--content-template "priv")))))
 
   (org-roam-mode)
-  (org-roam--build-cache-async)
-
-  (map! :map org-mode-map
-        :localleader
-        (:prefix ("R" . "Org Roam")
-          "o"   #'org-roam
-          "f"   #'org-roam-find-file
-          "g"   #'org-roam-show-graph
-          "i"   #'org-roam-insert)))
+  (org-roam--build-cache-async))
 
 ;; -- Custom Bindings ----------------------------------------------------------doom-one
-;;
 
 (map!
+
  ;; -- <GLOBAL> ---------------------------------------------------------------
 
  :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
@@ -92,20 +110,26 @@
  :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
 
  ;; -- <LEADER> ----------------------------------------------------------------
+ 
  (:leader
-   (:desc "tees" :prefix "v"
+    (:desc "tees" :prefix "v"
      :desc "M-X Alt"             :n "v" #'execute-extended-command)
 
+    ;; additional org roam bindings to `SPC n`
+    (:prefix-map ("n" . "notes")
+      :desc "Org-Roam-Insert"              "i" #'org-roam-insert
+      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+      :desc "Org-Roam-Buffer"              "r" #'org-roam)
 
-   (:desc "lisp" :prefix "k"
-     :desc "sp-copy"              :n "c" #'sp-copy-sexp
-     :desc "sp-kill"              :n "k" #'sp-kill-sexp
-     :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
-     :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
-     :desc "sp-up"                :n "u" #'sp-up-sexp
-     :desc "sp-down"              :n "d" #'sp-down-sexp
-     :desc "sp-next"              :n "l" #'sp-next-sexp
-     :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+    (:prefix-map ("k" . "lisp")
+      :desc "sp-copy"              :n "c" #'sp-copy-sexp
+      :desc "sp-kill"              :n "k" #'sp-kill-sexp
+      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+      :desc "sp-up"                :n "u" #'sp-up-sexp
+      :desc "sp-down"              :n "d" #'sp-down-sexp
+      :desc "sp-next"              :n "l" #'sp-next-sexp
+      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 
 
 ;; -- Hooks --------------------------------------------------------------------

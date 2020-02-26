@@ -1,0 +1,16 @@
+
+* Meta
+:PROPERTIES:
+:date_completed: ?
+:date_started: ?
+:intent: ?
+:link: ?
+:related: ?
+:slug: ?
+:state: ?
+:under: ?
+:END:
+:LOGBOOK:
+:END:
+* Resources
+* Notes
