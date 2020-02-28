@@ -60,10 +60,10 @@
    (let* ((timestamp       (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
           (nl              "\n")
           (title           "#+TITLE: ${title}")
-          (section         (concat "#+FILE_UNDER: " project-type))
           (date_created    (concat "#+DATE_CREATED: " timestamp))
-          (base-template   (concat title nl section nl date_created nl))
+          (base-template   (concat title nl date_created nl))
           (adv-template    (cond
+                            ((string= project-type "default") (get-string-from-file "~/.doom.d/templates/org-roam-default.org"))
                             ((string= project-type "project") (get-string-from-file "~/.doom.d/templates/org-roam-project.org"))
                             ((string= project-type "research") (get-string-from-file "~/.doom.d/templates/org-roam-research.org"))
                             (t "")))
@@ -72,7 +72,8 @@
 
 
 (use-package! org-roam
-  :after org
+  ;; :after org
+  :hook (after-init . org-roam-mode)
   :config
   (setq-default
    org-roam-directory "~/Dropbox/wiki"
@@ -81,16 +82,17 @@
    ;; templates for creating a new note.
    ;; FIXME: mapcar / macroize this
     (list (list "default"   (list :file (org-roam--title-maker nil)
-                                  :content (org-roam--content-template nil)))
+                                  :content (org-roam--content-template "default")))
           (list "proj"      (list :file  (org-roam--title-maker "proj")
                                   :content (org-roam--content-template "project")))
           (list "research"  (list :file  (org-roam--title-maker "research")
                                   :content (org-roam--content-template "research")))
           (list "priv"      (list :file  (org-roam--title-maker "priv")
                                   :content (org-roam--content-template "priv")))))
-
-  (org-roam-mode)
+  ;; (org-roam-mode)
   (org-roam--build-cache-async))
+
+
 
 ;; -- Custom Bindings ----------------------------------------------------------doom-one
 

@@ -1,15 +1,16 @@
 #+STATUS: active
+#+FILE_UNDER: project
 
 * Meta
-:PROPERTIES:
+:INFO:
 :date_completed: ?
 :date_started: ?
+:file_under: ?
 :intent: ?
-:link: ?
+:links: ?
 :related: ?
 :slug: ?
 :state: ?
-:under: ?
 :END:
 * Resources
 * Tasks
