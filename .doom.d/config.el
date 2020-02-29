@@ -2,6 +2,9 @@
 ;;
 (menu-bar-mode t)
 (fringe-mode 0)
+;; add a bit of internal margins to all buffers
+;; (set-face-attribute 'header-line nil :background (frame-parameter 'nil 'background-color))
+;; (set-window-margins nil 2 2)
 
 (setq-default
  avy-all-windows        'all-frames
@@ -11,6 +14,7 @@
  global-whitespace-mode 0
  line-spacing 2
  which-key-idle-delay   0.2
+ ;; header-line-format     "" ;; padding to top...
 
  ;; Org mode stuff
  deft-directory         "~/Dropbox/wiki"

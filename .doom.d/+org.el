@@ -5,7 +5,6 @@
 
 (after! org
   (org-super-agenda-mode)
-  (toggle-truncate-lines)
 
   (setq
    wiki-path "~/Dropbox/wiki/"
@@ -24,7 +23,7 @@
    org-directory                          wiki-path
    org-ellipsis                           " • " ;; " ⇢ " ;;  ;; " ⋱ " ;;
    line-spacing                3
- 
+
    org-bullets-bullet-list '("⁖")
    org-fontify-whole-heading-line         nil
    org-log-done                           t
