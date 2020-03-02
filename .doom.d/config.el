@@ -1,23 +1,20 @@
-;; -- General variables --
-;;
+
+;; -- Startup stuff --
+
 (menu-bar-mode t)
 (fringe-mode 0)
-;; add a bit of internal margins to all buffers
-;; (set-face-attribute 'header-line nil :background (frame-parameter 'nil 'background-color))
-;; (set-window-margins nil 2 2)
+
+;; -- General variables --
 
 (setq-default
  avy-all-windows        'all-frames
  doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
- doom-theme             'doom-nord
  which-key-idle-delay   0.2
  global-whitespace-mode 0
  line-spacing 2
  which-key-idle-delay   0.2
- ;; header-line-format     "" ;; padding to top...
 
- ;; Org mode stuff
- deft-directory         "~/Dropbox/wiki"
+ deft-directory         "~/Dropbox/wiki" ; org mode stuff
 
  ;; Web stuff
  js2-bounce-indent-p nil
@@ -34,6 +31,15 @@
 
  ;; Tool stuff
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s .") ;; stop rg crashing on long files.
+
+;;
+;; -- Custom UI ---------------
+;;
+
+(load-theme 'doom-snazzy t)
+;; make sure org blocks have good backgrounds.
+;; (set-face-background 'org-block-begin-line (doom-color 'base1))
+
 
 ;;
 ;; -- Custom Packages
@@ -74,27 +80,40 @@
           (template         (concat base-template adv-template)))
      template))
 
-
 (use-package! org-roam
-  ;; :after org
-  :hook (after-init . org-roam-mode)
+  :commands (org-roam-insert org-roam-find-file org-roam)
+  :init
+  (setq org-roam-directory "~/Dropbox/wiki"
+        org-roam-link-title-format "%sº") ;; appends a  `º` to each Roam link.
+  (map! :leader
+        :prefix "n"
+        :desc "Org-Roam-Insert" "i" #'org-roam-insert
+        :desc "Org-Roam-Find"   "/" #'org-roam-find-file
+        :desc "Org-Roam-Buffer" "r" #'org-roam)
   :config
-  (setq-default
-   org-roam-directory "~/Dropbox/wiki"
-   org-roam-link-title-format "%sº" ;; appends a  `º` to each Roam link.
-   org-roam-templates
-   ;; templates for creating a new note.
-   ;; FIXME: mapcar / macroize this
-    (list (list "default"   (list :file (org-roam--title-maker nil)
+  (org-roam-mode +1)
+
+  (setq org-publish-project-alist
+   '(
+     ("org-files"
+      :base-directory "~/Dropbox/wiki"
+      :base-extension "org"
+      :publishing-directory "~/Dropbox/wiki/tmp/html"
+      :publishing-function org-html-publish-to-html)
+
+     ("example" :components ("org-files"))))
+
+
+
+  (setq org-roam-templates
+        (list (list "default"   (list :file (org-roam--title-maker nil)
                                   :content (org-roam--content-template "default")))
           (list "proj"      (list :file  (org-roam--title-maker "proj")
                                   :content (org-roam--content-template "project")))
           (list "research"  (list :file  (org-roam--title-maker "research")
                                   :content (org-roam--content-template "research")))
-          (list "priv"      (list :file  (org-roam--title-maker "priv")
-                                  :content (org-roam--content-template "priv")))))
-  ;; (org-roam-mode)
-  (org-roam--build-cache-async))
+          (list "priv"      (list :file  (org-roam--title-maker "priv"))))))
+
 
 
 
@@ -122,10 +141,6 @@
      :desc "M-X Alt"             :n "v" #'execute-extended-command)
 
     ;; additional org roam bindings to `SPC n`
-    (:prefix-map ("n" . "notes")
-      :desc "Org-Roam-Insert"              "i" #'org-roam-insert
-      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
-      :desc "Org-Roam-Buffer"              "r" #'org-roam)
 
     (:prefix-map ("k" . "lisp")
       :desc "sp-copy"              :n "c" #'sp-copy-sexp
@@ -142,6 +157,9 @@
 
 (add-hook! 'doom-load-theme-hook
   (after! outline
+
+    (set-face-background 'org-block (doom-color 'bg-alt))
+    (set-face-background 'org-quote (doom-color 'bg-alt))
     (set-face-attribute 'outline-1 nil :height 1.0 :background nil)))
 
 ;; -- Local file requires --
@@ -155,3 +173,5 @@
 (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
 (epa-file-enable)
 (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
+
+
