@@ -10,9 +10,11 @@
  avy-all-windows        'all-frames
  doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
  which-key-idle-delay   0.2
+ doom-theme             'doom-snazzy
  global-whitespace-mode 0
  line-spacing 2
  which-key-idle-delay   0.2
+
 
  deft-directory         "~/Dropbox/wiki" ; org mode stuff
 
@@ -36,9 +38,9 @@
 ;; -- Custom UI ---------------
 ;;
 
-(load-theme 'doom-snazzy t)
+;; (load-theme 'doom-snazzy t)
 ;; make sure org blocks have good backgrounds.
-;; (set-face-background 'org-block-begin-line (doom-color 'base1))
+;; (set-face-background 'org-block-begin-line (doom-color 'bg))
 
 
 ;;
@@ -48,37 +50,37 @@
 
 ;; ----- ORG ROAM STUFF ----------------------------------------------------------------
 
-(defun org-roam--title-maker (project-type)
-  "Is used to create the FILE NAME for an org-roam-file.
-   Returns a func: used by the org-roam-template '(list :file <FUNC>)
-   @param - project-type"
-  (lambda (title)
-    (let ((timestamp     (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
-          (slug (org-roam--title-to-slug title)))
-      (if project-type
-          (format "%s_%s_%s" project-type slug timestamp)
-          (format "%s_%s" slug timestamp)))))
+;; (defun org-roam--title-maker (project-type)
+;;   "Is used to create the FILE NAME for an org-roam-file.
+;;    Returns a func: used by the org-roam-template '(list :file <FUNC>)
+;;    @param - project-type"
+;;   (lambda (title)
+;;     (let ((timestamp     (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
+;;           (slug (org-roam--title-to-slug title)))
+;;       (if project-type
+;;           (format "%s_%s_%s" project-type slug timestamp)
+;;           (format "%s_%s" slug timestamp)))))
 
-(defun get-string-from-file (filePath)
-  "Return filePath's file content."
-  (with-temp-buffer
-    (insert-file-contents filePath)
-    (buffer-string)))
+;; (defun get-string-from-file (filePath)
+;;   "Return filePath's file content."
+;;   (with-temp-buffer
+;;     (insert-file-contents filePath)
+;;     (buffer-string)))
 
-(defun org-roam--content-template (project-type)
-  "Generates the 'front-matter' of the org files for org-roam"
-   (let* ((timestamp       (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
-          (nl              "\n")
-          (title           "#+TITLE: ${title}")
-          (date_created    (concat "#+DATE_CREATED: " timestamp))
-          (base-template   (concat title nl date_created nl))
-          (adv-template    (cond
-                            ((string= project-type "default") (get-string-from-file "~/.doom.d/templates/org-roam-default.org"))
-                            ((string= project-type "project") (get-string-from-file "~/.doom.d/templates/org-roam-project.org"))
-                            ((string= project-type "research") (get-string-from-file "~/.doom.d/templates/org-roam-research.org"))
-                            (t "")))
-          (template         (concat base-template adv-template)))
-     template))
+;; (defun org-roam--content-template (project-type)
+;;   "Generates the 'front-matter' of the org files for org-roam"
+;;   (let* ((timestamp       (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
+;;          (nl              "\n")
+;;          (title           "#+TITLE: ${title}")
+;;          (date_created    (concat "#+DATE_CREATED: " timestamp))
+;;          (base-template   (concat title nl date_created nl))
+;;          (adv-template    (cond
+;;                            ((string= project-type "default") (get-string-from-file "~/.doom.d/templates/org-roam-default.org"))
+;;                            ((string= project-type "project") (get-string-from-file "~/.doom.d/templates/org-roam-project.org"))
+;;                            ((string= project-type "research") (get-string-from-file "~/.doom.d/templates/org-roam-research.org"))
+;;                            (t "")))
+;;          (template         (concat base-template adv-template)))
+;;     template))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
@@ -91,29 +93,23 @@
         :desc "Org-Roam-Find"   "/" #'org-roam-find-file
         :desc "Org-Roam-Buffer" "r" #'org-roam)
   :config
-  (org-roam-mode +1)
+  (setq org-roam-capture-templates
+        '(("p" "project" plain (function org-roam--capture-get-point)
+           "%?"
+           :file-name "${slug}"
+           :head "#+TITLE: ${title}\n#+STATUS: active \n#+FILE_UNDER: project \n"
+           :unnarrowed t)))
+          
+  (org-roam-mode +1))
 
-  (setq org-publish-project-alist
-   '(
-     ("org-files"
-      :base-directory "~/Dropbox/wiki"
-      :base-extension "org"
-      :publishing-directory "~/Dropbox/wiki/tmp/html"
-      :publishing-function org-html-publish-to-html)
-
-     ("example" :components ("org-files"))))
-
-
-
-  (setq org-roam-templates
-        (list (list "default"   (list :file (org-roam--title-maker nil)
-                                  :content (org-roam--content-template "default")))
-          (list "proj"      (list :file  (org-roam--title-maker "proj")
-                                  :content (org-roam--content-template "project")))
-          (list "research"  (list :file  (org-roam--title-maker "research")
-                                  :content (org-roam--content-template "research")))
-          (list "priv"      (list :file  (org-roam--title-maker "priv"))))))
-
+  ;; (setq org-roam-templates
+  ;;       (list (list "default"   (list :file (org-roam--title-maker nil)
+  ;;                                 :content (org-roam--content-template "default")))
+  ;;         (list "proj"      (list :file  (org-roam--title-maker "proj")
+  ;;                                 :content (org-roam--content-template "project")))
+  ;;         (list "research"  (list :file  (org-roam--title-maker "research")
+  ;;                                 :content (org-roam--content-template "research")))
+  ;;         (list "priv"      (list :file  (org-roam--title-maker "priv"))))))
 
 
 
@@ -157,7 +153,7 @@
 
 (add-hook! 'doom-load-theme-hook
   (after! outline
-
+    (set-face-background 'org-block-begin-line (doom-color 'bg))
     (set-face-background 'org-block (doom-color 'bg-alt))
     (set-face-background 'org-quote (doom-color 'bg-alt))
     (set-face-attribute 'outline-1 nil :height 1.0 :background nil)))

@@ -4,7 +4,6 @@
 (setq refile-targets '("wiki.org" "todo.org" "projects.org" "someday.org"))
 
 (after! org
-  (org-super-agenda-mode)
 
   (setq
    wiki-path "~/Dropbox/wiki/"
@@ -94,7 +93,6 @@
 ;; -- Hooks
 
 ;; get line wrapping working
-(add-hook 'org-mode-hook #'toggle-word-wrap)
 (add-hook 'kill-emacs-query-functions 'tees/org-clock-query-out)
 (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
 (add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
