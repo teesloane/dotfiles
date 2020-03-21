@@ -8,15 +8,16 @@
 
 (setq-default
  avy-all-windows        'all-frames
- doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
+ ;; doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
+ doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
  which-key-idle-delay   0.2
- doom-theme             'doom-snazzy
+ doom-theme             'doom-tomorrow-night
  global-whitespace-mode 0
+ olivetti-body-width 80
  line-spacing 2
  which-key-idle-delay   0.2
-
-
  deft-directory         "~/Dropbox/wiki" ; org mode stuff
+
 
  ;; Web stuff
  js2-bounce-indent-p nil
@@ -34,13 +35,6 @@
  ;; Tool stuff
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s .") ;; stop rg crashing on long files.
 
-;;
-;; -- Custom UI ---------------
-;;
-
-;; (load-theme 'doom-snazzy t)
-;; make sure org blocks have good backgrounds.
-;; (set-face-background 'org-block-begin-line (doom-color 'bg))
 
 
 ;;
@@ -61,11 +55,11 @@
 ;;           (format "%s_%s_%s" project-type slug timestamp)
 ;;           (format "%s_%s" slug timestamp)))))
 
-;; (defun get-string-from-file (filePath)
-;;   "Return filePath's file content."
-;;   (with-temp-buffer
-;;     (insert-file-contents filePath)
-;;     (buffer-string)))
+(defun get-string-from-file (filePath)
+  "Return filePath's file content."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (buffer-string)))
 
 ;; (defun org-roam--content-template (project-type)
 ;;   "Generates the 'front-matter' of the org files for org-roam"
@@ -87,19 +81,43 @@
   :init
   (setq org-roam-directory "~/Dropbox/wiki"
         org-roam-link-title-format "%sº") ;; appends a  `º` to each Roam link.
-  (map! :leader
-        :prefix "n"
-        :desc "Org-Roam-Insert" "i" #'org-roam-insert
-        :desc "Org-Roam-Find"   "/" #'org-roam-find-file
-        :desc "Org-Roam-Buffer" "r" #'org-roam)
+  (map!
+   :desc "Org-Roam-Insert" "C-c i" #'org-roam-insert
+   :desc "Org-Roam-Find"   "C-c n" #'org-roam-find-file
+   :leader
+   :prefix "n"
+   :desc "Org-Roam-Insert" "i" #'org-roam-insert
+   :desc "Org-Roam-Find"   "/" #'org-roam-find-file
+   :desc "Org-Roam-Buffer" "r" #'org-roam)
   :config
   (setq org-roam-capture-templates
-        '(("p" "project" plain (function org-roam--capture-get-point)
-           "%?"
+        '(("p" "project" entry (function org-roam--capture-get-point)
+           ;; "r Entry item!"
+           (file "~/.doom.d/templates/org-roam-project.org")
            :file-name "${slug}"
            :head "#+TITLE: ${title}\n#+STATUS: active \n#+FILE_UNDER: project \n"
-           :unnarrowed t)))
-          
+           :unnarrowed t)
+          ("r" "research" entry (function org-roam--capture-get-point)
+           ;; "r Entry item!"
+           (file "~/.doom.d/templates/org-roam-research.org")
+           :file-name "${slug}"
+           :head "#+TITLE: ${title}\n#+STATUS: active \n#+FILE_UNDER: research \n"
+           :unnarrowed t)
+          ("d" "default" plain (function org-roam--capture-get-point)
+              "%?"
+              :file-name "${slug}"
+              :head "#+TITLE: ${title}\n"
+              :unnarrowed t)))
+
+          ;; ("d" "default" entry (function org-roam--capture-get-point)
+          ;;  ;; "r Entry item!"
+          ;;  (file "~/.doom.d/templates/org-roam-default.org")
+          ;;  :file-name "${slug}"
+          ;;  :head "#+TITLE: ${title}\n"
+          ;;  :unnarrowed t)))
+
+
+
   (org-roam-mode +1))
 
   ;; (setq org-roam-templates
@@ -151,12 +169,12 @@
 
 ;; -- Hooks --------------------------------------------------------------------
 
-(add-hook! 'doom-load-theme-hook
-  (after! outline
-    (set-face-background 'org-block-begin-line (doom-color 'bg))
-    (set-face-background 'org-block (doom-color 'bg-alt))
-    (set-face-background 'org-quote (doom-color 'bg-alt))
-    (set-face-attribute 'outline-1 nil :height 1.0 :background nil)))
+;; (add-hook! 'doom-load-theme-hook
+  ;; (after! outline
+    ;; (set-face-background 'org-block-begin-line (doom-color 'bg))
+    ;; (set-face-background 'org-block (doom-color 'bg-alt))
+    ;; (set-face-background 'org-quote (doom-color 'bg-alt))
+    ;; (set-face-attribute 'outline-1 nil :height 1.0 :background nil)))
 
 ;; -- Local file requires --
 

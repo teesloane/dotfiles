@@ -1,5 +1,3 @@
-#+FILE_UNDER: research
-
 * Meta
 :INFO:
 :file_under: ?

@@ -1,8 +1,5 @@
-#+STATUS: active
-#+FILE_UNDER: project
-
 * Meta
-:INFO:
+:PROPERTIES:
 :date_completed: ?
 :date_started: ?
 :file_under: ?
@@ -15,3 +12,5 @@
 * Resources
 * Tasks
 * Notes
+
+%?

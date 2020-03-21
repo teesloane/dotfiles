@@ -7,5 +7,6 @@
 :END:
 :LOGBOOK:
 :END:
-
 * Notes
+
+%?
