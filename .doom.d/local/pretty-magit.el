@@ -1,5 +1,8 @@
 ;;; ~/Development/dotfiles/.doom.d/local/pretty-magit.el -*- lexical-binding: t; -*-
 
+;; From here: http://www.modernemacs.com/post/pretty-magit/
+;; And : https://github.com/fuxialexander/doom-emacs-private-xfu/blob/9ab46f036fda6bce0f8497c47ccb5b8b06d9fdae/gc.org
+
 (require 'dash)
 (require 'ivy)  ; for leader-prompts only
 (require 'evil)  ; Remove evil-insert at end if not using evil

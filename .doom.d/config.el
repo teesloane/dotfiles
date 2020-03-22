@@ -18,8 +18,6 @@
  line-spacing 2
  which-key-idle-delay   0.2
  deft-directory         "~/Dropbox/wiki" ; org mode stuff
-
-
  ;; Web stuff
  js2-bounce-indent-p nil
  js2-highlight-level 3
@@ -36,20 +34,11 @@
  ;; Tool stuff
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s .") ;; stop rg crashing on long files.
 
-
-
 ;;
 ;; -- Custom Packages
 ;;
 
-
 ;; ----- ORG ROAM STUFF ----------------------------------------------------------------
-
-(defun get-string-from-file (filePath)
-  "Return filePath's file content."
-  (with-temp-buffer
-    (insert-file-contents filePath)
-    (buffer-string)))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
@@ -83,25 +72,17 @@
               :file-name "${slug}"
               :head "#+TITLE: ${title}\n"
               :unnarrowed t)))
-
-
-
   (org-roam-mode +1))
 
 
 (use-package! pretty-magit
   :init
-
   (pretty-magit "Feat" ? '(:foreground "slate gray" :height 1.0 :family "FontAwesome"))
   (pretty-magit "Add" ? '(:foreground "#375E97" :height 1.0 :family "FontAwesome"))
   (pretty-magit "Fix" ? '(:foreground "#FB6542" :height 1.0 :family "FontAwesome"))
   (pretty-magit "Clean" ? '(:foreground "#FFBB00" :height 1.0 :family "FontAwesome"))
   (pretty-magit "Docs" ? '(:foreground "#3F681C" :height 1.0 :family "FontAwesome"))
   (pretty-magit "Refactor" ? '(:box nil :height 1.0 :family "material") t))
-
-
-
-
 
 
 ;; -- Custom Bindings ----------------------------------------------------------doom-one
