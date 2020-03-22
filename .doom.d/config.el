@@ -3,6 +3,7 @@
 
 (menu-bar-mode t)
 (fringe-mode 0)
+(global-emojify-mode)
 
 ;; -- General variables --
 
@@ -44,37 +45,11 @@
 
 ;; ----- ORG ROAM STUFF ----------------------------------------------------------------
 
-;; (defun org-roam--title-maker (project-type)
-;;   "Is used to create the FILE NAME for an org-roam-file.
-;;    Returns a func: used by the org-roam-template '(list :file <FUNC>)
-;;    @param - project-type"
-;;   (lambda (title)
-;;     (let ((timestamp     (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
-;;           (slug (org-roam--title-to-slug title)))
-;;       (if project-type
-;;           (format "%s_%s_%s" project-type slug timestamp)
-;;           (format "%s_%s" slug timestamp)))))
-
 (defun get-string-from-file (filePath)
   "Return filePath's file content."
   (with-temp-buffer
     (insert-file-contents filePath)
     (buffer-string)))
-
-;; (defun org-roam--content-template (project-type)
-;;   "Generates the 'front-matter' of the org files for org-roam"
-;;   (let* ((timestamp       (format-time-string "%Y-%m-%d--%H-%M" (current-time)))
-;;          (nl              "\n")
-;;          (title           "#+TITLE: ${title}")
-;;          (date_created    (concat "#+DATE_CREATED: " timestamp))
-;;          (base-template   (concat title nl date_created nl))
-;;          (adv-template    (cond
-;;                            ((string= project-type "default") (get-string-from-file "~/.doom.d/templates/org-roam-default.org"))
-;;                            ((string= project-type "project") (get-string-from-file "~/.doom.d/templates/org-roam-project.org"))
-;;                            ((string= project-type "research") (get-string-from-file "~/.doom.d/templates/org-roam-research.org"))
-;;                            (t "")))
-;;          (template         (concat base-template adv-template)))
-;;     template))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
@@ -109,25 +84,23 @@
               :head "#+TITLE: ${title}\n"
               :unnarrowed t)))
 
-          ;; ("d" "default" entry (function org-roam--capture-get-point)
-          ;;  ;; "r Entry item!"
-          ;;  (file "~/.doom.d/templates/org-roam-default.org")
-          ;;  :file-name "${slug}"
-          ;;  :head "#+TITLE: ${title}\n"
-          ;;  :unnarrowed t)))
-
 
 
   (org-roam-mode +1))
 
-  ;; (setq org-roam-templates
-  ;;       (list (list "default"   (list :file (org-roam--title-maker nil)
-  ;;                                 :content (org-roam--content-template "default")))
-  ;;         (list "proj"      (list :file  (org-roam--title-maker "proj")
-  ;;                                 :content (org-roam--content-template "project")))
-  ;;         (list "research"  (list :file  (org-roam--title-maker "research")
-  ;;                                 :content (org-roam--content-template "research")))
-  ;;         (list "priv"      (list :file  (org-roam--title-maker "priv"))))))
+
+(use-package! pretty-magit
+  :init
+
+  (pretty-magit "Feat" ? '(:foreground "slate gray" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Add" ? '(:foreground "#375E97" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Fix" ? '(:foreground "#FB6542" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Clean" ? '(:foreground "#FFBB00" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Docs" ? '(:foreground "#3F681C" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Refactor" ? '(:box nil :height 1.0 :family "material") t))
+
+
+
 
 
 
@@ -168,13 +141,6 @@
 
 
 ;; -- Hooks --------------------------------------------------------------------
-
-;; (add-hook! 'doom-load-theme-hook
-  ;; (after! outline
-    ;; (set-face-background 'org-block-begin-line (doom-color 'bg))
-    ;; (set-face-background 'org-block (doom-color 'bg-alt))
-    ;; (set-face-background 'org-quote (doom-color 'bg-alt))
-    ;; (set-face-attribute 'outline-1 nil :height 1.0 :background nil)))
 
 ;; -- Local file requires --
 
