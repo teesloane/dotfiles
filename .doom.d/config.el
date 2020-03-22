@@ -42,9 +42,8 @@
 
 ;; ----- ORG ROAM STUFF ----------------------------------------------------------------
 ;;
-;; (defun tees/org-roam-template-head (file-under)
-;;   (insert
-;;    (concat "#+TITLE: #{title}\n#+FILE_UNDER: " file-under "\n#+DATE_UPDATED: Time-stamp: <>")))
+(defun tees/org-roam-template-head (file-under)
+ (concat "#+TITLE: ${title}\n#+FILE_UNDER: " file-under "\n#+DATE_UPDATED: Time-stamp: <>\n\n"))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
@@ -61,23 +60,23 @@
    :desc "Org-Roam-Buffer" "r" #'org-roam)
   :config
   (setq org-roam-capture-templates
-        '(("p" "project" entry (function org-roam--capture-get-point)
+        `(("p" "project" entry (function org-roam--capture-get-point)
            ;; "r Entry item!"
            (file "~/.doom.d/templates/org-roam-project.org")
            :file-name "${slug}"
-           :head "#+TITLE: ${title}\n#+STATUS: active \n#+FILE_UNDER: project \n#+DATE_UPDATED: <>"
+           :head ,(tees/org-roam-template-head "project")
            :unnarrowed t)
           ("r" "research" entry (function org-roam--capture-get-point)
            ;; "r Entry item!"
            (file "~/.doom.d/templates/org-roam-research.org")
            :file-name "${slug}"
-           :head "#+TITLE: ${title}\n#+STATUS: active \n#+FILE_UNDER: research \n#+DATE_UPDATED: <>"
+           :head ,(tees/org-roam-template-head "research")
            :unnarrowed t)
           ("d" "default" plain (function org-roam--capture-get-point)
-              "%?"
-              :file-name "${slug}"
-              :head "#+TITLE: ${title}\n#+DATE_UPDATED: <>"
-              :unnarrowed t)))
+           "%?"
+           :file-name "${slug}"
+           :head ,(tees/org-roam-template-head "general")
+           :unnarrowed t)))
   (org-roam-mode +1))
 
 
