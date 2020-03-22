@@ -1,5 +1,5 @@
 * Meta
-:INFO:
+:PROPERTIES:
 :file_under: ?
 :related: ?
 :slug: ?

@@ -1,5 +1,4 @@
-
-;; -- Startup stuff --
+;; Startup stuff --
 
 (menu-bar-mode t)
 (fringe-mode 0)
@@ -18,6 +17,9 @@
  line-spacing 2
  which-key-idle-delay   0.2
  deft-directory         "~/Dropbox/wiki" ; org mode stuff
+ time-stamp-active t
+ ;; time-stamp-pattern "8/LAST_UPDATED:[ \t]+\\\\?[\"<]+%:y-%02m-%02d %02H:%02M\\\\?[\">]" ;;<< used for firn / org-mode
+ time-stamp-format "%04y-%02m-%02d %02H:%02M:%02S"
  ;; Web stuff
  js2-bounce-indent-p nil
  js2-highlight-level 3
@@ -39,6 +41,10 @@
 ;;
 
 ;; ----- ORG ROAM STUFF ----------------------------------------------------------------
+;;
+;; (defun tees/org-roam-template-head (file-under)
+;;   (insert
+;;    (concat "#+TITLE: #{title}\n#+FILE_UNDER: " file-under "\n#+DATE_UPDATED: Time-stamp: <>")))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
@@ -59,18 +65,18 @@
            ;; "r Entry item!"
            (file "~/.doom.d/templates/org-roam-project.org")
            :file-name "${slug}"
-           :head "#+TITLE: ${title}\n#+STATUS: active \n#+FILE_UNDER: project \n"
+           :head "#+TITLE: ${title}\n#+STATUS: active \n#+FILE_UNDER: project \n#+DATE_UPDATED: <>"
            :unnarrowed t)
           ("r" "research" entry (function org-roam--capture-get-point)
            ;; "r Entry item!"
            (file "~/.doom.d/templates/org-roam-research.org")
            :file-name "${slug}"
-           :head "#+TITLE: ${title}\n#+STATUS: active \n#+FILE_UNDER: research \n"
+           :head "#+TITLE: ${title}\n#+STATUS: active \n#+FILE_UNDER: research \n#+DATE_UPDATED: <>"
            :unnarrowed t)
           ("d" "default" plain (function org-roam--capture-get-point)
               "%?"
               :file-name "${slug}"
-              :head "#+TITLE: ${title}\n"
+              :head "#+TITLE: ${title}\n#+DATE_UPDATED: <>"
               :unnarrowed t)))
   (org-roam-mode +1))
 
@@ -82,7 +88,9 @@
   (pretty-magit "Fix" ? '(:foreground "#FB6542" :height 1.0 :family "FontAwesome"))
   (pretty-magit "Clean" ? '(:foreground "#FFBB00" :height 1.0 :family "FontAwesome"))
   (pretty-magit "Docs" ? '(:foreground "#3F681C" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Refactor" ? '(:box nil :height 1.0 :family "material") t))
+  (pretty-magit "Refactor" ? '(:box nil :height 1.0 :family "material") t)
+  (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
+  (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 
 
 ;; -- Custom Bindings ----------------------------------------------------------doom-one
@@ -103,7 +111,7 @@
  :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
 
  ;; -- <LEADER> ----------------------------------------------------------------
- 
+
  (:leader
     (:desc "tees" :prefix "v"
      :desc "M-X Alt"             :n "v" #'execute-extended-command)
@@ -122,6 +130,8 @@
 
 
 ;; -- Hooks --------------------------------------------------------------------
+;;
+(add-hook 'write-file-hooks 'time-stamp) ; update timestamp, if it exists, when saving
 
 ;; -- Local file requires --
 
