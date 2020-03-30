@@ -11,15 +11,6 @@
   (interactive "r")
   (align-regexp start end "\\(\\s-*\\)\\s-" 1 0 t))
 
-(defun tees/max-buffer ()
-  "Current buffer becomes full width"
-  (interactive)
-  (if (= 1 (length (window-list))
-         (jump-to-register '_))
-      (progn
-        (window-configuration-to-register '_)
-        (delete-other-windows))))
-
 (defun tees/write ()
   (interactive)
   ;; (setq buffer-face-mode-face '(:family "iA Writer Duospace" :height 140)) ; set the font
