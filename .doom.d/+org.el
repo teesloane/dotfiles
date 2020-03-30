@@ -5,35 +5,31 @@
 
 (after! org
 
+  ;; org variables not related to directories.
   (setq
-   wiki-path "~/Dropbox/wiki/"
+   ;; org-habit-show-habits-only-for-today   nil
    elfeed-search-filter                   "@1-week-ago"
-   org-agenda-files                       (list wiki-path)
-   org-agenda-span 'day
-   org-agenda-start-day "+0d"
-   org-agenda-skip-scheduled-if-done t
-   org-agenda-skip-deadline-if-done t
+   line-spacing                           3
+   org-agenda-skip-deadline-if-done       t
+   org-agenda-skip-scheduled-if-done      t
+   org-agenda-span                        'day
+   org-agenda-start-day                   "+0d"
+   org-bullets-bullet-list                '("⁖")
    org-cycle-separator-lines              -1
-	 ;; org-habit-show-habits-only-for-today   nil
-   org-habit-show-all-today t
-   org-habit-today-glyph ?‖
-   org-habit-completed-glyph ?✓
-   org-default-notes-file                 (concat wiki-path "index.org")
-   org-directory                          wiki-path
-   org-ellipsis                           " • " ;; " ⇢ " ;;  ;; " ⋱ " ;;
-   line-spacing                3
-
-   org-bullets-bullet-list '("⁖")
+   org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
    org-fontify-whole-heading-line         nil
+   org-habit-completed-glyph              ?✓
+   org-habit-show-all-today               t
+   org-habit-today-glyph                  ?‖
    org-log-done                           t
    org-log-into-drawer                    t
-   org-outline-path-complete-in-steps     nil  ; refile easy
+   org-outline-path-complete-in-steps     nil ; refile easy
    org-refile-allow-creating-parent-nodes 'confirm
    org-refile-targets                     (mapcar (lambda (l) `(,l :maxlevel . 1)) refile-targets)
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-startup-truncated                  t
-   org-tags-column                        80
-   )
+   org-tags-column                        80)
+  
 
   ;; ---- CUSTOM CAPTURE TEMPLATES ------------------------------------------------
 
@@ -58,8 +54,8 @@
 
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
-  (add-to-list 'org-capture-templates '("t" "Todo" entry (file "todo.org") "* TODO %?\n%i" :prepend t))
-  )
+  (add-to-list 'org-capture-templates '("t" "Todo" entry (file "todo.org") "* TODO %?\n%i" :prepend t)))
+  
 
 
 ;; HOOKS -----------------------------------------------------------------------

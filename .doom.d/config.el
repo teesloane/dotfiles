@@ -5,33 +5,38 @@
 (global-emojify-mode)
 
 ;; -- General variables --
+;;
+
 
 (setq-default
- avy-all-windows        'all-frames
- ;; doom-font              (font-spec :family "JetBrains Mono" :size 13 :weight 'regular)
- doom-font              (font-spec :family "Iosevka" :size 14 :weight 'regular)
- which-key-idle-delay   0.2
- doom-theme             'doom-tomorrow-night
- global-whitespace-mode 0
- olivetti-body-width 80
- line-spacing 2
- which-key-idle-delay   0.2
- deft-directory         "~/Dropbox/wiki" ; org mode stuff
- time-stamp-active t
- ;; time-stamp-pattern "8/LAST_UPDATED:[ \t]+\\\\?[\"<]+%:y-%02m-%02d %02H:%02M\\\\?[\">]" ;;<< used for firn / org-mode
- time-stamp-format "%04y-%02m-%02d %02H:%02M:%02S"
- ;; Web stuff
- js2-bounce-indent-p nil
- js2-highlight-level 3
- js2-basic-offset 2
- js-indent-level 2
+ _wiki-path                   "~/Dropbox/wiki/"
+ avy-all-windows              'all-frames
+ css-indent-offset             2
+ deft-directory               _wiki-path
+ doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-theme                    'doom-tomorrow-night
+ global-whitespace-mode        0
+ js-indent-level               2
+ js2-basic-offset              2
+ js2-bounce-indent-p           nil
+ js2-highlight-level           3
+ line-spacing                  2
+ olivetti-body-width           80
+ org-attach-id-dir             (concat _wiki-path "attach/")
+ org-agenda-files              (list _wiki-path)
+ org-default-notes-file        (concat _wiki-path "index.org")
+ org-directory                 _wiki-path
+ org-link-file-path-type       'relative
+ time-stamp-active             t
+ time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
+ web-mode-code-indent-offset   2
+ web-mode-css-indent-offset    2
  web-mode-markup-indent-offset 2
- web-mode-css-indent-offset 2
- web-mode-code-indent-offset 2
- web-mode-style-padding 2
- web-mode-script-padding 2
- css-indent-offset 2
- writeroom-width 90
+ web-mode-script-padding       2
+ web-mode-style-padding        2
+ which-key-idle-delay          0.2
+ which-key-idle-delay          0.2
+ writeroom-width               90
 
  ;; Tool stuff
  counsel-rg-base-command "rg -i -M 160 --no-heading --line-number --color never %s .") ;; stop rg crashing on long files.
@@ -79,6 +84,7 @@
            :unnarrowed t)))
   (org-roam-mode +1))
 
+;; Make magit render icons for common commit leaders (ex: "Fix:" becomes "")
 
 (use-package! pretty-magit
   :init
