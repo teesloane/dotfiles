@@ -3,12 +3,15 @@
 (menu-bar-mode t)
 (fringe-mode 0)
 (global-emojify-mode)
+;; stop async buffer from popping up (https://emacs.stackexchange.com/a/5554)
+(add-to-list 'display-buffer-alist (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
 
 ;; -- General variables --
 ;;
 
 
 (setq-default
+ async-shell-command-buffer   'rename-buffer  ; stop async buffer from bothering me when clocking.
  _wiki-path                   "~/Dropbox/wiki/"
  avy-all-windows              'all-frames
  css-indent-offset             2

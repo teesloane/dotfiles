@@ -55,7 +55,7 @@
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "todo.org") "* TODO %?\n%i" :prepend t)))
-  
+
 
 
 ;; HOOKS -----------------------------------------------------------------------
@@ -64,7 +64,19 @@
 ;;
 ;; Hook funcs
 ;;
-
+(defun tees/async-shell-command-no-window
+    (command)
+  "Run an async command but don't show it's output.
+   src: https://www.reddit.com/r/emacs/comments/9wnxdq/async_shell_command_woes/e9mu5bg"
+  (interactive)
+  (let
+      ((display-buffer-alist
+        (list
+         (cons
+          "\\*Async Shell Command\\*.*"
+          (cons #'display-buffer-no-window nil)))))
+    (async-shell-command
+     command)))
 
 (defun tees/org-clock-query-out ()
   "Ask the user before clocking out.
@@ -78,17 +90,16 @@
 
 (defun tees/org-on-clock-in ()
 	(message "Launching anybar and init'ing clock reminder")
-	(async-shell-command "~/.teescripts/org-clock-check.sh run")
-	)
+	(tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh run")
+  (save-buffer))
 
 (defun tees/org-on-clock-out ()
   "Kill the org-clock-check"
-	(async-shell-command "~/.teescripts/org-clock-check.sh stop")
-  )
+	(tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh stop")
+  (save-buffer))
 
 ;; -- Hooks
 
-;; get line wrapping working
 (add-hook 'kill-emacs-query-functions 'tees/org-clock-query-out)
 (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
 (add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
