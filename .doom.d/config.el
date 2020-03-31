@@ -51,7 +51,7 @@
 ;; ----- ORG ROAM STUFF ----------------------------------------------------------------
 ;;
 (defun tees/org-roam-template-head (file-under)
- (concat "#+TITLE: ${title}\n#+FILE_UNDER: " file-under "\n#+DATE_UPDATED: <>\n\n"))
+ (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FILE_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)

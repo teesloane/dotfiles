@@ -12,7 +12,7 @@ function anybar {
 
 function checkAnybar() {
 	if pgrep AnyBar; then
-		echo 'Running';
+		echo 'Running anybar clock.';
 	else
 		open -a AnyBar
 	fi

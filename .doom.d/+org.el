@@ -3,6 +3,13 @@
 
 (setq refile-targets '("wiki.org" "todo.org" "projects.org" "someday.org"))
 
+(defun my-org-files-list ()
+  (delq nil
+        (mapc (lambda (buffer)
+                (buffer-file-name buffer))
+              (org-buffer-list 'files t))))
+
+
 (after! org
 
   ;; org variables not related to directories.
@@ -26,6 +33,8 @@
    org-outline-path-complete-in-steps     nil ; refile easy
    org-refile-allow-creating-parent-nodes 'confirm
    org-refile-targets                     (mapcar (lambda (l) `(,l :maxlevel . 1)) refile-targets)
+   org-refile-targets                      '((my-org-files-list :maxlevel .
+2))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-startup-truncated                  t
    org-tags-column                        80)
@@ -54,7 +63,7 @@
 
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
-  (add-to-list 'org-capture-templates '("t" "Todo" entry (file "todo.org") "* TODO %?\n%i" :prepend t)))
+  (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 
 
 
@@ -95,14 +104,15 @@
 
 (defun tees/org-on-clock-out ()
   "Kill the org-clock-check"
-	(tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh stop")
+  (tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh stop")
   (save-buffer))
 
 ;; -- Hooks
 
 (add-hook 'kill-emacs-query-functions 'tees/org-clock-query-out)
-(add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
-(add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
+;; These need to be refactored to not stack async spawned processes.
+;; (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
+;; (add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
 
 ;; Save archive file after something is archived. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=887332
 (advice-add 'org-archive-default-command :after #'org-save-all-org-buffers)
