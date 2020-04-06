@@ -9,7 +9,6 @@
                 (buffer-file-name buffer))
               (org-buffer-list 'files t))))
 
-
 (after! org
 
   ;; org variables not related to directories.
@@ -21,6 +20,8 @@
    org-agenda-skip-scheduled-if-done      t
    org-agenda-span                        'day
    org-agenda-start-day                   "+0d"
+   org-attach-id-dir                      "data/attachments/"
+   org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")
    org-bullets-bullet-list                '("⁖")
    org-cycle-separator-lines              -1
    org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
@@ -32,12 +33,11 @@
    org-log-into-drawer                    t
    org-outline-path-complete-in-steps     nil ; refile easy
    org-refile-allow-creating-parent-nodes 'confirm
-   org-refile-targets                     (mapcar (lambda (l) `(,l :maxlevel . 1)) refile-targets)
-   org-refile-targets                      '((my-org-files-list :maxlevel .
-2))
+   org-refile-targets                      '((my-org-files-list :maxlevel . 2))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-startup-truncated                  t
    org-tags-column                        80)
+
   
 
   ;; ---- CUSTOM CAPTURE TEMPLATES ------------------------------------------------
@@ -65,7 +65,11 @@
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 
-
+;; turn org-download links into simple relative links.
+(after! org-download
+  (setq
+   org-attach-id-dir                      "./data/attachments/"
+   org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")))
 
 ;; HOOKS -----------------------------------------------------------------------
 
@@ -98,21 +102,21 @@
     t)) ;; only fails on keyboard quit or error
 
 (defun tees/org-on-clock-in ()
-	(message "Launching anybar and init'ing clock reminder")
-	(tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh run")
+	;; (message "Launching anybar and init'ing clock reminder")
+	;; (tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh run")
   (save-buffer))
 
 (defun tees/org-on-clock-out ()
   "Kill the org-clock-check"
-  (tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh stop")
+  ;; (tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh stop")
   (save-buffer))
 
 ;; -- Hooks
 
 (add-hook 'kill-emacs-query-functions 'tees/org-clock-query-out)
 ;; These need to be refactored to not stack async spawned processes.
-;; (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
-;; (add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
+(add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
+(add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
 
 ;; Save archive file after something is archived. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=887332
 (advice-add 'org-archive-default-command :after #'org-save-all-org-buffers)

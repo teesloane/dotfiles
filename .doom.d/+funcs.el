@@ -26,6 +26,7 @@
   (fringe-mode              0)    ; don't show fringe.
   (set-fill-column          90)   ; set width of fill column (for text wrapping.)
   (auto-fill-mode           0)    ; disable line breaking.
+  (flyspell-mode)                 ; spell checkin'
   (company-mode             0)    ; disable completion.
   (linum-mode               0)    ; turn off  line  numbers (dooum style.)
   (global-linum-mode        0)    ; turn off  line  numbers again.

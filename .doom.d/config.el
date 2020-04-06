@@ -2,12 +2,11 @@
 
 (menu-bar-mode t)
 (fringe-mode 0)
-(global-emojify-mode)
 ;; stop async buffer from popping up (https://emacs.stackexchange.com/a/5554)
 (add-to-list 'display-buffer-alist (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
 
+
 ;; -- General variables --
-;;
 
 
 (setq-default
@@ -17,7 +16,7 @@
  css-indent-offset             2
  deft-directory               _wiki-path
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-theme                    'doom-tomorrow-night
+ doom-theme                    'doom-solarized-light
  global-whitespace-mode        0
  js-indent-level               2
  js2-basic-offset              2
@@ -25,11 +24,12 @@
  js2-highlight-level           3
  line-spacing                  2
  olivetti-body-width           80
- org-attach-id-dir             (concat _wiki-path "attach/")
+ ;; links to org directories have to happen later (can't be in an after! block, I think)
  org-agenda-files              (list _wiki-path)
  org-default-notes-file        (concat _wiki-path "index.org")
  org-directory                 _wiki-path
  org-link-file-path-type       'relative
+ projectile-project-search-path '("~/Projects" "~/Development")
  time-stamp-active             t
  time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
  web-mode-code-indent-offset   2
@@ -51,7 +51,7 @@
 ;; ----- ORG ROAM STUFF ----------------------------------------------------------------
 ;;
 (defun tees/org-roam-template-head (file-under)
- (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FILE_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
+ (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
