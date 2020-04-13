@@ -30,13 +30,15 @@
    org-habit-show-all-today               t
    org-habit-today-glyph                  ?‖
    org-log-done                           t
+   org-image-actual-width                 350
    org-log-into-drawer                    t
    org-outline-path-complete-in-steps     nil ; refile easy
    org-refile-allow-creating-parent-nodes 'confirm
    org-refile-targets                      '((my-org-files-list :maxlevel . 2))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-startup-truncated                  t
-   org-tags-column                        80)
+   org-tags-column                        80
+   )
 
   
 
@@ -118,5 +120,3 @@
 (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
 (add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
 
-;; Save archive file after something is archived. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=887332
-(advice-add 'org-archive-default-command :after #'org-save-all-org-buffers)

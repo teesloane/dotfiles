@@ -146,6 +146,8 @@
         +dragndrop       ; drag & drop files/images into org buffers
         ;;+hugo            ; use Emacs for hugo blogging
         ;;+jupyter        ; ipython/jupyter support for babel
+        +journal
+        +roam
         +pandoc          ; export-with-pandoc support
         +pomodoro        ; be fruitful with the tomato technique
         +present)        ; using org-mode for presentations
@@ -180,5 +182,5 @@
        twitter           ; twitter client https://twitter.com/vnought
 
        :config
-       ;;literate
+       literate
        (default +bindings +smartparens))

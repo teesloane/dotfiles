@@ -1,9 +1,17 @@
+#+TITLE: Config
+
+* Startup Things
+#+BEGIN_SRC elisp
+
 ;;; Startup Calls
 
 (menu-bar-mode t)
 (fringe-mode 0)
 ;; stop async buffer from popping up (https://emacs.stackexchange.com/a/5554)
 (add-to-list 'display-buffer-alist (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+#+END_SRC
+* Variable Overrides and Defaults
+#+BEGIN_SRC elisp
 
 ;;; Variable overrides --
 
@@ -35,6 +43,12 @@
  writeroom-width               90
  counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
 )
+#+END_SRC
+* Magit Configuration
+
+This sets up Magit to have pretty icons with "commit leaders"
+
+#+BEGIN_SRC elisp
 
 ;;; Magit --
 
@@ -52,6 +66,9 @@
   (pretty-magit "Refactor" ? '(:foreground "#9b59b6" :height 1.0 :family "FontAwesome"))
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
+#+END_SRC
+* My Bindings
+#+BEGIN_SRC elisp
 
 ;;; Custom Bindings --
 
@@ -73,39 +90,59 @@
  ;; -- <LEADER> ----------------------------------------------------------------
 
  (:leader
-   (:desc "tees" :prefix "v"
+    (:desc "tees" :prefix "v"
      :desc "M-X Alt"             :n "v" #'execute-extended-command)
 
-   ;; additional org roam bindings to `SPC n`
-   (:prefix-map ("n" . "notes")
-     :desc "Org-Roam-Find"                "/" #'org-roam-find-file
-     )
+    ;; additional org roam bindings to `SPC n`
+    (:prefix-map ("n" . "notes")
+      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+        )
 
-   (:prefix-map ("k" . "lisp")
-     :desc "sp-copy"              :n "c" #'sp-copy-sexp
-     :desc "sp-kill"              :n "k" #'sp-kill-sexp
-     :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
-     :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
-     :desc "sp-up"                :n "u" #'sp-up-sexp
-     :desc "sp-down"              :n "d" #'sp-down-sexp
-     :desc "sp-next"              :n "l" #'sp-next-sexp
-     :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+    (:prefix-map ("k" . "lisp")
+      :desc "sp-copy"              :n "c" #'sp-copy-sexp
+      :desc "sp-kill"              :n "k" #'sp-kill-sexp
+      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+      :desc "sp-up"                :n "u" #'sp-up-sexp
+      :desc "sp-down"              :n "d" #'sp-down-sexp
+      :desc "sp-next"              :n "l" #'sp-next-sexp
+      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+#+END_SRC
+* TODO Load Other Files
+This will get migrated eventually to this org config.
 
+#+BEGIN_SRC elisp
 ;; -- Local file requires --
 (load! "+funcs")
 ;; (load! "+org")
+#+END_SRC
+* Enable GPG
+This was originally for a log.gpg file. Will probably migrate to org-journal.
 
+#+BEGIN_SRC elisp
 ;; -- Enable gpg stuff ---------------------------------------------------------
 (require 'epa-file)
 (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
 (epa-file-enable)
 (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
+#+END_SRC
+* Hooks
+#+BEGIN_SRC elisp
 
 ;;;  Hooks --
 
 (add-hook 'write-file-hooks 'time-stamp) ; update timestamp, if it exists, when saving
+#+END_SRC
+* Org Mode
+#+BEGIN_SRC elisp
 
 ;;; Org Mode ---
+
+#+END_SRC
+** Set Directories
+First, configure directory specific variables. These need to run before any =after! org= blocks.
+
+#+BEGIN_SRC elisp
 
 ;; Org Directory
 
@@ -115,6 +152,9 @@
  org-directory                 _wiki-path
  org-link-file-path-type       'relative
  )
+#+END_SRC
+** Variable customization
+#+BEGIN_SRC elisp
 
 ;;; Org: general variable setting --
 
@@ -154,7 +194,10 @@
    org-startup-truncated                  t
    org-tags-column                        80
    )
-  )
+)
+#+END_SRC
+** Capture Templates
+#+BEGIN_SRC elisp
 
 ;; org - templates
 
@@ -182,12 +225,18 @@
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
-
+#+END_SRC
+** Org-download
+I customize this for Firn usage.
+#+BEGIN_SRC elisp
 ;; I customize this for Firn usage.
 (after! org-download
   (setq
    org-attach-id-dir                      "./data/attachments/"
    org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")))
+#+END_SRC
+** Roam
+#+BEGIN_SRC elisp
 
 ;; Org Roam Config
 
@@ -227,6 +276,15 @@
            :head ,(tees/org-roam-template-head "general")
            :unnarrowed t)))
   (org-roam-mode +1))
+
+#+END_SRC
+** Clocking
+
+These functions / hooks were mostly for when I used to run an anybar
+notification when I was clocking something . I don't really use that setup
+anymore, generally leaning on pomodoro / the modebar.
+
+#+BEGIN_SRC elisp
 
 ;;; Org - Clocking
 
@@ -270,3 +328,4 @@
 ;; These need to be refactored to not stack async spawned processes.
 (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
 (add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
+#+END_SRC
