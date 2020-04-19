@@ -22,14 +22,13 @@
  css-indent-offset             2
  deft-directory               _wiki-path
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-theme                    'doom-tomorrow-night
+ doom-theme                    'doom-spacegrey
  global-whitespace-mode        0
  js-indent-level               2
  js2-basic-offset              2
  js2-bounce-indent-p           nil
  js2-highlight-level           3
  line-spacing                  2
- olivetti-body-width           80
  projectile-project-search-path '("~/Projects" "~/Development")
  time-stamp-active             t
  time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
@@ -42,6 +41,7 @@
  which-key-idle-delay          0.2
  writeroom-width               90
  counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
+ +zen-text-scale               0
 )
 #+END_SRC
 * Magit Configuration
@@ -67,7 +67,7 @@ This sets up Magit to have pretty icons with "commit leaders"
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 #+END_SRC
-* My Bindings
+* Bindings
 #+BEGIN_SRC elisp
 
 ;;; Custom Bindings --
@@ -108,14 +108,6 @@ This sets up Magit to have pretty icons with "commit leaders"
       :desc "sp-next"              :n "l" #'sp-next-sexp
       :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 #+END_SRC
-* TODO Load Other Files
-This will get migrated eventually to this org config.
-
-#+BEGIN_SRC elisp
-;; -- Local file requires --
-(load! "+funcs")
-;; (load! "+org")
-#+END_SRC
 * Enable GPG
 This was originally for a log.gpg file. Will probably migrate to org-journal.
 
@@ -130,24 +122,19 @@ This was originally for a log.gpg file. Will probably migrate to org-journal.
 #+BEGIN_SRC elisp
 
 ;;;  Hooks --
-
 (add-hook 'write-file-hooks 'time-stamp) ; update timestamp, if it exists, when saving
 #+END_SRC
 * Org Mode
 #+BEGIN_SRC elisp
-
 ;;; Org Mode ---
-
 #+END_SRC
 ** Set Directories
+
 First, configure directory specific variables. These need to run before any =after! org= blocks.
-
 #+BEGIN_SRC elisp
-
 ;; Org Directory
-
 (setq
- org-agenda-files              (list _wiki-path)
+ ;; org-agenda-files              (list _wiki-path)
  org-default-notes-file        (concat _wiki-path "index.org")
  org-directory                 _wiki-path
  org-link-file-path-type       'relative
@@ -176,7 +163,6 @@ First, configure directory specific variables. These need to run before any =aft
    org-agenda-span                        'day
    org-agenda-start-day                   "+0d"
    org-attach-id-dir                      "data/attachments/"
-   org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")
    org-bullets-bullet-list                '("⁖")
    org-cycle-separator-lines              -1
    org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
@@ -194,7 +180,7 @@ First, configure directory specific variables. These need to run before any =aft
    org-startup-truncated                  t
    org-tags-column                        80
    )
-)
+  )
 #+END_SRC
 ** Capture Templates
 #+BEGIN_SRC elisp
@@ -226,13 +212,15 @@ First, configure directory specific variables. These need to run before any =aft
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 #+END_SRC
-** Org-download
+** TODO Org-download
+
 I customize this for Firn usage.
+When you drop an image into a file, it will create a data/attachments folder
+where the file is. This is really only for flat file wikis and is brittle. Fix it.
 #+BEGIN_SRC elisp
 ;; I customize this for Firn usage.
 (after! org-download
   (setq
-   org-attach-id-dir                      "./data/attachments/"
    org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")))
 #+END_SRC
 ** Roam
@@ -270,6 +258,11 @@ I customize this for Firn usage.
            :file-name "${slug}"
            :head ,(tees/org-roam-template-head "research")
            :unnarrowed t)
+          ("l" "log" plain (function org-roam--capture-get-point)
+              "%?"
+              :file-name "log/%<%Y-%m-%d-%H%M>-${slug}"
+              :head ,(tees/org-roam-template-head "log")
+              :unnarrowed t)
           ("d" "default" plain (function org-roam--capture-get-point)
            "%?"
            :file-name "${slug}"
@@ -328,4 +321,50 @@ anymore, generally leaning on pomodoro / the modebar.
 ;; These need to be refactored to not stack async spawned processes.
 (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
 (add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
+#+END_SRC
+** Pomodoro
+
+It's SO LOUD.
+
+#+BEGIN_SRC elisp
+(setq
+ org-pomodoro-finished-sound-args "-volume 0.3"
+ org-pomodoro-finished-sound-args "-volume 0.3"
+ org-pomodoro-long-break-sound-args "-volume 0.3"
+ org-pomodoro-short-break-sound-args "-volume 0.3"
+ )
+#+END_SRC
+* My functions
+#+BEGIN_SRC elisp
+(defun tees/align-whitespace (start end)
+  "Align columns by whitespace"
+  (interactive "r")
+  (align-regexp start end "\\(\\s-*\\)\\s-" 1 0 t))
+
+
+(defun tees/write ()
+  (interactive)
+  (setq buffer-face-mode-face '(:family "Iosevka" :height 140)) ; set the font
+  (setq
+    writeroom-width         90    ; set width of writeroom mode
+    writeroom-maximize-window nil
+    indent-tabs-mode        t     ; use tabs for indentation
+    tab-width               2     ; set tab width to 2 FIXME
+    writeroom-mode-line     nil   ; don't show the modeline
+    truncate-lines          nil   ; wrap lines?
+    line-spacing            5     ; set line spacing
+    global-hl-line-mode     nil   ; Turn off line highlight
+    display-line-numbers    nil)  ; don't show line numbers
+  (fringe-mode              0)    ; don't show fringe.
+  (set-fill-column          90)   ; set width of fill column (for text wrapping.)
+  (auto-fill-mode           0)    ; disable line breaking.
+  (flyspell-mode)                 ; spell checkin'
+  (company-mode             0)    ; disable completion.
+  (linum-mode               0)    ; turn off  line  numbers (dooum style.)
+  (global-linum-mode        0)    ; turn off  line  numbers again.
+  (hl-line-mode             0)    ; stop highlighting stuff!
+  (writeroom-mode           1)    ; go into write room   mode.
+  (visual-line-mode         1)    ; don't know.
+  (blink-cursor-mode)                      ; let's blink that cursor.
+  (run-at-time "1 sec" nil #'toggle-frame-fullscreen))
 #+END_SRC

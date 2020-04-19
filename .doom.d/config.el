@@ -14,14 +14,13 @@
  css-indent-offset             2
  deft-directory               _wiki-path
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-theme                    'doom-tomorrow-night
+ doom-theme                    'doom-spacegrey
  global-whitespace-mode        0
  js-indent-level               2
  js2-basic-offset              2
  js2-bounce-indent-p           nil
  js2-highlight-level           3
  line-spacing                  2
- olivetti-body-width           80
  projectile-project-search-path '("~/Projects" "~/Development")
  time-stamp-active             t
  time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
@@ -34,6 +33,7 @@
  which-key-idle-delay          0.2
  writeroom-width               90
  counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
+ +zen-text-scale               0
 )
 
 ;;; Magit --
@@ -73,27 +73,23 @@
  ;; -- <LEADER> ----------------------------------------------------------------
 
  (:leader
-   (:desc "tees" :prefix "v"
+    (:desc "tees" :prefix "v"
      :desc "M-X Alt"             :n "v" #'execute-extended-command)
 
-   ;; additional org roam bindings to `SPC n`
-   (:prefix-map ("n" . "notes")
-     :desc "Org-Roam-Find"                "/" #'org-roam-find-file
-     )
+    ;; additional org roam bindings to `SPC n`
+    (:prefix-map ("n" . "notes")
+      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+        )
 
-   (:prefix-map ("k" . "lisp")
-     :desc "sp-copy"              :n "c" #'sp-copy-sexp
-     :desc "sp-kill"              :n "k" #'sp-kill-sexp
-     :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
-     :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
-     :desc "sp-up"                :n "u" #'sp-up-sexp
-     :desc "sp-down"              :n "d" #'sp-down-sexp
-     :desc "sp-next"              :n "l" #'sp-next-sexp
-     :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
-
-;; -- Local file requires --
-(load! "+funcs")
-;; (load! "+org")
+    (:prefix-map ("k" . "lisp")
+      :desc "sp-copy"              :n "c" #'sp-copy-sexp
+      :desc "sp-kill"              :n "k" #'sp-kill-sexp
+      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+      :desc "sp-up"                :n "u" #'sp-up-sexp
+      :desc "sp-down"              :n "d" #'sp-down-sexp
+      :desc "sp-next"              :n "l" #'sp-next-sexp
+      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 
 ;; -- Enable gpg stuff ---------------------------------------------------------
 (require 'epa-file)
@@ -102,15 +98,13 @@
 (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
 
 ;;;  Hooks --
-
 (add-hook 'write-file-hooks 'time-stamp) ; update timestamp, if it exists, when saving
 
 ;;; Org Mode ---
 
 ;; Org Directory
-
 (setq
- org-agenda-files              (list _wiki-path)
+ ;; org-agenda-files              (list _wiki-path)
  org-default-notes-file        (concat _wiki-path "index.org")
  org-directory                 _wiki-path
  org-link-file-path-type       'relative
@@ -136,7 +130,6 @@
    org-agenda-span                        'day
    org-agenda-start-day                   "+0d"
    org-attach-id-dir                      "data/attachments/"
-   org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")
    org-bullets-bullet-list                '("⁖")
    org-cycle-separator-lines              -1
    org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
@@ -186,7 +179,6 @@
 ;; I customize this for Firn usage.
 (after! org-download
   (setq
-   org-attach-id-dir                      "./data/attachments/"
    org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")))
 
 ;; Org Roam Config
@@ -221,6 +213,11 @@
            :file-name "${slug}"
            :head ,(tees/org-roam-template-head "research")
            :unnarrowed t)
+          ("l" "log" plain (function org-roam--capture-get-point)
+              "%?"
+              :file-name "log/%<%Y-%m-%d-%H%M>-${slug}"
+              :head ,(tees/org-roam-template-head "log")
+              :unnarrowed t)
           ("d" "default" plain (function org-roam--capture-get-point)
            "%?"
            :file-name "${slug}"
@@ -270,3 +267,42 @@
 ;; These need to be refactored to not stack async spawned processes.
 (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
 (add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
+
+(setq
+ org-pomodoro-finished-sound-args "-volume 0.3"
+ org-pomodoro-finished-sound-args "-volume 0.3"
+ org-pomodoro-long-break-sound-args "-volume 0.3"
+ org-pomodoro-short-break-sound-args "-volume 0.3"
+ )
+
+(defun tees/align-whitespace (start end)
+  "Align columns by whitespace"
+  (interactive "r")
+  (align-regexp start end "\\(\\s-*\\)\\s-" 1 0 t))
+
+
+(defun tees/write ()
+  (interactive)
+  (setq buffer-face-mode-face '(:family "Iosevka" :height 140)) ; set the font
+  (setq
+    writeroom-width         90    ; set width of writeroom mode
+    writeroom-maximize-window nil
+    indent-tabs-mode        t     ; use tabs for indentation
+    tab-width               2     ; set tab width to 2 FIXME
+    writeroom-mode-line     nil   ; don't show the modeline
+    truncate-lines          nil   ; wrap lines?
+    line-spacing            5     ; set line spacing
+    global-hl-line-mode     nil   ; Turn off line highlight
+    display-line-numbers    nil)  ; don't show line numbers
+  (fringe-mode              0)    ; don't show fringe.
+  (set-fill-column          90)   ; set width of fill column (for text wrapping.)
+  (auto-fill-mode           0)    ; disable line breaking.
+  (flyspell-mode)                 ; spell checkin'
+  (company-mode             0)    ; disable completion.
+  (linum-mode               0)    ; turn off  line  numbers (dooum style.)
+  (global-linum-mode        0)    ; turn off  line  numbers again.
+  (hl-line-mode             0)    ; stop highlighting stuff!
+  (writeroom-mode           1)    ; go into write room   mode.
+  (visual-line-mode         1)    ; don't know.
+  (blink-cursor-mode)                      ; let's blink that cursor.
+  (run-at-time "1 sec" nil #'toggle-frame-fullscreen))
