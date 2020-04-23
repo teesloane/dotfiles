@@ -322,6 +322,31 @@
           )
   )
 
+(after! org
+(setq-default
+   org-bullets-bullet-list '("⁖")
+   org-todo-keyword-faces
+   '(
+     ("DONE"       :foreground "#7c7c75" :weight normal :underline t)
+     ("[X]"        :foreground "#7c7c75" :weight normal :underline t)
+     ("PROJ"       :foreground "#7c7c75" :weight normal :underline t)
+     ("WAIT"       :foreground "#9f7efe" :weight normal :underline t)
+     ("[?]"        :foreground "#9f7efe" :weight normal :underline t)
+     ("STRT"       :foreground "#0098dd" :weight normal :underline t)
+     ("NEXT"       :foreground "#0098dd" :weight normal :underline t)
+     ("TODO"       :foreground "#50a14f" :weight normal :underline t)
+     ("[ ]"       :foreground "#50a14f" :weight normal :underline t)
+     ("HOLD"       :foreground "#ff6480" :weight normal :underline t)
+     ("[-]"        :foreground "#ff6480" :weight normal :underline t)
+     ("ABRT"       :foreground "#ff6480" :weight normal :underline t)
+     )
+
+   org-priority-faces '((65 :foreground "#e45649")
+                        (66 :foreground "#da8548")
+                        (67 :foreground "#0098dd"))
+   )
+)
+
 (defun tees/align-whitespace (start end)
   "Align columns by whitespace"
   (interactive "r")
