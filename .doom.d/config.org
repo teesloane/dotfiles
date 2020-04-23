@@ -1,10 +1,20 @@
 #+TITLE: Config
 
+* Preface
+This is a literate configuration. Some of it is mine, but a lot of it has been
+borrowed from smarter people than me.
+
+Thank you's:
+
+-  Tecosaur's [[https://tecosaur.github.io/emacs-config/config.html][Doom Emacs Configuration]]
 * Packages
 #+BEGIN_SRC elisp :tangle packages.el
 (package! org-super-agenda)
 (package! solaire-mode :disable t)
 (package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
+
+;; nice org things
+(package! org-fancy-priorities :pin "819bb993b7")
 #+END_SRC
 * Startup
 #+BEGIN_SRC elisp
@@ -28,6 +38,7 @@
  css-indent-offset             2
  deft-directory               _wiki-path
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
  doom-theme                    'doom-spacegrey
  global-whitespace-mode        0
  js-indent-level               2
@@ -49,6 +60,21 @@
  counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
  +zen-text-scale               0
 )
+#+END_SRC
+* UI
+** Centaur Tab Config
+Borrowed from Tecosaur.
+#+BEGIN_SRC elisp
+(after! centaur-tabs
+  (centaur-tabs-mode -1)
+  (setq centaur-tabs-height 36
+        centaur-tabs-set-icons t
+        centaur-tabs-modified-marker "~"
+        centaur-tabs-close-button "×"
+        centaur-tabs-set-bar 'above)
+        centaur-tabs-gray-out-icons 'buffer
+  ;; (centaur-tabs-change-fonts "P22 Underground Book" 160)
+  )
 #+END_SRC
 * Magit
 
@@ -125,15 +151,13 @@ This was originally for a log.gpg file. Will probably migrate to org-journal.
 (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
 #+END_SRC
 * Hooks
+
 #+BEGIN_SRC elisp
 
 ;;;  Hooks --
 (add-hook 'write-file-hooks 'time-stamp) ; update timestamp, if it exists, when saving
 #+END_SRC
 * Org Mode
-#+BEGIN_SRC elisp
-;;; Org Mode ---
-#+END_SRC
 ** Set Directories
 
 First, configure directory specific variables. These need to run before any =after! org= blocks.
@@ -208,8 +232,11 @@ point, and will need to setup cache+invalidation or another solution.
   )
 #+END_SRC
 
-#+RESULTS:
-: 80
+Add hook to turn on flyspell in org mode:
+
+#+BEGIN_SRC elisp
+(after! org (add-hook 'org-mode-hook 'turn-on-flyspell))
+#+END_SRC
 
 ** Capture Templates
 
@@ -365,6 +392,14 @@ It's SO LOUD.
  org-pomodoro-long-break-sound-args "-volume 0.3"
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
+#+END_SRC
+** Org-UI
+
+Enable inlining formatting (bold, italics /etc/ )
+Also include *mixed pitch mode*
+
+#+BEGIN_SRC elisp
+(add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 #+END_SRC
 * My functions
 #+BEGIN_SRC elisp

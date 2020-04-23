@@ -14,6 +14,7 @@
  css-indent-offset             2
  deft-directory               _wiki-path
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
  doom-theme                    'doom-spacegrey
  global-whitespace-mode        0
  js-indent-level               2
@@ -35,6 +36,17 @@
  counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
  +zen-text-scale               0
 )
+
+(after! centaur-tabs
+  (centaur-tabs-mode -1)
+  (setq centaur-tabs-height 36
+        centaur-tabs-set-icons t
+        centaur-tabs-modified-marker "~"
+        centaur-tabs-close-button "×"
+        centaur-tabs-set-bar 'above)
+        centaur-tabs-gray-out-icons 'buffer
+  ;; (centaur-tabs-change-fonts "P22 Underground Book" 160)
+  )
 
 ;;; Magit --
 
@@ -100,8 +112,6 @@
 ;;;  Hooks --
 (add-hook 'write-file-hooks 'time-stamp) ; update timestamp, if it exists, when saving
 
-;;; Org Mode ---
-
 ;; Org Directory
 (setq
  ;; org-agenda-files              (list _wiki-path)
@@ -158,6 +168,8 @@
    org-tags-column                        80
    )
   )
+
+(after! org (add-hook 'org-mode-hook 'turn-on-flyspell))
 
 ;; org - templates
 
@@ -283,6 +295,8 @@
  org-pomodoro-long-break-sound-args "-volume 0.3"
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
+
+(add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 
 (defun tees/align-whitespace (start end)
   "Align columns by whitespace"
