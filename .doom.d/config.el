@@ -110,6 +110,16 @@
  org-link-file-path-type       'relative
  )
 
+(defun +org/opened-buffer-files ()
+  "Return the list of files currently opened in emacs"
+  (delq nil
+        (mapcar (lambda (x)
+                  (if (and (buffer-file-name x)
+                           (string-match "\\.org$"
+                                         (buffer-file-name x)))
+                      (buffer-file-name x)))
+                (buffer-list))))
+
 ;;; Org: general variable setting --
 
 ;; This is for getting refile targets from my open org files.
@@ -142,7 +152,7 @@
    org-log-into-drawer                    t
    org-outline-path-complete-in-steps     nil ; refile easy
    org-refile-allow-creating-parent-nodes 'confirm
-   org-refile-targets                      '((my-org-files-list :maxlevel . 2))
+   org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 4))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-startup-truncated                  t
    org-tags-column                        80
@@ -150,7 +160,6 @@
   )
 
 ;; org - templates
-
 
 (after! org
   (add-to-list 'org-capture-templates
@@ -281,6 +290,7 @@
   (align-regexp start end "\\(\\s-*\\)\\s-" 1 0 t))
 
 
+;; This doesn't really interop well with doom's configuration of write room mode anymore.
 (defun tees/write ()
   (interactive)
   (setq buffer-face-mode-face '(:family "Iosevka" :height 140)) ; set the font
