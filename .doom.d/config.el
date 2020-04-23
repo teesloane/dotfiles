@@ -38,7 +38,7 @@
 )
 
 (after! centaur-tabs
-  (centaur-tabs-mode -1)
+  (centaur-tabs-mode 1)
   (setq centaur-tabs-height 36
         centaur-tabs-set-icons t
         centaur-tabs-modified-marker "~"
@@ -86,7 +86,8 @@
 
  (:leader
     (:desc "tees" :prefix "v"
-     :desc "M-X Alt"             :n "v" #'execute-extended-command)
+     :desc "M-X Alt"             :n "v" #'execute-extended-command
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point )
 
     ;; additional org roam bindings to `SPC n`
     (:prefix-map ("n" . "notes")
@@ -130,6 +131,13 @@
                       (buffer-file-name x)))
                 (buffer-list))))
 
+(after! org
+  (setq
+   org-refile-allow-creating-parent-nodes 'confirm
+   org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 4))
+   org-refile-use-outline-path            'file ; Show/full/paths for refiling
+   ))
+
 ;;; Org: general variable setting --
 
 ;; This is for getting refile targets from my open org files.
@@ -143,29 +151,18 @@
   ;; org variables not related to directories.
   (setq
    ;; org-habit-show-habits-only-for-today   nil
-   elfeed-search-filter                   "@1-week-ago"
-   line-spacing                           3
    org-agenda-skip-deadline-if-done       t
    org-agenda-skip-scheduled-if-done      t
    org-agenda-span                        'day
    org-agenda-start-day                   "+0d"
    org-attach-id-dir                      "data/attachments/"
    org-bullets-bullet-list                '("⁖")
-   org-cycle-separator-lines              -1
-   org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
-   org-fontify-whole-heading-line         nil
-   org-habit-completed-glyph              ?✓
-   org-habit-show-all-today               t
-   org-habit-today-glyph                  ?‖
    org-log-done                           t
-   org-image-actual-width                 350
    org-log-into-drawer                    t
    org-outline-path-complete-in-steps     nil ; refile easy
    org-refile-allow-creating-parent-nodes 'confirm
    org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 4))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
-   org-startup-truncated                  t
-   org-tags-column                        80
    )
   )
 
@@ -296,7 +293,34 @@
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
 
+(after! org
+  (setq
+   line-spacing                           3
+   org-cycle-separator-lines 2
+   org-bullets-bullet-list                '("⁖")
+   org-startup-truncated                  t
+   org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
+   org-fontify-whole-heading-line         nil
+   org-tags-column                        80
+   org-image-actual-width                 350 ; set the width of inline images.
+   org-habit-completed-glyph              ?✓
+   org-habit-show-all-today               t
+   org-habit-today-glyph                  ?‖
+   ))
+
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
+
+(after! mixed-pitch
+  (pushnew! mixed-pitch-fixed-pitch-faces
+          'org-level-1
+          'org-level-2
+          'org-level-3
+          'org-level-4
+          'org-level-5
+          'org-level-6
+          'org-level-7
+          )
+  )
 
 (defun tees/align-whitespace (start end)
   "Align columns by whitespace"

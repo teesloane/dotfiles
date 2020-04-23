@@ -2,11 +2,12 @@
 
 * Preface
 This is a literate configuration. Some of it is mine, but a lot of it has been
-borrowed from smarter people than me.
+borrowed from people who know a lot more than me.
 
 Thank you's:
 
 -  Tecosaur's [[https://tecosaur.github.io/emacs-config/config.html][Doom Emacs Configuration]]
+ 
 * Packages
 #+BEGIN_SRC elisp :tangle packages.el
 (package! org-super-agenda)
@@ -61,12 +62,12 @@ Thank you's:
  +zen-text-scale               0
 )
 #+END_SRC
-* UI
+* UI/UX
 ** Centaur Tab Config
 Borrowed from Tecosaur.
 #+BEGIN_SRC elisp
 (after! centaur-tabs
-  (centaur-tabs-mode -1)
+  (centaur-tabs-mode 1)
   (setq centaur-tabs-height 36
         centaur-tabs-set-icons t
         centaur-tabs-modified-marker "~"
@@ -123,7 +124,8 @@ This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[ht
 
  (:leader
     (:desc "tees" :prefix "v"
-     :desc "M-X Alt"             :n "v" #'execute-extended-command)
+     :desc "M-X Alt"             :n "v" #'execute-extended-command
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point )
 
     ;; additional org roam bindings to `SPC n`
     (:prefix-map ("n" . "notes")
@@ -170,6 +172,7 @@ First, configure directory specific variables. These need to run before any =aft
  org-link-file-path-type       'relative
  )
 #+END_SRC
+
 ** Refile
 
 I would like to be able to refile headings from anywhere within the wiki to
@@ -189,7 +192,20 @@ point, and will need to setup cache+invalidation or another solution.
                       (buffer-file-name x)))
                 (buffer-list))))
 #+END_SRC
+
+And then, setup some variables for refile.
+
+#+BEGIN_SRC elisp
+(after! org
+  (setq
+   org-refile-allow-creating-parent-nodes 'confirm
+   org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 4))
+   org-refile-use-outline-path            'file ; Show/full/paths for refiling
+   ))
+#+END_SRC
+
 ** Variables
+
 #+BEGIN_SRC elisp
 
 ;;; Org: general variable setting --
@@ -205,29 +221,18 @@ point, and will need to setup cache+invalidation or another solution.
   ;; org variables not related to directories.
   (setq
    ;; org-habit-show-habits-only-for-today   nil
-   elfeed-search-filter                   "@1-week-ago"
-   line-spacing                           3
    org-agenda-skip-deadline-if-done       t
    org-agenda-skip-scheduled-if-done      t
    org-agenda-span                        'day
    org-agenda-start-day                   "+0d"
    org-attach-id-dir                      "data/attachments/"
    org-bullets-bullet-list                '("⁖")
-   org-cycle-separator-lines              -1
-   org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
-   org-fontify-whole-heading-line         nil
-   org-habit-completed-glyph              ?✓
-   org-habit-show-all-today               t
-   org-habit-today-glyph                  ?‖
    org-log-done                           t
-   org-image-actual-width                 350
    org-log-into-drawer                    t
    org-outline-path-complete-in-steps     nil ; refile easy
    org-refile-allow-creating-parent-nodes 'confirm
    org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 4))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
-   org-startup-truncated                  t
-   org-tags-column                        80
    )
   )
 #+END_SRC
@@ -270,6 +275,7 @@ FIXME: I should move these to the "templates" folder eventually.
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 #+END_SRC
+
 ** Org-download
 
 I customize this for Firn usage.
@@ -282,7 +288,9 @@ where the file is. This is really only for flat file wikis and is brittle. Fix i
   (setq
    org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")))
 #+END_SRC
+
 ** Roam
+
 #+BEGIN_SRC elisp
 
 ;; Org Roam Config
@@ -330,6 +338,7 @@ where the file is. This is really only for flat file wikis and is brittle. Fix i
   (org-roam-mode +1))
 
 #+END_SRC
+
 ** Clocking
 
 These functions / hooks were mostly for when I used to run an anybar
@@ -381,6 +390,7 @@ anymore, generally leaning on pomodoro / the modebar.
 (add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
 (add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
 #+END_SRC
+
 ** Pomodoro
 
 It's SO LOUD.
@@ -393,14 +403,49 @@ It's SO LOUD.
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
 #+END_SRC
-** Org-UI
 
-Enable inlining formatting (bold, italics /etc/ )
-Also include *mixed pitch mode*
+** Org UI
 
+Vars related to how things look:
+
+#+BEGIN_SRC elisp
+(after! org
+  (setq
+   line-spacing                           3
+   org-cycle-separator-lines 2
+   org-bullets-bullet-list                '("⁖")
+   org-startup-truncated                  t
+   org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
+   org-fontify-whole-heading-line         nil
+   org-tags-column                        80
+   org-image-actual-width                 350 ; set the width of inline images.
+   org-habit-completed-glyph              ?✓
+   org-habit-show-all-today               t
+   org-habit-today-glyph                  ?‖
+   ))
+#+END_SRC
+
+Enable inlining formatting (bold, italics /etc/ ); Also enable *mixed pitch mode*.
 #+BEGIN_SRC elisp
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 #+END_SRC
+
+Make it so mixed-pitch headings are not variable fonts.
+#+BEGIN_SRC elisp
+
+(after! mixed-pitch
+  (pushnew! mixed-pitch-fixed-pitch-faces
+          'org-level-1
+          'org-level-2
+          'org-level-3
+          'org-level-4
+          'org-level-5
+          'org-level-6
+          'org-level-7
+          )
+  )
+#+END_SRC
+
 * My functions
 #+BEGIN_SRC elisp
 (defun tees/align-whitespace (start end)
