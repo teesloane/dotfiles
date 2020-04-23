@@ -1,6 +1,12 @@
 #+TITLE: Config
 
-* Startup Things
+* Packages
+#+BEGIN_SRC elisp :tangle packages.el
+(package! org-super-agenda)
+(package! solaire-mode :disable t)
+(package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
+#+END_SRC
+* Startup
 #+BEGIN_SRC elisp
 
 ;;; Startup Calls
@@ -44,9 +50,9 @@
  +zen-text-scale               0
 )
 #+END_SRC
-* Magit Configuration
+* Magit
 
-This sets up Magit to have pretty icons with "commit leaders"
+This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
 
 #+BEGIN_SRC elisp
 
@@ -140,7 +146,26 @@ First, configure directory specific variables. These need to run before any =aft
  org-link-file-path-type       'relative
  )
 #+END_SRC
-** Variable customization
+** Refile
+
+I would like to be able to refile headings from anywhere within the wiki to
+anywhere else. I don't know how to do that yet. For now, it's useful enough to
+look at open org mode files and use tham as re-file candidates. Borrrowed from
+[[https://yiming.dev/blog/2018/03/02/my-org-refile-workflow/][here]]. As the linked tutorial describes this will probably get slow at some
+point, and will need to setup cache+invalidation or another solution.
+
+#+BEGIN_SRC elisp
+(defun +org/opened-buffer-files ()
+  "Return the list of files currently opened in emacs"
+  (delq nil
+        (mapcar (lambda (x)
+                  (if (and (buffer-file-name x)
+                           (string-match "\\.org$"
+                                         (buffer-file-name x)))
+                      (buffer-file-name x)))
+                (buffer-list))))
+#+END_SRC
+** Variables
 #+BEGIN_SRC elisp
 
 ;;; Org: general variable setting --
@@ -175,18 +200,24 @@ First, configure directory specific variables. These need to run before any =aft
    org-log-into-drawer                    t
    org-outline-path-complete-in-steps     nil ; refile easy
    org-refile-allow-creating-parent-nodes 'confirm
-   org-refile-targets                      '((my-org-files-list :maxlevel . 2))
+   org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 4))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-startup-truncated                  t
    org-tags-column                        80
    )
   )
 #+END_SRC
+
+#+RESULTS:
+: 80
+
 ** Capture Templates
+
+FIXME: I should move these to the "templates" folder eventually.
+
 #+BEGIN_SRC elisp
 
 ;; org - templates
-
 
 (after! org
   (add-to-list 'org-capture-templates
@@ -212,11 +243,12 @@ First, configure directory specific variables. These need to run before any =aft
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 #+END_SRC
-** TODO Org-download
+** Org-download
 
 I customize this for Firn usage.
 When you drop an image into a file, it will create a data/attachments folder
 where the file is. This is really only for flat file wikis and is brittle. Fix it.
+
 #+BEGIN_SRC elisp
 ;; I customize this for Firn usage.
 (after! org-download
@@ -342,6 +374,7 @@ It's SO LOUD.
   (align-regexp start end "\\(\\s-*\\)\\s-" 1 0 t))
 
 
+;; This doesn't really interop well with doom's configuration of write room mode anymore.
 (defun tees/write ()
   (interactive)
   (setq buffer-face-mode-face '(:family "Iosevka" :height 140)) ; set the font
