@@ -39,13 +39,13 @@
 
 (after! centaur-tabs
   (centaur-tabs-mode 1)
-  (setq centaur-tabs-height 36
+  (setq centaur-tabs-height 34
         centaur-tabs-set-icons t
         centaur-tabs-modified-marker "~"
         centaur-tabs-close-button "×"
         centaur-tabs-set-bar 'above)
         centaur-tabs-gray-out-icons 'buffer
-  ;; (centaur-tabs-change-fonts "P22 Underground Book" 160)
+  (centaur-tabs-change-fonts "IBM Plex Sans" 160)
   )
 
 ;;; Magit --
@@ -86,8 +86,9 @@
 
  (:leader
     (:desc "tees" :prefix "v"
-     :desc "M-X Alt"             :n "v" #'execute-extended-command
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point )
+     :desc "M-X Alt"                   :n "v" #'execute-extended-command
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
+     :desc "Toggle Centaur Tabs"       :n "t" #'centaur-tabs-mode)
 
     ;; additional org roam bindings to `SPC n`
     (:prefix-map ("n" . "notes")
@@ -116,6 +117,7 @@
 ;; Org Directory
 (setq
  ;; org-agenda-files              (list _wiki-path)
+ org-agenda-files              '("~/Dropbox/wiki/inbox")
  org-default-notes-file        (concat _wiki-path "index.org")
  org-directory                 _wiki-path
  org-link-file-path-type       'relative
