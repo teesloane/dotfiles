@@ -160,9 +160,6 @@
    org-log-done                           t
    org-log-into-drawer                    t
    org-outline-path-complete-in-steps     nil ; refile easy
-   org-refile-allow-creating-parent-nodes 'confirm
-   org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 4))
-   org-refile-use-outline-path            'file ; Show/full/paths for refiling
    )
   )
 
