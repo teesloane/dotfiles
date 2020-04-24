@@ -41,11 +41,13 @@
   (centaur-tabs-mode 1)
   (setq centaur-tabs-height 34
         centaur-tabs-set-icons t
-        centaur-tabs-modified-marker "~"
-        centaur-tabs-close-button "×"
+        centaur-tabs-modified-marker " ~ "
+        centaur-tabs-close-button " × "
+        centaur-tabs-icon-v-adjust -0.03
+        centaur-tabs-icon-scale-factor 0.8
         centaur-tabs-set-bar 'above)
         centaur-tabs-gray-out-icons 'buffer
-  (centaur-tabs-change-fonts "IBM Plex Sans" 160)
+  (centaur-tabs-change-fonts "IBM Plex Sans" 120)
   )
 
 ;;; Magit --
@@ -117,8 +119,9 @@
 ;; Org Directory
 (setq
  ;; org-agenda-files              (list _wiki-path)
- org-agenda-files              '("~/Dropbox/wiki/inbox")
- org-default-notes-file        (concat _wiki-path "index.org")
+ ;; org-agenda-files              '("~/Dropbox/wiki/inbox")
+ org-agenda-files              '("~/Dropbox/wiki/inbox.org" "~/Dropbox/wiki/priv/work.org")
+ org-default-notes-file        (concat _wiki-path "inbox.org")
  org-directory                 _wiki-path
  org-link-file-path-type       'relative
  )
