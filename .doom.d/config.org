@@ -172,6 +172,13 @@ This was originally for a log.gpg file. Will probably migrate to org-journal.
 ;;;  Hooks --
 (add-hook 'write-file-hooks 'time-stamp) ; update timestamp, if it exists, when saving
 #+END_SRC
+
+Turn off writeroom linumbers
+
+#+BEGIN_SRC elisp
+(add-hook! 'writeroom-mode-hook
+  (display-line-numbers-mode (if writeroom-mode -1 +1)))
+#+END_SRC
 * Org Mode
 ** Set Directories
 
@@ -454,6 +461,7 @@ Make it so mixed-pitch headings are not variable fonts.
           'org-level-5
           'org-level-6
           'org-level-7
+          'org-link
           )
   )
 #+END_SRC

@@ -118,6 +118,9 @@
 ;;;  Hooks --
 (add-hook 'write-file-hooks 'time-stamp) ; update timestamp, if it exists, when saving
 
+(add-hook! 'writeroom-mode-hook
+  (display-line-numbers-mode (if writeroom-mode -1 +1)))
+
 ;; Org Directory
 (setq
  ;; org-agenda-files              (list _wiki-path)
@@ -323,6 +326,7 @@
           'org-level-5
           'org-level-6
           'org-level-7
+          'org-link
           )
   )
 
