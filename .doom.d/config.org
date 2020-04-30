@@ -14,6 +14,7 @@ Thank you's:
 (package! org-super-agenda)
 (package! solaire-mode :disable t)
 (package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
+(package! magit-status-advice :recipe (:local-repo "~/.doom.d/local"))
 
 ;; nice org things
 (package! org-fancy-priorities :pin "819bb993b7")
@@ -83,6 +84,7 @@ Disabling for now. Still on the fence.
 ;;   )
 #+END_SRC
 * Magit
+** Pretty leaders.
 
 This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
 
@@ -105,6 +107,11 @@ This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[ht
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 #+END_SRC
+** Little custom [[https://github.com/jdenen/magit-status-advice/blob/master/magit-status-advice.el][advice]].
+#+BEGIN_SRC elisp
+(use-package! magit-status-advice)
+#+END_SRC
+
 * Bindings
 #+BEGIN_SRC elisp
 

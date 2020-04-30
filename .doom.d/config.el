@@ -67,6 +67,8 @@
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 
+(use-package! magit-status-advice)
+
 ;;; Custom Bindings --
 
 (map!
