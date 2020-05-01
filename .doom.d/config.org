@@ -14,10 +14,6 @@ Thank you's:
 (package! org-super-agenda)
 (package! solaire-mode :disable t)
 (package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
-(package! magit-status-advice :recipe (:local-repo "~/.doom.d/local"))
-
-;; nice org things
-(package! org-fancy-priorities :pin "819bb993b7")
 #+END_SRC
 * Startup: fn calls and variable overrides
 #+BEGIN_SRC elisp
@@ -64,25 +60,6 @@ Thank you's:
  +zen-text-scale               0
 )
 #+END_SRC
-* UI/UX
-** HOLD Centaur Tab Config
-Borrowed from Tecosaur.
-
-Disabling for now. Still on the fence.
-#+BEGIN_SRC elisp
-;; (after! centaur-tabs
-;;   (centaur-tabs-mode 1)
-;;   (setq centaur-tabs-height 34
-;;         centaur-tabs-set-icons t
-;;         centaur-tabs-modified-marker " ~ "
-;;         centaur-tabs-close-button " × "
-;;         centaur-tabs-icon-v-adjust -0.03
-;;         centaur-tabs-icon-scale-factor 0.8
-;;         centaur-tabs-set-bar 'above)
-;;         centaur-tabs-gray-out-icons 'buffer
-;;   (centaur-tabs-change-fonts "IBM Plex Sans" 120)
-;;   )
-#+END_SRC
 * Magit
 ** Pretty leaders.
 
@@ -107,11 +84,6 @@ This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[ht
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 #+END_SRC
-** Little custom [[https://github.com/jdenen/magit-status-advice/blob/master/magit-status-advice.el][advice]].
-#+BEGIN_SRC elisp
-(use-package! magit-status-advice)
-#+END_SRC
-
 * Bindings
 #+BEGIN_SRC elisp
 
@@ -137,8 +109,7 @@ This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[ht
  (:leader
     (:desc "tees" :prefix "v"
      :desc "M-X Alt"                   :n "v" #'execute-extended-command
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
-     :desc "Toggle Centaur Tabs"       :n "t" #'centaur-tabs-mode)
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
 
     ;; additional org roam bindings to `SPC n`
     (:prefix-map ("n" . "notes")

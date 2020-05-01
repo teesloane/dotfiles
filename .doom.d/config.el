@@ -37,19 +37,6 @@
  +zen-text-scale               0
 )
 
-;; (after! centaur-tabs
-;;   (centaur-tabs-mode 1)
-;;   (setq centaur-tabs-height 34
-;;         centaur-tabs-set-icons t
-;;         centaur-tabs-modified-marker " ~ "
-;;         centaur-tabs-close-button " × "
-;;         centaur-tabs-icon-v-adjust -0.03
-;;         centaur-tabs-icon-scale-factor 0.8
-;;         centaur-tabs-set-bar 'above)
-;;         centaur-tabs-gray-out-icons 'buffer
-;;   (centaur-tabs-change-fonts "IBM Plex Sans" 120)
-;;   )
-
 ;;; Magit --
 
 ;; Make magit render icons for common commit leaders (ex: "Fix:" becomes "")
@@ -66,8 +53,6 @@
   (pretty-magit "Refactor" ? '(:foreground "#9b59b6" :height 1.0 :family "FontAwesome"))
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
-
-(use-package! magit-status-advice)
 
 ;;; Custom Bindings --
 
@@ -91,8 +76,7 @@
  (:leader
     (:desc "tees" :prefix "v"
      :desc "M-X Alt"                   :n "v" #'execute-extended-command
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
-     :desc "Toggle Centaur Tabs"       :n "t" #'centaur-tabs-mode)
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
 
     ;; additional org roam bindings to `SPC n`
     (:prefix-map ("n" . "notes")
