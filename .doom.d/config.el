@@ -1,4 +1,4 @@
-;;; Startup Calls
+;;; Startup Calls --
 
 (menu-bar-mode t)
 (fringe-mode 0)
@@ -54,61 +54,11 @@
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 
-;;; Custom Bindings --
-
-(map!
-
- ;; -- <GLOBAL> ---------------------------------------------------------------
-
- :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
- :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
- :desc "Switch to 3rd workspace" :n  "s-3"   (λ! (+workspace/switch-to 2))
- :desc "Switch to 4th workspace" :n  "s-4"   (λ! (+workspace/switch-to 3))
- :desc "Switch to 5th workspace" :n  "s-5"   (λ! (+workspace/switch-to 4))
- :desc "Switch to 6th workspace" :n  "s-6"   (λ! (+workspace/switch-to 5))
- :desc "Switch to 7th workspace" :n  "s-7"   (λ! (+workspace/switch-to 6))
- :desc "Switch to 8th workspace" :n  "s-8"   (λ! (+workspace/switch-to 7))
- :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
- :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
-
- ;; -- <LEADER> ----------------------------------------------------------------
-
- (:leader
-    (:desc "tees" :prefix "v"
-     :desc "M-X Alt"                   :n "v" #'execute-extended-command
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
-
-    ;; additional org roam bindings to `SPC n`
-    (:prefix-map ("n" . "notes")
-      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
-        )
-
-    (:prefix-map ("k" . "lisp")
-      :desc "sp-copy"              :n "c" #'sp-copy-sexp
-      :desc "sp-kill"              :n "k" #'sp-kill-sexp
-      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
-      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
-      :desc "sp-up"                :n "u" #'sp-up-sexp
-      :desc "sp-down"              :n "d" #'sp-down-sexp
-      :desc "sp-next"              :n "l" #'sp-next-sexp
-      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
-
-;; -- Enable gpg stuff ---------------------------------------------------------
-(require 'epa-file)
-(custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
-(epa-file-enable)
-(setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
-
-;;;  Hooks --
-(add-hook 'write-file-hooks 'time-stamp) ; update timestamp, if it exists, when saving
-
-(add-hook! 'writeroom-mode-hook
-  (display-line-numbers-mode (if writeroom-mode -1 +1)))
+;;; Org Mode --
 
 ;; Org Directory
+
 (setq
- ;; org-agenda-files              (list _wiki-path)
- ;; org-agenda-files              '("~/Dropbox/wiki/inbox")
  org-agenda-files              '("~/Dropbox/wiki/inbox.org" "~/Dropbox/wiki/priv/work.org")
  org-default-notes-file        (concat _wiki-path "inbox.org")
  org-directory                 _wiki-path
@@ -144,11 +94,6 @@
 (after! org
   ;; org variables not related to directories.
   (setq
-   ;; org-habit-show-habits-only-for-today   nil
-   org-agenda-skip-deadline-if-done       t
-   org-agenda-skip-scheduled-if-done      t
-   org-agenda-span                        'day
-   org-agenda-start-day                   "+0d"
    org-attach-id-dir                      "data/attachments/"
    org-bullets-bullet-list                '("⁖")
    org-log-done                           t
@@ -190,10 +135,112 @@
   (setq
    org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")))
 
+(use-package! org-super-agenda
+  :commands (org-super-agenda-mode))
+(after! org-agenda
+  (org-super-agenda-mode))
+
+(setq
+ org-agenda-include-deadlines t
+ org-agenda-start-with-log-mode t
+ org-agenda-span 3
+ org-agenda-block-separator nil
+ org-agenda-start-day "+0d"
+ org-agenda-use-time-grid nil
+ org-agenda-tags-column 120
+ org-agenda-compact-blocks t)
+
+(set-popup-rule! "^\\*Org Agenda.*" :slot -1 :size 190  :select t)
+
+(setq org-agenda-custom-commands
+      '(("o" "Overview"
+         ((agenda "" ((org-agenda-span 'day)
+                      (org-super-agenda-groups
+                       '((:name "Today"
+                          :time-grid t
+                          :date today
+                          :scheduled today
+                          :order 1)))))
+          (alltodo "" ((org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '((:name "Next to do"
+                           :todo "NEXT"
+                           :order 1)
+                          (:name "Important"
+                           :tag "Important"
+                           :priority "A"
+                           :order 6)
+                          (:name "Due Today"
+                           :deadline today
+                           :order 2)
+                          (:name "Due Soon"
+                           :deadline future
+                           :order 8)
+                          (:name "Overdue"
+                           :deadline past
+                           :face error
+                           :order 7)))))))
+
+        ("wt" "Work"
+         ((agenda "" ((org-agenda-span 'day)
+                      (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                      (org-super-agenda-groups
+                       '((:name ""
+                          :time-grid t
+                          :scheduled today
+                          :deadline today
+                          ;; :anything t
+                          :discard (:todo "WAIT" :todo "HOLD")
+                          :order 1)))))
+
+          (todo "" ((org-agenda-overriding-header "_____________________________________________________________________________")
+                    (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                    (org-super-agenda-groups
+                     '(
+                       (:name "BLOCKED" :todo  "WAIT" :todo "HOLD" :order 30)
+                       (:name "TASKS" :todo "TODO")
+                       ;; (:name "REVIEWS" :tag "review") ;; this isn't working.
+                       (:discard (:anything t))))))
+          ;; could fix / clean this up.
+          (tags "review" ((org-agenda-overriding-header "_____________________________________________________________________________")
+                          (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                          (org-super-agenda-groups
+                           '(
+                             (:name "REVIEWS" :tag "review") ;; this isn't working.
+                             (:discard (:anything t))))))))
+
+
+
+        ("ww" "Work Week Review"
+         ((agenda "" ((org-agenda-span 'week)
+                      (org-agenda-start-on-weekday 0)
+                      (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                      (org-agenda-start-with-log-mode t)
+                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))))
+          (todo "" ((org-agenda-overriding-header "_____________________________________________________________________________")
+                    (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                    (org-super-agenda-groups
+                     '((:name "BLOCKED" :todo  "WAIT" :todo "HOLD")
+                       (:name "TASKS" :todo "TODO")
+                       (:name "REVIEWS" :tag ("review" "reviews" "pr"))
+                       (:discard (:anything t))))))))))
+
+          
+
+        ;; ("ww" "Weekly work review"
+        ;;  agenda ""
+        ;;  ((org-agenda-span 'week)
+        ;;   (org-agenda-start-on-weekday 0)
+        ;;   (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+        ;;   (org-agenda-start-with-log-mode t)
+        ;;   (org-agenda-skip-function
+        ;;    '(org-agenda-skip-entry-if 'nottodo 'done))))
+
+
 ;; Org Roam Config
 
 (defun tees/org-roam-template-head (file-under)
- (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
+  (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
@@ -234,55 +281,14 @@
            :unnarrowed t)))
   (org-roam-mode +1))
 
-;;; Org - Clocking
-
-(defun tees/async-shell-command-no-window
-    (command)
-  "Run an async command but don't show it's output.
-   src: https://www.reddit.com/r/emacs/comments/9wnxdq/async_shell_command_woes/e9mu5bg"
-  (interactive)
-  (let
-      ((display-buffer-alist
-        (list
-         (cons
-          "\\*Async Shell Command\\*.*"
-          (cons #'display-buffer-no-window nil)))))
-    (async-shell-command
-     command)))
-
-(defun tees/org-clock-query-out ()
-  "Ask the user before clocking out.
-	This is a useful function for adding to `kill-emacs-query-functions'."
-	(if (and
-       (featurep 'org-clock)
-       (funcall 'org-clocking-p)
-       (y-or-n-p "You are currently clocking time, clock out? "))
-      (org-clock-out)
-    t)) ;; only fails on keyboard quit or error
-
-(defun tees/org-on-clock-in ()
-	;; (message "Launching anybar and init'ing clock reminder")
-	;; (tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh run")
-  (save-buffer))
-
-(defun tees/org-on-clock-out ()
-  "Kill the org-clock-check"
-  ;; (tees/async-shell-command-no-window "~/.teescripts/org-clock-check.sh stop")
-  (save-buffer))
-
-;; -- Hooks
-
-(add-hook 'kill-emacs-query-functions 'tees/org-clock-query-out)
-;; These need to be refactored to not stack async spawned processes.
-(add-hook 'org-clock-in-hook #'tees/org-on-clock-in)
-(add-hook 'org-clock-out-hook #'tees/org-on-clock-out)
-
 (setq
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-long-break-sound-args "-volume 0.3"
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
+
+;; Org general settings / ui
 
 (after! org
   (setq
@@ -293,7 +299,7 @@
    org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
    org-fontify-whole-heading-line         nil
    org-tags-column                        80
-   org-image-actual-width                 350 ; set the width of inline images.
+   org-image-actual-width                 400 ; set the width of inline images.
    org-habit-completed-glyph              ?✓
    org-habit-show-all-today               t
    org-habit-today-glyph                  ?‖
@@ -339,38 +345,60 @@
    )
 )
 
-(defun tees/align-whitespace (start end)
-  "Align columns by whitespace"
-  (interactive "r")
-  (align-regexp start end "\\(\\s-*\\)\\s-" 1 0 t))
+;;; Custom Bindings --
 
+(map!
 
-;; This doesn't really interop well with doom's configuration of write room mode anymore.
-(defun tees/write ()
-  (interactive)
-  (setq buffer-face-mode-face '(:family "Iosevka" :height 140)) ; set the font
-  (setq
-    writeroom-width         90    ; set width of writeroom mode
-    writeroom-maximize-window nil
-    indent-tabs-mode        t     ; use tabs for indentation
-    tab-width               2     ; set tab width to 2 FIXME
-    writeroom-mode-line     nil   ; don't show the modeline
-    truncate-lines          nil   ; wrap lines?
-    line-spacing            5     ; set line spacing
-    global-hl-line-mode     nil   ; Turn off line highlight
-    display-line-numbers    nil)  ; don't show line numbers
-  (fringe-mode              0)    ; don't show fringe.
-  (set-fill-column          90)   ; set width of fill column (for text wrapping.)
-  (auto-fill-mode           0)    ; disable line breaking.
-  (flyspell-mode)                 ; spell checkin'
-  (company-mode             0)    ; disable completion.
-  (linum-mode               0)    ; turn off  line  numbers (dooum style.)
-  (global-linum-mode        0)    ; turn off  line  numbers again.
-  (hl-line-mode             0)    ; stop highlighting stuff!
-  (writeroom-mode           1)    ; go into write room   mode.
-  (visual-line-mode         1)    ; don't know.
-  (blink-cursor-mode)                      ; let's blink that cursor.
-  (run-at-time "1 sec" nil #'toggle-frame-fullscreen))
+ ; -- <GLOBAL> --
+
+ :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
+ :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
+ :desc "Switch to 3rd workspace" :n  "s-3"   (λ! (+workspace/switch-to 2))
+ :desc "Switch to 4th workspace" :n  "s-4"   (λ! (+workspace/switch-to 3))
+ :desc "Switch to 5th workspace" :n  "s-5"   (λ! (+workspace/switch-to 4))
+ :desc "Switch to 6th workspace" :n  "s-6"   (λ! (+workspace/switch-to 5))
+ :desc "Switch to 7th workspace" :n  "s-7"   (λ! (+workspace/switch-to 6))
+ :desc "Switch to 8th workspace" :n  "s-8"   (λ! (+workspace/switch-to 7))
+ :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
+ :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
+
+ ; -- <LEADER> --
+
+ (:leader
+    (:desc "tees" :prefix "v"
+     :desc "M-X Alt"                   :n "v" #'execute-extended-command
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
+
+    ;; additional org roam bindings to `SPC n`
+    (:prefix-map ("n" . "notes")
+      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+        )
+
+    (:prefix-map ("k" . "lisp")
+      :desc "sp-copy"              :n "c" #'sp-copy-sexp
+      :desc "sp-kill"              :n "k" #'sp-kill-sexp
+      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+      :desc "sp-up"                :n "u" #'sp-up-sexp
+      :desc "sp-down"              :n "d" #'sp-down-sexp
+      :desc "sp-next"              :n "l" #'sp-next-sexp
+      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+
+;;' -- Enable gpg stuff --
+
+(require 'epa-file)
+(custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
+(epa-file-enable)
+(setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
+
+;;;  Hooks --
+
+;; update timestamp, if it exists, when saving
+(add-hook 'write-file-hooks 'time-stamp)
+;; Don't show line numbers in writeroom mode.
+
+(add-hook! 'writeroom-mode-hook
+  (display-line-numbers-mode (if writeroom-mode -1 +1)))
 
 (after! cider
   (add-hook 'company-completion-started-hook 'custom/set-company-maps)
