@@ -78,7 +78,7 @@
 (after! org
   (setq
    org-refile-allow-creating-parent-nodes 'confirm
-   org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 4))
+   org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 2))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    ))
 
@@ -126,7 +126,7 @@
 "
                  :prepend t :kill-buffer t))
 
-  (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %u %?\n%i\n" :prepend t :kill-buffer t))
+  (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 
@@ -135,51 +135,45 @@
   (setq
    org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")))
 
-(use-package! org-super-agenda
-  :commands (org-super-agenda-mode))
+;;; Org Agenda
+
+(after! org
+  (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.5 :select t :ttl nil))
+
+(use-package! org-super-agenda :commands (org-super-agenda-mode))
+
 (after! org-agenda
-  (org-super-agenda-mode))
-
-(setq
- org-agenda-include-deadlines t
- org-agenda-start-with-log-mode t
- org-agenda-span 3
- org-agenda-block-separator nil
- org-agenda-start-day "+0d"
- org-agenda-use-time-grid nil
- org-agenda-tags-column 120
- org-agenda-compact-blocks t)
-
-(set-popup-rule! "^\\*Org Agenda.*" :slot -1 :size 190  :select t)
+  (org-super-agenda-mode)
+  ;; (set-popup-rule! "^\\*Org Agenda.*" :slot -1 :size 190  :select t)
+  (setq
+   org-agenda-include-deadlines t
+   org-agenda-start-with-log-mode t
+   org-agenda-span 3
+   org-agenda-block-separator nil
+   org-agenda-start-day "+0d"
+   org-agenda-use-time-grid nil
+   org-global-properties '(("Effort_ALL" . "0 0:10 0:20 0:30 0:45 1:00 1:30 2:00 3:00 4:00 6:00 8:00 10:00 20:00"))
+   org-agenda-tags-column 120
+   org-agenda-compact-blocks t)
+  )
 
 (setq org-agenda-custom-commands
-      '(("o" "Overview"
+      '(("a" "Overview"
          ((agenda "" ((org-agenda-span 'day)
+                      (org-agenda-files '("~/Dropbox/wiki/inbox.org"))
                       (org-super-agenda-groups
                        '((:name "Today"
                           :time-grid t
                           :date today
                           :scheduled today
+                          :deadline today
                           :order 1)))))
           (alltodo "" ((org-agenda-overriding-header "")
+                       (org-agenda-files '("~/Dropbox/wiki/inbox.org"))
                        (org-super-agenda-groups
-                        '((:name "Next to do"
-                           :todo "NEXT"
-                           :order 1)
-                          (:name "Important"
-                           :tag "Important"
-                           :priority "A"
-                           :order 6)
-                          (:name "Due Today"
-                           :deadline today
-                           :order 2)
-                          (:name "Due Soon"
-                           :deadline future
-                           :order 8)
-                          (:name "Overdue"
-                           :deadline past
-                           :face error
-                           :order 7)))))))
+                        '((:name "Low effort" :effort< "1:00")
+                          (:name "Overdue" :deadline past :face error :order 7)
+                          (:name "Unscheduled Tasks" :todo "TODO" :scheduled nila  :order 8)))))))
 
         ("wt" "Work"
          ((agenda "" ((org-agenda-span 'day)
@@ -189,7 +183,6 @@
                           :time-grid t
                           :scheduled today
                           :deadline today
-                          ;; :anything t
                           :discard (:todo "WAIT" :todo "HOLD")
                           :order 1)))))
 
@@ -201,15 +194,12 @@
                        (:name "TASKS" :todo "TODO")
                        ;; (:name "REVIEWS" :tag "review") ;; this isn't working.
                        (:discard (:anything t))))))
-          ;; could fix / clean this up.
-          (tags "review" ((org-agenda-overriding-header "_____________________________________________________________________________")
+          ;; Alternative to not getting the `(:tag "review")'
+          (tags "review" ((org-agenda-overriding-header "")
                           (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
                           (org-super-agenda-groups
-                           '(
-                             (:name "REVIEWS" :tag "review") ;; this isn't working.
+                           '((:name "REVIEWS" :tag "review") ;; this isn't working.
                              (:discard (:anything t))))))))
-
-
 
         ("ww" "Work Week Review"
          ((agenda "" ((org-agenda-span 'week)
@@ -222,25 +212,12 @@
                     (org-super-agenda-groups
                      '((:name "BLOCKED" :todo  "WAIT" :todo "HOLD")
                        (:name "TASKS" :todo "TODO")
-                       (:name "REVIEWS" :tag ("review" "reviews" "pr"))
                        (:discard (:anything t))))))))))
-
-          
-
-        ;; ("ww" "Weekly work review"
-        ;;  agenda ""
-        ;;  ((org-agenda-span 'week)
-        ;;   (org-agenda-start-on-weekday 0)
-        ;;   (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
-        ;;   (org-agenda-start-with-log-mode t)
-        ;;   (org-agenda-skip-function
-        ;;    '(org-agenda-skip-entry-if 'nottodo 'done))))
-
 
 ;; Org Roam Config
 
 (defun tees/org-roam-template-head (file-under)
-  (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
+ (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
@@ -256,6 +233,7 @@
    :desc "Org-Roam-Find"   "/" #'org-roam-find-file
    :desc "Org-Roam-Buffer" "r" #'org-roam)
   :config
+  (setq +org-roam-open-buffer-on-find-file nil)
   (setq org-roam-capture-templates
         `(("p" "project" entry (function org-roam--capture-get-point)
            ;; "r Entry item!"
@@ -325,18 +303,18 @@
    org-bullets-bullet-list '("⁖")
    org-todo-keyword-faces
    '(
-     ("DONE"       :foreground "#7c7c75" :weight normal :underline t)
-     ("[X]"        :foreground "#7c7c75" :weight normal :underline t)
-     ("PROJ"       :foreground "#7c7c75" :weight normal :underline t)
-     ("WAIT"       :foreground "#9f7efe" :weight normal :underline t)
-     ("[?]"        :foreground "#9f7efe" :weight normal :underline t)
-     ("STRT"       :foreground "#0098dd" :weight normal :underline t)
-     ("NEXT"       :foreground "#0098dd" :weight normal :underline t)
-     ("TODO"       :foreground "#50a14f" :weight normal :underline t)
-     ("[ ]"       :foreground "#50a14f" :weight normal :underline t)
-     ("HOLD"       :foreground "#ff6480" :weight normal :underline t)
-     ("[-]"        :foreground "#ff6480" :weight normal :underline t)
-     ("ABRT"       :foreground "#ff6480" :weight normal :underline t)
+     ("DONE"       :foreground "#7c7c75") ; :weight normal :underline t)
+     ("[X]"        :foreground "#7c7c75") ;add-face :weight normal :underline t)
+     ("PROJ"       :foreground "#7c7c75") ; :weight normal :underline t)
+     ("WAIT"       :foreground "#9f7efe") ; :weight normal :underline t)
+     ("[?]"        :foreground "#9f7efe") ; :weight normal :underline t)
+     ("STRT"       :foreground "#0098dd") ; :weight normal :underline t)
+     ("NEXT"       :foreground "#0098dd") ; :weight normal :underline t)
+     ("TODO"       :foreground "#50a14f") ; :weight normal :underline t)
+     ("[ ]"       :foreground "#50a14f" ) ; :weight normal :underline t)
+     ("HOLD"       :foreground "#ff6480") ; :weight normal :underline t)
+     ("[-]"        :foreground "#ff6480") ; :weight normal :underline t)
+     ("ABRT"       :foreground "#ff6480") ; :weight normal :underline t)
      )
 
    org-priority-faces '((65 :foreground "#e45649")
@@ -386,10 +364,10 @@
 
 ;;' -- Enable gpg stuff --
 
-(require 'epa-file)
-(custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
-(epa-file-enable)
-(setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
+;; (require 'epa-file)
+;; (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
+;; (epa-file-enable)
+;; (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
 
 ;;;  Hooks --
 
