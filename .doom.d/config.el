@@ -382,25 +382,25 @@
                                         ; -- <LEADER> --
 
  (:leader
-  (:desc "tees" :prefix "v"
-   :desc "M-X Alt"                   :n "v" #'execute-extended-command
-   :desc "Toggle Centaur Tabs"       :n "t" #'centaur-tabs-mode
-   :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
+    (:desc "tees" :prefix "v"
+     :desc "M-X Alt"                   :n "v" #'execute-extended-command
+     :desc "Focus it"                  :n "f" #'focus-mode
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
 
-  ;; additional org roam bindings to `SPC n`
-  (:prefix-map ("n" . "notes")
-   :desc "Org-Roam-Find"                "/" #'org-roam-find-file
-   )
+    ;; additional org roam bindings to `SPC n`
+    (:prefix-map ("n" . "notes")
+      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+        )
 
-  (:prefix-map ("k" . "lisp")
-   :desc "sp-copy"              :n "c" #'sp-copy-sexp
-   :desc "sp-kill"              :n "k" #'sp-kill-sexp
-   :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
-   :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
-   :desc "sp-up"                :n "u" #'sp-up-sexp
-   :desc "sp-down"              :n "d" #'sp-down-sexp
-   :desc "sp-next"              :n "l" #'sp-next-sexp
-   :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+    (:prefix-map ("k" . "lisp")
+      :desc "sp-copy"              :n "c" #'sp-copy-sexp
+      :desc "sp-kill"              :n "k" #'sp-kill-sexp
+      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+      :desc "sp-up"                :n "u" #'sp-up-sexp
+      :desc "sp-down"              :n "d" #'sp-down-sexp
+      :desc "sp-next"              :n "l" #'sp-next-sexp
+      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 
 ;;' -- Enable gpg stuff --
 
