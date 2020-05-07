@@ -37,6 +37,19 @@
  +zen-text-scale               0
 )
 
+;; (after! centaur-tabs
+;;   (centaur-tabs-mode -1))
+
+;;   (setq centaur-tabs-height 34
+;;         centaur-tabs-set-icons t
+;;         centaur-tabs-modified-marker " ~ "
+;;         centaur-tabs-close-button " × "
+;;         centaur-tabs-icon-v-adjust -0.03
+;;         centaur-tabs-icon-scale-factor 0.6
+;;         centaur-tabs-set-bar 'above)
+;;         centaur-tabs-gray-out-icons 'buffer
+;;   (centaur-tabs-change-fonts "IBM Plex Sans" 100))
+
 ;;; Magit --
 
 ;; Make magit render icons for common commit leaders (ex: "Fix:" becomes "")
@@ -345,6 +358,7 @@
  (:leader
     (:desc "tees" :prefix "v"
      :desc "M-X Alt"                   :n "v" #'execute-extended-command
+     :desc "Toggle Centaur Tabs"       :n "t" #'centaur-tabs-mode
      :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
 
     ;; additional org roam bindings to `SPC n`
