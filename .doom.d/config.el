@@ -1,41 +1,50 @@
+;; Startup funcs
+
 ;;; Startup Calls --
 
 (menu-bar-mode t)
 (fringe-mode 0)
-;; stop async buffer from popping up (https://emacs.stackexchange.com/a/5554)
-(add-to-list 'display-buffer-alist (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
 
 ;;; Variable overrides --
 
 (setq-default
- async-shell-command-buffer   'rename-buffer  ; stop async buffer from bothering me when clocking.
  _wiki-path                   "~/Dropbox/wiki/"
  avy-all-windows              'all-frames
- css-indent-offset             2
  deft-directory               _wiki-path
+ projectile-project-search-path '("~/Projects" "~/Development")
+ time-stamp-active             t
+ time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
+ which-key-idle-delay          0.2
+ counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
+ )
+
+(setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
+
+;; Doom things
+
+(setq-default
+ global-whitespace-mode        0
+ line-spacing                  2
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
+ +zen-text-scale               0
  doom-theme                    'doom-spacegrey
- global-whitespace-mode        0
+ )
+
+;;; Webby web web
+
+(setq-default
+ css-indent-offset             2
  js-indent-level               2
  js2-basic-offset              2
  js2-bounce-indent-p           nil
  js2-highlight-level           3
- line-spacing                  2
- projectile-project-search-path '("~/Projects" "~/Development")
- time-stamp-active             t
- time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
  web-mode-code-indent-offset   2
  web-mode-css-indent-offset    2
  web-mode-markup-indent-offset 2
  web-mode-script-padding       2
  web-mode-style-padding        2
- which-key-idle-delay          0.2
- which-key-idle-delay          0.2
- writeroom-width               90
- counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
- +zen-text-scale               0
-)
+ )
 
 ;; (after! centaur-tabs
 ;;   (centaur-tabs-mode -1))
@@ -112,8 +121,7 @@
    org-log-done                           t
    org-log-into-drawer                    t
    org-outline-path-complete-in-steps     nil ; refile easy
-   )
-  )
+   ))
 
 (after! org (add-hook 'org-mode-hook 'turn-on-flyspell))
 
@@ -153,11 +161,11 @@
 (after! org
   (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.5 :select t :ttl nil))
 
-(use-package! org-super-agenda :commands (org-super-agenda-mode))
 
 (after! org-agenda
   (org-super-agenda-mode)
-  ;; (set-popup-rule! "^\\*Org Agenda.*" :slot -1 :size 190  :select t)
+  (use-package! org-super-agenda :commands (org-super-agenda-mode))
+
   (setq
    org-agenda-include-deadlines t
    org-agenda-start-with-log-mode t
@@ -166,71 +174,94 @@
    org-agenda-start-day "+0d"
    org-agenda-use-time-grid nil
    org-global-properties '(("Effort_ALL" . "0 0:10 0:20 0:30 0:45 1:00 1:30 2:00 3:00 4:00 6:00 8:00 10:00 20:00"))
-   org-agenda-tags-column 120
+   org-agenda-tags-column 100
    org-agenda-compact-blocks t)
-  )
 
-(setq org-agenda-custom-commands
-      '(("a" "Overview"
-         ((agenda "" ((org-agenda-span 'day)
-                      (org-agenda-files '("~/Dropbox/wiki/inbox.org"))
-                      (org-super-agenda-groups
-                       '((:name "Today"
-                          :time-grid t
-                          :date today
-                          :scheduled today
-                          :deadline today
-                          :order 1)))))
-          (alltodo "" ((org-agenda-overriding-header "")
-                       (org-agenda-files '("~/Dropbox/wiki/inbox.org"))
-                       (org-super-agenda-groups
-                        '((:name "Low effort" :effort< "1:00")
-                          (:name "Overdue" :deadline past :face error :order 7)
-                          (:name "Unscheduled Tasks" :todo "TODO" :scheduled nila  :order 8)))))))
 
-        ("wt" "Work"
-         ((agenda "" ((org-agenda-span 'day)
+  (setq org-agenda-exporter-settings
+    '((ps-left-header (list 'org-agenda-write-buffer-name))
+      (ps-right-header
+           (list "/pagenumberstring load"
+                 (lambda () (format-time-string "%d/%m/%Y"))))
+      (ps-print-color-p 'black-white)
+      (ps-font-size '(11 . 10))       ; Lanscape . Portrait
+      (ps-top-margin 25)
+      (ps-number-of-columns 1)
+      (ps-landscape-mode t)
+      (ps-left-margin 35)
+      (ps-right-margin 30)))
+
+  (setq org-agenda-custom-commands
+        '(("a" "Overview"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-files '("~/Dropbox/wiki/inbox.org"))
+                        (org-super-agenda-groups
+                         '((:name "Today"
+                            :time-grid t
+                            :date today
+                            :scheduled today
+                            :deadline today
+                            :order 1)))))
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-agenda-files '("~/Dropbox/wiki/inbox.org"))
+                         (org-super-agenda-groups
+                          '((:name "Low effort" :effort< "1:00")
+                            (:name "Overdue" :deadline past :face error :order 7)
+                            (:name "Unscheduled Tasks" :todo "TODO" :scheduled nila  :order 8)))))))
+
+          ("wt" "Work"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                        (org-super-agenda-groups
+                         '((:name ""
+                            :time-grid t
+                            :scheduled today
+                            :deadline today
+                            :discard (:todo "WAIT" :todo "HOLD")
+                            :order 1)))))
+
+            (todo "" ((org-agenda-overriding-header "_____________________________________________________________________________")
                       (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
                       (org-super-agenda-groups
-                       '((:name ""
-                          :time-grid t
-                          :scheduled today
-                          :deadline today
-                          :discard (:todo "WAIT" :todo "HOLD")
-                          :order 1)))))
+                       '(
+                         (:name "IN PROGRESS" :todo  "PROJ" :todo "STRT")
+                         (:name "BLOCKED" :todo  "WAIT" :todo "HOLD" )
+                         (:name "TASKS" :todo "TODO")
+                         (:discard (:anything t))))))
+            ;; Alternative to not getting the `(:tag "review")'
+            (tags "review" ((org-agenda-overriding-header "")
+                            (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                            (org-super-agenda-groups
+                             '((:name "REVIEWS" :tag "review") ;; this isn't working.
+                               (:discard (:anything t))))))))
 
-          (todo "" ((org-agenda-overriding-header "_____________________________________________________________________________")
-                    (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
-                    (org-super-agenda-groups
-                     '(
-                       (:name "BLOCKED" :todo  "WAIT" :todo "HOLD" :order 30)
-                       (:name "TASKS" :todo "TODO")
-                       ;; (:name "REVIEWS" :tag "review") ;; this isn't working.
-                       (:discard (:anything t))))))
-          ;; Alternative to not getting the `(:tag "review")'
-          (tags "review" ((org-agenda-overriding-header "")
-                          (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
-                          (org-super-agenda-groups
-                           '((:name "REVIEWS" :tag "review") ;; this isn't working.
-                             (:discard (:anything t))))))))
 
-        ("ww" "Work Week Review"
-         ((agenda "" ((org-agenda-span 'week)
-                      (org-agenda-start-on-weekday 0)
+          ;; show tasks that were "closed" over a one week span.
+          ("ww" "Work Week Review"
+           ((agenda "" ((org-agenda-span 'week)
+                        (org-agenda-start-on-weekday 0)
+                        (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                        (org-agenda-prefix-format "  %t %s")
+                        (org-agenda-start-with-log-mode '(closed))
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+                        ;; this removes duplicate entries of tasks that were scheduled and marked done.
+                        (org-super-agenda-groups
+                         '((:name "" :time-grid t :discard (:anything t) :order 1)))))
+
+            (todo "" ((org-agenda-overriding-header "_____________________________________________________________________________")
                       (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
-                      (org-agenda-start-with-log-mode t)
-                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))))
-          (todo "" ((org-agenda-overriding-header "_____________________________________________________________________________")
-                    (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
-                    (org-super-agenda-groups
-                     '((:name "BLOCKED" :todo  "WAIT" :todo "HOLD")
-                       (:name "TASKS" :todo "TODO")
-                       (:discard (:anything t))))))))))
+                      (org-agenda-prefix-format "  %t %s")
+                      (org-super-agenda-groups
+                       '((:name "IN PROGRESS" :todo  "PROJ" :todo "STRT")
+                         (:name "BLOCKED" :todo  "WAIT" :todo "HOLD")
+                         (:name "TASKS" :todo "TODO")
+                         (:discard (:anything t))))))))))
+)
 
 ;; Org Roam Config
 
 (defun tees/org-roam-template-head (file-under)
- (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
+  (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
 
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
@@ -261,10 +292,10 @@
            :head ,(tees/org-roam-template-head "research")
            :unnarrowed t)
           ("l" "log" plain (function org-roam--capture-get-point)
-              "%?"
-              :file-name "log/%<%Y-%m-%d-%H%M>-${slug}"
-              :head ,(tees/org-roam-template-head "log")
-              :unnarrowed t)
+           "%?"
+           :file-name "log/%<%Y-%m-%d-%H%M>-${slug}"
+           :head ,(tees/org-roam-template-head "log")
+           :unnarrowed t)
           ("d" "default" plain (function org-roam--capture-get-point)
            "%?"
            :file-name "${slug}"
@@ -300,19 +331,14 @@
 
 (after! mixed-pitch
   (pushnew! mixed-pitch-fixed-pitch-faces
-          'org-level-1
-          'org-level-2
-          'org-level-3
-          'org-level-4
-          'org-level-5
-          'org-level-6
-          'org-level-7
-          'org-link
-          )
+            'org-level-1 'org-level-2 'org-level-3
+            'org-level-4 'org-level-5 'org-level-6
+            'org-level-7 'org-link
+            )
   )
 
 (after! org
-(setq-default
+  (setq-default
    org-bullets-bullet-list '("⁖")
    org-todo-keyword-faces
    '(
@@ -334,13 +360,13 @@
                         (66 :foreground "#da8548")
                         (67 :foreground "#0098dd"))
    )
-)
+  )
 
 ;;; Custom Bindings --
 
 (map!
 
- ; -- <GLOBAL> --
+                                        ; -- <GLOBAL> --
 
  :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
  :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
@@ -353,28 +379,28 @@
  :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
  :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
 
- ; -- <LEADER> --
+                                        ; -- <LEADER> --
 
  (:leader
-    (:desc "tees" :prefix "v"
-     :desc "M-X Alt"                   :n "v" #'execute-extended-command
-     :desc "Toggle Centaur Tabs"       :n "t" #'centaur-tabs-mode
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
+  (:desc "tees" :prefix "v"
+   :desc "M-X Alt"                   :n "v" #'execute-extended-command
+   :desc "Toggle Centaur Tabs"       :n "t" #'centaur-tabs-mode
+   :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
 
-    ;; additional org roam bindings to `SPC n`
-    (:prefix-map ("n" . "notes")
-      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
-        )
+  ;; additional org roam bindings to `SPC n`
+  (:prefix-map ("n" . "notes")
+   :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+   )
 
-    (:prefix-map ("k" . "lisp")
-      :desc "sp-copy"              :n "c" #'sp-copy-sexp
-      :desc "sp-kill"              :n "k" #'sp-kill-sexp
-      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
-      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
-      :desc "sp-up"                :n "u" #'sp-up-sexp
-      :desc "sp-down"              :n "d" #'sp-down-sexp
-      :desc "sp-next"              :n "l" #'sp-next-sexp
-      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+  (:prefix-map ("k" . "lisp")
+   :desc "sp-copy"              :n "c" #'sp-copy-sexp
+   :desc "sp-kill"              :n "k" #'sp-kill-sexp
+   :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+   :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+   :desc "sp-up"                :n "u" #'sp-up-sexp
+   :desc "sp-down"              :n "d" #'sp-down-sexp
+   :desc "sp-next"              :n "l" #'sp-next-sexp
+   :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 
 ;;' -- Enable gpg stuff --
 
