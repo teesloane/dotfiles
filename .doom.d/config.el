@@ -116,12 +116,17 @@
 (after! org
   ;; org variables not related to directories.
   (setq
-   org-attach-id-dir                      "data/attachments/"
-   org-bullets-bullet-list                '("⁖")
-   org-log-done                           t
-   org-log-into-drawer                    t
-   org-outline-path-complete-in-steps     nil ; refile easy
+   org-attach-id-dir                   "data/attachments/"
+   org-bullets-bullet-list             '("⁖")
+   org-log-done                        t
+   org-log-into-drawer                 t
+   org-outline-path-complete-in-steps  nil ; refile easy
    ))
+
+(after! org-download
+  (setq
+   org-download-method                 'directory
+   org-download-image-dir              "~/Dropbox/wiki/data/files/"))
 
 (after! org (add-hook 'org-mode-hook 'turn-on-flyspell))
 
@@ -151,16 +156,10 @@
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 
-;; I customize this for Firn usage.
-(after! org-download
-  (setq
-   org-download-link-format               (concat "[[" org-attach-id-dir "%s]]\n")))
-
 ;;; Org Agenda
 
 (after! org
   (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.5 :select t :ttl nil))
-
 
 (after! org-agenda
   (org-super-agenda-mode)
@@ -170,26 +169,27 @@
    org-agenda-include-deadlines t
    org-agenda-start-with-log-mode t
    org-agenda-span 3
-   org-agenda-block-separator nil
+   org-agenda-block-separator ?-  ;; ?- is a "character" type. It evaluates to a num representing a char
    org-agenda-start-day "+0d"
+   org-agenda-skip-scheduled-if-deadline-is-shown t
+   org-agenda-skip-deadline-if-done t
    org-agenda-use-time-grid nil
    org-global-properties '(("Effort_ALL" . "0 0:10 0:20 0:30 0:45 1:00 1:30 2:00 3:00 4:00 6:00 8:00 10:00 20:00"))
    org-agenda-tags-column 100
-   org-agenda-compact-blocks t)
-
+   org-agenda-compact-blocks nil)
 
   (setq org-agenda-exporter-settings
-    '((ps-left-header (list 'org-agenda-write-buffer-name))
-      (ps-right-header
+        '((ps-left-header (list 'org-agenda-write-buffer-name))
+          (ps-right-header
            (list "/pagenumberstring load"
                  (lambda () (format-time-string "%d/%m/%Y"))))
-      (ps-print-color-p 'black-white)
-      (ps-font-size '(11 . 10))       ; Lanscape . Portrait
-      (ps-top-margin 25)
-      (ps-number-of-columns 1)
-      (ps-landscape-mode t)
-      (ps-left-margin 35)
-      (ps-right-margin 30)))
+          (ps-print-color-p 'black-white)
+          (ps-font-size '(11 . 10))       ; Lanscape . Portrait
+          (ps-top-margin 25)
+          (ps-number-of-columns 1)
+          (ps-landscape-mode t)
+          (ps-left-margin 35)
+          (ps-right-margin 30)))
 
   (setq org-agenda-custom-commands
         '(("a" "Overview"
@@ -199,15 +199,19 @@
                          '((:name "Today"
                             :time-grid t
                             :date today
-                            :scheduled today
+                            :scheduled nil
                             :deadline today
+                            :discard (:anything t)
                             :order 1)))))
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-agenda-files '("~/Dropbox/wiki/inbox.org"))
                          (org-super-agenda-groups
-                          '((:name "Low effort" :effort< "1:00")
-                            (:name "Overdue" :deadline past :face error :order 7)
-                            (:name "Unscheduled Tasks" :todo "TODO" :scheduled nila  :order 8)))))))
+                          '((:name "Scheduled / Ongoing" :scheduled past)
+                            (:name "Overdue" :deadline past)
+                            (:name "Low effort" :effort< "1:00")
+                            (:name "Recipes To Try" :tag "recipes")
+                            (:name "Unscheduled/No Deadline" :scheduled nil :deadline nil  :order 8)
+                            (:name "Other"   :order 8)))))))
 
           ("wt" "Work"
            ((agenda "" ((org-agenda-span 'day)
@@ -220,12 +224,12 @@
                             :discard (:todo "WAIT" :todo "HOLD")
                             :order 1)))))
 
-            (todo "" ((org-agenda-overriding-header "_____________________________________________________________________________")
+            (todo "" ((org-agenda-overriding-header "")
                       (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
                       (org-super-agenda-groups
                        '(
                          (:name "IN PROGRESS" :todo  "PROJ" :todo "STRT")
-                         (:name "BLOCKED" :todo  "WAIT" :todo "HOLD" )
+                         (:name "BLOCKED" :todo  "WAIT" :todo "HOLD")
                          (:name "TASKS" :todo "TODO")
                          (:discard (:anything t))))))
             ;; Alternative to not getting the `(:tag "review")'
@@ -248,60 +252,14 @@
                         (org-super-agenda-groups
                          '((:name "" :time-grid t :discard (:anything t) :order 1)))))
 
-            (todo "" ((org-agenda-overriding-header "_____________________________________________________________________________")
+            (todo "" ((org-agenda-overriding-header "")
                       (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
                       (org-agenda-prefix-format "  %t %s")
                       (org-super-agenda-groups
                        '((:name "IN PROGRESS" :todo  "PROJ" :todo "STRT")
                          (:name "BLOCKED" :todo  "WAIT" :todo "HOLD")
                          (:name "TASKS" :todo "TODO")
-                         (:discard (:anything t))))))))))
-)
-
-;; Org Roam Config
-
-(defun tees/org-roam-template-head (file-under)
-  (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
-
-(use-package! org-roam
-  :commands (org-roam-insert org-roam-find-file org-roam)
-  :init
-  (setq org-roam-directory "~/Dropbox/wiki"
-        org-roam-link-title-format "%sº") ;; appends a  `º` to each Roam link.
-  (map!
-   :desc "Org-Roam-Insert" "C-c i" #'org-roam-insert
-   :desc "Org-Roam-Find"   "C-c n" #'org-roam-find-file
-   :leader
-   :prefix "n"
-   :desc "Org-Roam-Insert" "i" #'org-roam-insert
-   :desc "Org-Roam-Find"   "/" #'org-roam-find-file
-   :desc "Org-Roam-Buffer" "r" #'org-roam)
-  :config
-  (setq +org-roam-open-buffer-on-find-file nil)
-  (setq org-roam-capture-templates
-        `(("p" "project" entry (function org-roam--capture-get-point)
-           ;; "r Entry item!"
-           (file "~/.doom.d/templates/org-roam-project.org")
-           :file-name "${slug}"
-           :head ,(tees/org-roam-template-head "project")
-           :unnarrowed t)
-          ("r" "research" entry (function org-roam--capture-get-point)
-           ;; "r Entry item!"
-           (file "~/.doom.d/templates/org-roam-research.org")
-           :file-name "${slug}"
-           :head ,(tees/org-roam-template-head "research")
-           :unnarrowed t)
-          ("l" "log" plain (function org-roam--capture-get-point)
-           "%?"
-           :file-name "log/%<%Y-%m-%d-%H%M>-${slug}"
-           :head ,(tees/org-roam-template-head "log")
-           :unnarrowed t)
-          ("d" "default" plain (function org-roam--capture-get-point)
-           "%?"
-           :file-name "${slug}"
-           :head ,(tees/org-roam-template-head "general")
-           :unnarrowed t)))
-  (org-roam-mode +1))
+                         (:discard (:anything t)))))))))))
 
 (setq
  org-pomodoro-finished-sound-args "-volume 0.3"
@@ -361,6 +319,51 @@
                         (67 :foreground "#0098dd"))
    )
   )
+
+;; Org Roam Config
+
+(defun tees/org-roam-template-head (file-under)
+  (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
+
+(use-package! org-roam
+  :commands (org-roam-insert org-roam-find-file org-roam)
+  :init
+  (setq org-roam-directory "~/Dropbox/wiki"
+        org-roam-link-title-format "%sº") ;; appends a  `º` to each Roam link.
+  (map!
+   :desc "Org-Roam-Insert" "C-c i" #'org-roam-insert
+   :desc "Org-Roam-Find"   "C-c n" #'org-roam-find-file
+   :leader
+   :prefix "n"
+   :desc "Org-Roam-Insert" "i" #'org-roam-insert
+   :desc "Org-Roam-Find"   "/" #'org-roam-find-file
+   :desc "Org-Roam-Buffer" "r" #'org-roam)
+  :config
+  (setq +org-roam-open-buffer-on-find-file nil)
+  (setq org-roam-capture-templates
+        `(("p" "project" entry (function org-roam--capture-get-point)
+           ;; "r Entry item!"
+           (file "~/.doom.d/templates/org-roam-project.org")
+           :file-name "${slug}"
+           :head ,(tees/org-roam-template-head "project")
+           :unnarrowed t)
+          ("r" "research" entry (function org-roam--capture-get-point)
+           ;; "r Entry item!"
+           (file "~/.doom.d/templates/org-roam-research.org")
+           :file-name "${slug}"
+           :head ,(tees/org-roam-template-head "research")
+           :unnarrowed t)
+          ("l" "log" plain (function org-roam--capture-get-point)
+           "%?"
+           :file-name "log/%<%Y-%m-%d-%H%M>-${slug}"
+           :head ,(tees/org-roam-template-head "log")
+           :unnarrowed t)
+          ("d" "default" plain (function org-roam--capture-get-point)
+           "%?"
+           :file-name "${slug}"
+           :head ,(tees/org-roam-template-head "general")
+           :unnarrowed t)))
+  (org-roam-mode +1))
 
 ;;; Custom Bindings --
 
