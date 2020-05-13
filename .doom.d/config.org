@@ -19,6 +19,7 @@ Thank you's:
 #+END_SRC
 * General Customization
 ** Startup funcs
+
 #+BEGIN_SRC elisp :comments org
 
 ;;; Startup Calls --
@@ -27,6 +28,7 @@ Thank you's:
 (fringe-mode 0)
 
 #+END_SRC
+
 ** Basic defaults
 #+BEGIN_SRC elisp
 
@@ -70,6 +72,7 @@ Prob can remove some of these weird js things from forever go.
 * UI
 ** Tabs
 [[https://raw.githubusercontent.com/andreyorst/dotfiles/master/.config/emacs/README.org][Possible tab inspiration]] when native tabs are available in os-x. For now, a potential centaur config:
+
 #+BEGIN_SRC elisp
 
 (after! centaur-tabs
@@ -98,12 +101,13 @@ Prob can remove some of these weird js things from forever go.
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-font                     (font-spec :family "JetBrains Mono" :size 14 :weight 'regular)
  doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
  +zen-text-scale               0
  doom-theme                    'doom-spacegrey
  )
 #+END_SRC
+
 * Magit
 ** Pretty leaders.
 
@@ -194,6 +198,7 @@ And then, setup some variables for refile.
   (setq
    org-attach-id-dir                   "data/attachments/"
    org-bullets-bullet-list             '("⁖")
+   org-superstar-headline-bullets-list '("⁖")
    org-log-done                        t
    org-log-into-drawer                 t
    org-outline-path-complete-in-steps  nil ; refile easy
@@ -401,6 +406,7 @@ Enable inlining formatting (bold, italics /etc/ ); Also enable *mixed pitch mode
 #+END_SRC
 
 Make it so mixed-pitch headings are not variable fonts.
+
 #+BEGIN_SRC elisp
 
 (after! mixed-pitch
@@ -412,7 +418,7 @@ Make it so mixed-pitch headings are not variable fonts.
   )
 #+END_SRC
 
-Make headings look nice. This doesn't load for some reason.
+Make headings look nice.
 
 #+BEGIN_SRC elisp
 
@@ -442,6 +448,15 @@ Make headings look nice. This doesn't load for some reason.
   )
 
 #+END_SRC
+
+Disable org mode src block backgrounds (cleans up backgrounds on headings when sections are folded):
+
+#+BEGIN_SRC elisp
+(custom-set-faces
+  '(org-block-begin-line ((t (:background nil))))
+  '(org-block-end-line   ((t (:background nil)))))
+#+END_SRC
+
 ** Roam
 
 #+BEGIN_SRC elisp
@@ -494,14 +509,13 @@ Make headings look nice. This doesn't load for some reason.
 #+END_SRC
 
 * Bindings
+
 #+BEGIN_SRC elisp
 
 ;;; Custom Bindings --
 
 (map!
-
-                                        ; -- <GLOBAL> --
-
+ ;; -- <GLOBAL> --
  :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
  :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
  :desc "Switch to 3rd workspace" :n  "s-3"   (λ! (+workspace/switch-to 2))
@@ -513,7 +527,7 @@ Make headings look nice. This doesn't load for some reason.
  :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
  :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
 
-                                        ; -- <LEADER> --
+; ; -- <LEADER> --
 
  (:leader
     (:desc "tees" :prefix "v"

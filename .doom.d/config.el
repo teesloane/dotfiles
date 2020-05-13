@@ -1,5 +1,6 @@
 ;; Startup funcs
 
+
 ;;; Startup Calls --
 
 (menu-bar-mode t)
@@ -58,7 +59,7 @@
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-font                     (font-spec :family "JetBrains Mono" :size 14 :weight 'regular)
  doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
  +zen-text-scale               0
  doom-theme                    'doom-spacegrey
@@ -123,6 +124,7 @@
   (setq
    org-attach-id-dir                   "data/attachments/"
    org-bullets-bullet-list             '("⁖")
+   org-superstar-headline-bullets-list '("⁖")
    org-log-done                        t
    org-log-into-drawer                 t
    org-outline-path-complete-in-steps  nil ; refile easy
@@ -325,6 +327,10 @@
    )
   )
 
+(custom-set-faces
+  '(org-block-begin-line ((t (:background nil))))
+  '(org-block-end-line   ((t (:background nil)))))
+
 ;; Org Roam Config
 
 (defun tees/org-roam-template-head (file-under)
@@ -373,9 +379,7 @@
 ;;; Custom Bindings --
 
 (map!
-
-                                        ; -- <GLOBAL> --
-
+ ;; -- <GLOBAL> --
  :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
  :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
  :desc "Switch to 3rd workspace" :n  "s-3"   (λ! (+workspace/switch-to 2))
@@ -387,7 +391,7 @@
  :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
  :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
 
-                                        ; -- <LEADER> --
+; ; -- <LEADER> --
 
  (:leader
     (:desc "tees" :prefix "v"
