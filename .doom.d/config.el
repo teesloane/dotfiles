@@ -20,17 +20,6 @@
 
 (setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
 
-;; Doom things
-
-(setq-default
- global-whitespace-mode        0
- line-spacing                  2
- doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
- +zen-text-scale               0
- doom-theme                    'doom-spacegrey
- )
-
 ;;; Webby web web
 
 (setq-default
@@ -46,18 +35,34 @@
  web-mode-style-padding        2
  )
 
-;; (after! centaur-tabs
-;;   (centaur-tabs-mode -1))
+(after! centaur-tabs
+  ;; (centaur-tabs-mode -1))
+  (centaur-tabs-mode 1)
+  (centaur-tabs-group-by-projectile-project)
 
-;;   (setq centaur-tabs-height 34
-;;         centaur-tabs-set-icons t
-;;         centaur-tabs-modified-marker " ~ "
-;;         centaur-tabs-close-button " × "
-;;         centaur-tabs-icon-v-adjust -0.03
-;;         centaur-tabs-icon-scale-factor 0.6
-;;         centaur-tabs-set-bar 'above)
-;;         centaur-tabs-gray-out-icons 'buffer
-;;   (centaur-tabs-change-fonts "IBM Plex Sans" 100))
+  (setq centaur-tabs-height 30
+        centaur-tabs-set-icons t
+        centaur-tabs-modified-marker "    ~    "
+        centaur-tabs-left-edge-margin "     "
+        centaur-tabs-close-button "   ×   "
+        centaur-tabs-icon-v-adjust -0.03
+        centaur-tabs-icon-scale-factor 0.6
+        centaur-tabs-label-fixed-length 24
+        centaur-tabs-style 'bar
+        centaur-tabs-set-bar 'above)
+  centaur-tabs-gray-out-icons 'buffer
+  (centaur-tabs-change-fonts "IBM Plex Mono" 110))
+
+;; Doom things
+
+(setq-default
+ global-whitespace-mode        0
+ line-spacing                  2
+ doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
+ +zen-text-scale               0
+ doom-theme                    'doom-spacegrey
+ )
 
 ;;; Magit --
 

@@ -8,8 +8,8 @@ borrowed from people who know a lot more than me.
 Thank you's:
 
 -  Tecosaur's [[https://tecosaur.github.io/emacs-config/config.html][Doom Emacs Configuration]]
--  [[https://github.com/zaiste/zaiste-emacs-theme][ zaiste/zaiste-emacs-theme]]
- 
+-  [[https://github.com/zaiste/zaiste-emacs-theme][zaiste/zaiste-emacs-theme]]
+
 * Packages
 #+BEGIN_SRC elisp :tangle packages.el
 (package! org-super-agenda)
@@ -46,19 +46,6 @@ Thank you's:
 (setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
 
 #+END_SRC
-** UI: Doom vars.
-#+BEGIN_SRC elisp
-;; Doom things
-
-(setq-default
- global-whitespace-mode        0
- line-spacing                  2
- doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
- +zen-text-scale               0
- doom-theme                    'doom-spacegrey
- )
-#+END_SRC
 ** TODO Web Defaults
 
 Prob can remove some of these weird js things from forever go.
@@ -80,22 +67,42 @@ Prob can remove some of these weird js things from forever go.
  )
 #+END_SRC
 
-** HOLD UI: Centaur Tab Config
-Currently disabled because it's a bit glitchy.
-
+* UI
+** Tabs
+[[https://raw.githubusercontent.com/andreyorst/dotfiles/master/.config/emacs/README.org][Possible tab inspiration]] when native tabs are available in os-x. For now, a potential centaur config:
 #+BEGIN_SRC elisp
-;; (after! centaur-tabs
-;;   (centaur-tabs-mode -1))
 
-;;   (setq centaur-tabs-height 34
-;;         centaur-tabs-set-icons t
-;;         centaur-tabs-modified-marker " ~ "
-;;         centaur-tabs-close-button " × "
-;;         centaur-tabs-icon-v-adjust -0.03
-;;         centaur-tabs-icon-scale-factor 0.6
-;;         centaur-tabs-set-bar 'above)
-;;         centaur-tabs-gray-out-icons 'buffer
-;;   (centaur-tabs-change-fonts "IBM Plex Sans" 100))
+(after! centaur-tabs
+  ;; (centaur-tabs-mode -1))
+  (centaur-tabs-mode 1)
+  (centaur-tabs-group-by-projectile-project)
+
+  (setq centaur-tabs-height 30
+        centaur-tabs-set-icons t
+        centaur-tabs-modified-marker "    ~    "
+        centaur-tabs-left-edge-margin "     "
+        centaur-tabs-close-button "   ×   "
+        centaur-tabs-icon-v-adjust -0.03
+        centaur-tabs-icon-scale-factor 0.6
+        centaur-tabs-label-fixed-length 24
+        centaur-tabs-style 'bar
+        centaur-tabs-set-bar 'above)
+  centaur-tabs-gray-out-icons 'buffer
+  (centaur-tabs-change-fonts "IBM Plex Mono" 110))
+
+#+END_SRC
+** Doom
+#+BEGIN_SRC elisp
+;; Doom things
+
+(setq-default
+ global-whitespace-mode        0
+ line-spacing                  2
+ doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
+ +zen-text-scale               0
+ doom-theme                    'doom-spacegrey
+ )
 #+END_SRC
 * Magit
 ** Pretty leaders.
