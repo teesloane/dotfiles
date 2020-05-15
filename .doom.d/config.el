@@ -15,7 +15,7 @@
  projectile-project-search-path '("~/Projects" "~/Development")
  time-stamp-active             t
  time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
- which-key-idle-delay          0.2
+ which-key-idle-delay          0.3
  counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
  )
 
@@ -59,11 +59,20 @@
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- doom-font                     (font-spec :family "JetBrains Mono" :size 14 :weight 'regular)
+ doom-font                     (font-spec :family "JetBrains Mono" :size 13)
+ ;; doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
  +zen-text-scale               0
- doom-theme                    'doom-spacegrey
+ doom-theme                    'doom-opera
  )
+
+(after! ivy-posframe
+  (setq ivy-fixed-height-minibuffer nil
+        ivy-posframe-border-width 10
+        ivy-posframe-width 150
+        ivy-posframe-parameters
+        `((min-width . 150)
+          (min-height . ,ivy-height))))
 
 ;;; Magit --
 
@@ -283,9 +292,9 @@
    org-cycle-separator-lines 2
    org-bullets-bullet-list                '("⁖")
    org-startup-truncated                  t
-   org-ellipsis                           " • " ;; " ⇢ " ;; ;; " ⋱ " ;;
+   org-ellipsis                          " ⋱ " ;; " • " ;; " ⇢ " ;; " ⋱ " ;;
    org-fontify-whole-heading-line         nil
-   org-tags-column                        80
+   org-tags-column                        70
    org-image-actual-width                 400 ; set the width of inline images.
    org-habit-completed-glyph              ?✓
    org-habit-show-all-today               t
@@ -425,8 +434,8 @@
 
 ;; update timestamp, if it exists, when saving
 (add-hook 'write-file-hooks 'time-stamp)
-;; Don't show line numbers in writeroom mode.
 
+;; Don't show line numbers in writeroom mode.
 (add-hook! 'writeroom-mode-hook
   (display-line-numbers-mode (if writeroom-mode -1 +1)))
 
