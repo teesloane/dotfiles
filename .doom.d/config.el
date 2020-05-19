@@ -61,7 +61,7 @@
  line-spacing                  2
  doom-font                     (font-spec :family "JetBrains Mono" :size 13)
  ;; doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-variable-pitch-font      (font-spec :family "IBM Plex Sans" :size 12)
+ doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
  doom-theme                    'doom-opera
  )
@@ -96,7 +96,7 @@
 ;; Org Directory
 
 (setq
- org-agenda-files              '("~/Dropbox/wiki/inbox.org" "~/Dropbox/wiki/priv/work.org")
+ org-agenda-files              '("~/Dropbox/wiki/inbox.org" "~/Dropbox/wiki/projects.org")
  org-default-notes-file        (concat _wiki-path "inbox.org")
  org-directory                 _wiki-path
  org-link-file-path-type       'relative
@@ -115,7 +115,8 @@
 (after! org
   (setq
    org-refile-allow-creating-parent-nodes 'confirm
-   org-refile-targets                     '((+org/opened-buffer-files :maxlevel . 2))
+   org-refile-targets                     '((org-agenda-files :maxlevel . 3))
+                                            ;(+org/opened-buffer-files :maxlevel . 2)) ;; < this was working ...
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    ))
 
@@ -294,7 +295,7 @@
    org-startup-truncated                  t
    org-ellipsis                          " ⋱ " ;; " • " ;; " ⇢ " ;; " ⋱ " ;;
    org-fontify-whole-heading-line         nil
-   org-tags-column                        70
+   org-tags-column                        65
    org-image-actual-width                 400 ; set the width of inline images.
    org-habit-completed-glyph              ?✓
    org-habit-show-all-today               t
@@ -324,15 +325,15 @@
      ("STRT"       :foreground "#0098dd") ; :weight normal :underline t)
      ("NEXT"       :foreground "#0098dd") ; :weight normal :underline t)
      ("TODO"       :foreground "#50a14f") ; :weight normal :underline t)
-     ("[ ]"       :foreground "#50a14f" ) ; :weight normal :underline t)
+     ("[ ]"        :foreground "#50a14f") ; :weight normal :underline t)
      ("HOLD"       :foreground "#ff6480") ; :weight normal :underline t)
      ("[-]"        :foreground "#ff6480") ; :weight normal :underline t)
      ("ABRT"       :foreground "#ff6480") ; :weight normal :underline t)
      )
 
-   org-priority-faces '((65 :foreground "#e45649")
-                        (66 :foreground "#da8548")
-                        (67 :foreground "#0098dd"))
+   ;; org-priority-faces '((65 :foreground "#e45649")
+   ;;                      (66 :foreground "#da8548")
+   ;;                      (67 :foreground "#0098dd"))
    )
   )
 
