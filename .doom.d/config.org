@@ -101,9 +101,10 @@ Prob can remove some of these weird js things from forever go.
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- doom-font                     (font-spec :family "JetBrains Mono" :size 13)
- ;; doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
+ ;; doom-font                     (font-spec :family "JetBrains Mono" :size 13)
+ doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ ;; doom-variable-pitch-font      (font-spec :family "JetBrains Mono" :size 12)
+ doom-variable-pitch-font      (font-spec :family "IBM Plex Mono" :size 12)
  +zen-text-scale               0
  doom-theme                    'doom-opera
  )
@@ -117,6 +118,44 @@ Prob can remove some of these weird js things from forever go.
         ivy-posframe-parameters
         `((min-width . 150)
           (min-height . ,ivy-height))))
+
+#+END_SRC
+** Fonts
+
+
+Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]].
+
+
+#+BEGIN_SRC elisp
+;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
+(setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode clojure-mode
+                                   latex-mode scheme-mode racket-mode ess-r-mode))
+
+(setq highlight-indent-guides-responsive 'top
+      highlight-indent-guides-delay 0)
+
+;; Org and R additional symbols
+;; hex code ▷ (9655), ◇ (9671), ▶ (9654), ƒ (402)
+(setq +pretty-code-iosevka-font-ligatures
+      (append +pretty-code-iosevka-font-ligatures
+              '(("[ ]" .  "☐")
+                ("[X]" . "☑" )
+                ("[-]" . "❍" )
+                ("%>%" . ?▷)
+                ("%$%" . ?◇)
+                ("%T>%" . ?▶)
+                ("function" . ?ƒ))))
+
+;; https://is.gd/3VuSXj
+(defface org-checkbox-done-text
+  '((t (:foreground "#5a637b")))
+  "Face for the text part of a checked org-mode checkbox.")
+
+(font-lock-add-keywords 'org-mode
+                        '(("^[ \t]*\\(?:[-+*]\\|[0-9]+[).]\\)[ \t]+\\(\\(?:\\[@\\(?:start:\\)?[0-9]+\\][ \t]*\\)?\\[\\(?:X\\|\\([0-9]+\\)/\\2\\)\\][^\n]*\n\\)"
+                           1 'org-checkbox-done-text prepend))
+                        'append)
+;; (custom-set-faces '(org-checkbox ((t (:foreground nil :inherit org-todo)))))
 
 #+END_SRC
 
@@ -307,7 +346,6 @@ Clean this ups and separate custom commands into their own blocks.
   (setq org-agenda-custom-commands
         '(("a" "Overview"
            ((agenda "" ((org-agenda-span 'day)
-                        (org-agenda-files '("~/Dropbox/wiki/inbox.org"))
                         (org-super-agenda-groups
                          '((:name "Today"
                             :time-grid t
@@ -317,7 +355,6 @@ Clean this ups and separate custom commands into their own blocks.
                             :discard (:anything t)
                             :order 1)))))
             (alltodo "" ((org-agenda-overriding-header "")
-                         (org-agenda-files '("~/Dropbox/wiki/inbox.org"))
                          (org-super-agenda-groups
                           '((:name "Scheduled / Ongoing" :scheduled past)
                             (:name "Overdue" :deadline past)
@@ -483,6 +520,7 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
   :commands (org-roam-insert org-roam-find-file org-roam)
   :init
   (setq org-roam-directory "~/Dropbox/wiki"
+        org-roam-db-location "~/.org/org-roam.db"
         org-roam-link-title-format "%sº") ;; appends a  `º` to each Roam link.
   (map!
    :desc "Org-Roam-Insert" "C-c i" #'org-roam-insert
