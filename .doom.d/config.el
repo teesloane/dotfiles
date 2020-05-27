@@ -6,6 +6,8 @@
 (menu-bar-mode t)
 (fringe-mode 0)
 
+;; Basic defaults
+
 ;;; Variable overrides --
 
 (setq-default
@@ -21,6 +23,11 @@
 
 (setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
 
+;; TODO Web Defaults
+
+;; Prob can remove some of these weird js things from forever go.
+
+
 ;;; Webby web web
 
 (setq-default
@@ -35,6 +42,10 @@
  web-mode-script-padding       2
  web-mode-style-padding        2
  )
+
+;; Tabs
+;; [[https://raw.githubusercontent.com/andreyorst/dotfiles/master/.config/emacs/README.org][Possible tab inspiration]] when native tabs are available in os-x. For now, a potential centaur config:
+
 
 (after! centaur-tabs
   ;; (centaur-tabs-mode -1))
@@ -54,6 +65,8 @@
   centaur-tabs-gray-out-icons 'buffer
   (centaur-tabs-change-fonts "IBM Plex Mono" 110))
 
+;; Doom
+
 ;; Doom things
 
 (setq-default
@@ -61,11 +74,12 @@
  line-spacing                  2
  ;; doom-font                     (font-spec :family "JetBrains Mono" :size 13)
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- ;; doom-variable-pitch-font      (font-spec :family "JetBrains Mono" :size 12)
- doom-variable-pitch-font      (font-spec :family "IBM Plex Mono" :size 12)
+ doom-variable-pitch-font      (font-spec :family "Inconsolata" :size 12)
  +zen-text-scale               0
  doom-theme                    'doom-opera
  )
+
+;; Ivy
 
 (after! ivy-posframe
   (setq ivy-fixed-height-minibuffer nil
@@ -74,6 +88,13 @@
         ivy-posframe-parameters
         `((min-width . 150)
           (min-height . ,ivy-height))))
+
+;; Fonts
+
+
+;; Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]].
+
+
 
 ;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
 (setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode clojure-mode
@@ -105,6 +126,11 @@
                         'append)
 ;; (custom-set-faces '(org-checkbox ((t (:foreground nil :inherit org-todo)))))
 
+;; Pretty leaders.
+
+;; This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
+
+
 ;;; Magit --
 
 ;; Make magit render icons for common commit leaders (ex: "Fix:" becomes "")
@@ -122,10 +148,11 @@
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 
+;; Set Directories
+
+;; First, configure directory specific variables. These need to run before any =after! org= blocks.
+
 ;;; Org Mode --
-
-;; Org Directory
-
 (setq
  org-agenda-files              '("~/Dropbox/wiki/inbox.org" "~/Dropbox/wiki/projects.org")
  org-default-notes-file        (concat _wiki-path "inbox.org")
@@ -133,32 +160,18 @@
  org-link-file-path-type       'relative
  )
 
-(defun +org/opened-buffer-files ()
-  "Return the list of files currently opened in emacs"
-  (delq nil
-        (mapcar (lambda (x)
-                  (if (and (buffer-file-name x)
-                           (string-match "\\.org$"
-                                         (buffer-file-name x)))
-                      (buffer-file-name x)))
-                (buffer-list))))
+;; Refile
 
 (after! org
   (setq
    org-refile-allow-creating-parent-nodes 'confirm
    org-refile-targets                     '((org-agenda-files :maxlevel . 3))
-                                            ;(+org/opened-buffer-files :maxlevel . 2)) ;; < this was working ...
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    ))
 
-;;; Org: general variable setting --
+;; Variables
 
-;; This is for getting refile targets from my open org files.
-(defun my-org-files-list ()
-  (delq nil
-        (mapc (lambda (buffer)
-                (buffer-file-name buffer))
-              (org-buffer-list 'files t))))
+;;; Org: general variable setting --
 
 (after! org
   ;; org variables not related to directories.
@@ -166,17 +179,13 @@
    org-attach-id-dir                   "data/attachments/"
    org-bullets-bullet-list             '("⁖")
    org-superstar-headline-bullets-list '("⁖")
+   org-startup-folded                  'overview
    org-log-done                        t
    org-log-into-drawer                 t
    org-outline-path-complete-in-steps  nil ; refile easy
    ))
 
-(after! org-download
-  (setq
-   org-download-method                 'directory
-   org-download-image-dir              "~/Dropbox/wiki/data/files/"))
-
-(after! org (add-hook 'org-mode-hook 'turn-on-flyspell))
+;; Capture Templates
 
 ;; org - templates
 
@@ -203,6 +212,11 @@
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
+
+;; TODO Org Agenda
+
+;; Clean this up and separate custom commands into their own blocks.
+
 
 ;;; Org Agenda
 
@@ -252,9 +266,11 @@
                             :order 1)))))
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
-                          '((:name "Scheduled / Ongoing" :scheduled past)
+                          '((:name "Active Projects" :todo "PROJ")
+                            (:name "Ongoing" :todo "STRT")
                             (:name "Overdue" :deadline past)
                             (:name "Low effort" :effort< "1:00")
+                            (:name "On Hold" :todo "HOLD" :todo "WAIT")
                             (:name "Recipes To Try" :tag "recipes")
                             (:name "Unscheduled/No Deadline" :scheduled nil :deadline nil  :order 8)
                             (:name "Other"   :order 8)))))))
@@ -307,12 +323,19 @@
                          (:name "TASKS" :todo "TODO")
                          (:discard (:anything t)))))))))))
 
+;; Pomodoro
+
+;; It's SO LOUD.
+
+
 (setq
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-long-break-sound-args "-volume 0.3"
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
+
+;; Org UI
 
 ;; Org general settings / ui
 
@@ -322,7 +345,8 @@
    org-cycle-separator-lines 2
    org-bullets-bullet-list                '("⁖")
    org-startup-truncated                  t
-   org-ellipsis                          " ⋱ " ;; " • " ;; " ⇢ " ;; " ⋱ " ;;
+   org-startup-folded                     'overview
+   org-ellipsis                           " ⋱ " ;; " • " ;; " ⇢ " ;; " ⋱ " ;;
    org-fontify-whole-heading-line         nil
    org-tags-column                        65
    org-image-actual-width                 400 ; set the width of inline images.
@@ -331,7 +355,17 @@
    org-habit-today-glyph                  ?‖
    ))
 
+
+
+;; Enable inlining formatting (bold, italics /etc/ ); Also enable *mixed pitch mode*.
+
+
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
+
+
+
+;; Make it so mixed-pitch headings are not variable fonts.
+
 
 (after! mixed-pitch
   (pushnew! mixed-pitch-fixed-pitch-faces
@@ -340,6 +374,11 @@
             'org-level-7 'org-link
             )
   )
+
+
+
+;; Make headings look nice.
+
 
 (after! org
   (setq-default
@@ -366,9 +405,17 @@
    )
   )
 
+
+
+;; Disable org mode src block backgrounds (cleans up backgrounds on headings when sections are folded):
+
+
 (custom-set-faces
   '(org-block-begin-line ((t (:background nil))))
   '(org-block-end-line   ((t (:background nil)))))
+
+;; Roam
+
 
 ;; Org Roam Config
 
@@ -416,6 +463,134 @@
            :unnarrowed t)))
   (org-roam-mode +1))
 
+;; Window navigation
+
+;;; Hydras
+
+(defhydra tees/hydra-winnav (:color red)
+  ("s" shrink-window-horizontally "shrink horizontally" :column "Sizing")
+  ("e" enlarge-window-horizontally "enlarge horizontally")
+  ("b" balance-windows "balance window height")
+  ("m" maximize-window "maximize current window")
+  ("M" minimize-window "minimize current window")
+
+  ("H" split-window-below "split horizontally" :column "Split management")
+  ("v" split-window-right "split vertically")
+  ("d" delete-window "delete current window")
+  ("x" delete-other-windows "delete-other-windows")
+
+
+  ("z" ace-window "ace window" :color blue :column "Navigation")
+  ("h" windmove-left "← window")
+  ("j" windmove-down "↓ window")
+  ("k" windmove-up "↑ window")
+  ("l" windmove-right "→ window")
+  ("r" toggle-window-split "rotate windows") ; Located in utility functions
+  ("q" nil "quit menu" :color blue :column nil))
+
+;; Clock
+
+(defhydra tees/hydra-org-clock (:color blue :hint nil)
+  "
+Clock   In/out^     ^Edit^    ^Summary     (_?_)
+-----------------------------------------
+        _i_n         _e_ffort _g_oto entry
+        _c_ontinue   _q_uit   _d_isplay
+        _o_ut        ^ ^      _r_eport
+      "
+  ("i" org-clock-in)
+  ("o" org-clock-out)
+  ("c" org-clock-in-last)
+  ("e" org-clock-modify-effort-estimate)
+  ("q" org-clock-cancel)
+  ("g" org-clock-goto)
+  ("d" org-clock-display)
+  ("r" org-clock-report)
+  ("?" (org-info "Clocking commands")))
+
+;; Agenda
+
+(defhydra tees/hydra-org-agenda (:pre (setq which-key-inhibit t)
+                            :post (setq which-key-inhibit nil)
+                            :hint none)
+  "
+Org agenda (_q_uit)
+
+^Clock^      ^Visit entry^              ^Date^             ^Other^
+^-----^----  ^-----------^------------  ^----^-----------  ^-----^---------
+_ci_ in      _SPC_ in other window      _ds_ schedule      _gr_ reload
+_co_ out     _TAB_ & go to location     _dd_ set deadline  _._  go to today
+_cq_ cancel  _RET_ & del other windows  _dt_ timestamp     _gd_ go to date
+_cj_ jump    _o_   link                 _+_  do later      ^^
+^^           ^^                         _-_  do earlier    ^^
+^^           ^^                         ^^                 ^^
+^View^          ^Filter^                 ^Headline^         ^Toggle mode^
+^----^--------  ^------^---------------  ^--------^-------  ^-----------^----
+_vd_ day        _ft_ by tag              _ht_ set status    _tf_ follow
+_vw_ week       _fr_ refine by tag       _hk_ kill          _tl_ log
+_vt_ fortnight  _fc_ by category         _hr_ refile        _ta_ archive trees
+_vm_ month      _fh_ by top headline     _hA_ archive       _tA_ archive files
+_vy_ year       _fx_ by regexp           _h:_ set tags      _tr_ clock report
+_vn_ next span  _fd_ delete all filters  _hp_ set priority  _td_ diaries
+_vp_ prev span  ^^                       ^^                 ^^
+_vr_ reset      ^^                       ^^                 ^^
+^^              ^^                       ^^                 ^^
+"
+  ;; Entry
+  ("hA" org-agenda-archive-default)
+  ("hk" org-agenda-kill)
+  ("hp" org-agenda-priority)
+  ("hr" org-agenda-refile)
+  ("h:" org-agenda-set-tags)
+  ("ht" org-agenda-todo)
+  ;; Visit entry
+  ("o"   link-hint-open-link :exit t)
+  ("<tab>" org-agenda-goto :exit t)
+  ("TAB" org-agenda-goto :exit t)
+  ("SPC" org-agenda-show-and-scroll-up)
+  ("RET" org-agenda-switch-to :exit t)
+  ;; Date
+  ("dt" org-agenda-date-prompt)
+  ("dd" org-agenda-deadline)
+  ("+" org-agenda-do-date-later)
+  ("-" org-agenda-do-date-earlier)
+  ("ds" org-agenda-schedule)
+  ;; View
+  ("vd" org-agenda-day-view)
+  ("vw" org-agenda-week-view)
+  ("vt" org-agenda-fortnight-view)
+  ("vm" org-agenda-month-view)
+  ("vy" org-agenda-year-view)
+  ("vn" org-agenda-later)
+  ("vp" org-agenda-earlier)
+  ("vr" org-agenda-reset-view)
+  ;; Toggle mode
+  ("ta" org-agenda-archives-mode)
+  ("tA" (org-agenda-archives-mode 'files))
+  ("tr" org-agenda-clockreport-mode)
+  ("tf" org-agenda-follow-mode)
+  ("tl" org-agenda-log-mode)
+  ("td" org-agenda-toggle-diary)
+  ;; Filter
+  ("fc" org-agenda-filter-by-category)
+  ("fx" org-agenda-filter-by-regexp)
+  ("ft" org-agenda-filter-by-tag)
+  ("fr" org-agenda-filter-by-tag-refine)
+  ("fh" org-agenda-filter-by-top-headline)
+  ("fd" org-agenda-filter-remove-all)
+  ;; Clock
+  ("cq" org-agenda-clock-cancel)
+  ("cj" org-agenda-clock-goto :exit t)
+  ("ci" org-agenda-clock-in :exit t)
+  ("co" org-agenda-clock-out)
+  ;; Other
+  ("q" nil :exit t)
+  ("gd" org-agenda-goto-date)
+  ("." org-agenda-goto-today)
+  ("gr" org-agenda-redo))
+
+;; Bindings
+
 ;;; Custom Bindings --
 
 (map!
@@ -437,7 +612,12 @@
     (:desc "tees" :prefix "v"
      :desc "M-X Alt"                   :n "v" #'execute-extended-command
      :desc "Focus it"                  :n "f" #'focus-mode
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point)
+     :desc "Hydra-Clock"               :n "c" #'tees/hydra-org-clock/body
+     :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda
+     :desc "Hydra-Windows"             :n "l" #'tees/hydra-winnav
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
+     )
 
     ;; additional org roam bindings to `SPC n`
     (:prefix-map ("n" . "notes")
@@ -454,12 +634,19 @@
       :desc "sp-next"              :n "l" #'sp-next-sexp
       :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 
+;; Enable GPG
+;; This was originally for a log.gpg file. Will probably migrate to org-journal.
+
+
 ;;' -- Enable gpg stuff --
 
 ;; (require 'epa-file)
 ;; (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
 ;; (epa-file-enable)
 ;; (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
+
+;; Hooks
+
 
 ;;;  Hooks --
 
@@ -469,6 +656,16 @@
 ;; Don't show line numbers in writeroom mode.
 (add-hook! 'writeroom-mode-hook
   (display-line-numbers-mode (if writeroom-mode -1 +1)))
+
+;; Getting happy completion with cider.
+
+;; I got here because my arrow keys weren't working for completion with clojure/cider.
+
+;; Related:
+
+;; - [[https://github.com/hlissner/doom-emacs/issues/1335][doom-emacs#1335 Cider + Company not working as it should]]
+;; [[https://github.com/hlissner/doom-emacs/issues/2610#issuecomment-593067367][- doom-emacs#2610 Company completion with Clojure - arrow keys are clo...]]
+
 
 (after! cider
   (add-hook 'company-completion-started-hook 'custom/set-company-maps)
