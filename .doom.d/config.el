@@ -488,6 +488,17 @@
   ("r" toggle-window-split "rotate windows") ; Located in utility functions
   ("q" nil "quit menu" :color blue :column nil))
 
+;; Workspace navigation
+
+(defhydra tees/hydra-workspace-nav (:color red)
+  ("s" +workspace/display "Show workspaces" )
+  ("h" +workspace/switch-left "Go left" )
+  ("l" +workspace/switch-right "Go left" )
+  ("n" +workspace/new "New" )
+  ("d" +workspace/delete "Delete" )
+  ("r" +workspace/rename "Rename" )
+  ("q" nil "quit menu" :color blue :column nil))
+
 ;; Clock
 
 (defhydra tees/hydra-org-clock (:color blue :hint nil)
@@ -613,8 +624,9 @@ _vr_ reset      ^^                       ^^                 ^^
      :desc "M-X Alt"                   :n "v" #'execute-extended-command
      :desc "Focus it"                  :n "f" #'focus-mode
      :desc "Hydra-Clock"               :n "c" #'tees/hydra-org-clock/body
-     :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda
-     :desc "Hydra-Windows"             :n "l" #'tees/hydra-winnav
+     :desc "Hydra-Workspaces"          :n "w" #'tees/hydra-workspace-nav/body
+     :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda/body
+     :desc "Hydra-Windows"             :n "l" #'tees/hydra-winnav/body
      :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
      :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
      )

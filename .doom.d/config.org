@@ -534,6 +534,20 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
   ("r" toggle-window-split "rotate windows") ; Located in utility functions
   ("q" nil "quit menu" :color blue :column nil))
 #+END_SRC
+** Workspace navigation
+#+BEGIN_SRC elisp
+
+(defhydra tees/hydra-workspace-nav (:color red)
+  ("s" +workspace/display "Show workspaces" )
+  ("h" +workspace/switch-left "Go left" )
+  ("l" +workspace/switch-right "Go left" )
+  ("n" +workspace/new "New" )
+  ("d" +workspace/delete "Delete" )
+  ("r" +workspace/rename "Rename" )
+  ("q" nil "quit menu" :color blue :column nil))
+
+
+#+END_SRC
 ** Clock
 #+BEGIN_SRC elisp
 (defhydra tees/hydra-org-clock (:color blue :hint nil)
@@ -660,8 +674,9 @@ _vr_ reset      ^^                       ^^                 ^^
      :desc "M-X Alt"                   :n "v" #'execute-extended-command
      :desc "Focus it"                  :n "f" #'focus-mode
      :desc "Hydra-Clock"               :n "c" #'tees/hydra-org-clock/body
-     :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda
-     :desc "Hydra-Windows"             :n "l" #'tees/hydra-winnav
+     :desc "Hydra-Workspaces"          :n "w" #'tees/hydra-workspace-nav/body
+     :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda/body
+     :desc "Hydra-Windows"             :n "l" #'tees/hydra-winnav/body
      :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
      :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
      )
@@ -681,6 +696,10 @@ _vr_ reset      ^^                       ^^                 ^^
       :desc "sp-next"              :n "l" #'sp-next-sexp
       :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 #+END_SRC
+
+#+RESULTS:
+: sp-previous-sexp
+
 * Enable GPG
 This was originally for a log.gpg file. Will probably migrate to org-journal.
 
