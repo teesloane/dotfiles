@@ -302,7 +302,9 @@
                                (:discard (:anything t))))))))
 
 
+
           ;; show tasks that were "closed" over a one week span.
+
           ("ww" "Work Week Review"
            ((agenda "" ((org-agenda-span 'week)
                         (org-agenda-start-on-weekday 0)
@@ -312,13 +314,15 @@
                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
                         ;; this removes duplicate entries of tasks that were scheduled and marked done.
                         (org-super-agenda-groups
-                         '((:name "" :time-grid t :discard (:anything t) :order 1)))))
+                         '((:discard (:not (:tag "circle")))
+                           (:name "" :time-grid t :discard (:anything t) :order 1)))))
 
             (todo "" ((org-agenda-overriding-header "")
                       (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
                       (org-agenda-prefix-format "  %t %s")
                       (org-super-agenda-groups
-                       '((:name "IN PROGRESS" :todo  "PROJ" :todo "STRT")
+                       '((:discard (:not (:tag "circle")))
+                         (:name "IN PROGRESS" :todo  "PROJ" :todo "STRT")
                          (:name "BLOCKED" :todo  "WAIT" :todo "HOLD")
                          (:name "TASKS" :todo "TODO")
                          (:discard (:anything t)))))))))))

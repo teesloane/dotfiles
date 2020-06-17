@@ -3,6 +3,7 @@
 alias l='exa -l'                     # normal list
 alias ll='exa -la'                   # hidden files
 alias llt='exa -T'.                  # tree
+alias lg='lazygit'
 
 alias cat=bat                        # nice cat.
 alias rm="DONT USE RM. USE `trash` " # a nice reminder.
