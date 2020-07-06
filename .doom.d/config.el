@@ -11,7 +11,7 @@
 ;;; Variable overrides --
 
 (setq-default
- _wiki-path                   "~/Dropbox/wiki/"
+ _wiki-path                   "~/Sync/wiki/"
  avy-all-windows              'all-frames
  deft-directory               _wiki-path
  projectile-project-search-path '("~/Projects" "~/Development")
@@ -154,7 +154,7 @@
 
 ;;; Org Mode --
 (setq
- org-agenda-files              '("~/Dropbox/wiki/inbox.org" "~/Dropbox/wiki/projects.org")
+ org-agenda-files              '("~/Sync/wiki/inbox.org" "~/Sync/wiki/projects.org")
  org-default-notes-file        (concat _wiki-path "inbox.org")
  org-directory                 _wiki-path
  org-link-file-path-type       'relative
@@ -277,7 +277,7 @@
 
           ("wt" "Work"
            ((agenda "" ((org-agenda-span 'day)
-                        (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                        (org-agenda-files '("~/Sync/wiki/priv/work.org"))
                         (org-super-agenda-groups
                          '((:name ""
                             :time-grid t
@@ -287,7 +287,7 @@
                             :order 1)))))
 
             (todo "" ((org-agenda-overriding-header "")
-                      (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                      (org-agenda-files '("~/Sync/wiki/priv/work.org"))
                       (org-super-agenda-groups
                        '(
                          (:name "IN PROGRESS" :todo  "PROJ" :todo "STRT")
@@ -296,7 +296,7 @@
                          (:discard (:anything t))))))
             ;; Alternative to not getting the `(:tag "review")'
             (tags "review" ((org-agenda-overriding-header "")
-                            (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                            (org-agenda-files '("~/Sync/wiki/priv/work.org"))
                             (org-super-agenda-groups
                              '((:name "REVIEWS" :tag "review") ;; this isn't working.
                                (:discard (:anything t))))))))
@@ -308,7 +308,7 @@
           ("ww" "Work Week Review"
            ((agenda "" ((org-agenda-span 'week)
                         (org-agenda-start-on-weekday 0)
-                        (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                        (org-agenda-files '("~/Sync/wiki/priv/work.org"))
                         (org-agenda-prefix-format "  %t %s")
                         (org-agenda-start-with-log-mode '(closed))
                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
@@ -318,7 +318,7 @@
                            (:name "" :time-grid t :discard (:anything t) :order 1)))))
 
             (todo "" ((org-agenda-overriding-header "")
-                      (org-agenda-files '("~/Dropbox/wiki/priv/work.org"))
+                      (org-agenda-files '("~/Sync/wiki/priv/work.org"))
                       (org-agenda-prefix-format "  %t %s")
                       (org-super-agenda-groups
                        '((:discard (:not (:tag "circle")))
@@ -429,7 +429,7 @@
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
   :init
-  (setq org-roam-directory "~/Dropbox/wiki"
+  (setq org-roam-directory "~/Sync/wiki"
         org-roam-db-location "~/.org/org-roam.db"
         org-roam-link-title-format "%sº") ;; appends a  `º` to each Roam link.
   (map!
