@@ -2,30 +2,30 @@
 (require 'doom-themes)
 
 ;;
-(defgroup doom-one-theme nil
+(defgroup doom-old-hope-theme nil
   "Options for doom-themes"
   :group 'doom-themes)
 
-(defcustom doom-one-brighter-modeline nil
+(defcustom doom-old-hope-brighter-modeline nil
   "If non-nil, more vivid colors will be used to style the mode-line."
   :group 'doom-one-theme
   :type 'boolean)
 
-(defcustom doom-one-brighter-comments nil
+(defcustom doom-old-hope-brighter-comments nil
   "If non-nil, comments will be highlighted in more vivid colors."
-  :group 'doom-one-theme
+  :group 'doom-old-hope-theme
   :type 'boolean)
 
-(defcustom doom-one-comment-bg doom-one-brighter-comments
+(defcustom doom-old-hope-comment-bg doom-old-hope-brighter-comments
   "If non-nil, comments will have a subtle, darker background. Enhancing their
 legibility."
-  :group 'doom-one-theme
+  :group 'doom-old-hope-theme
   :type 'boolean)
 
-(defcustom doom-one-padded-modeline doom-themes-padded-modeline
+(defcustom doom-old-hope-padded-modeline doom-themes-padded-modeline
   "If non-nil, adds a 4px padding to the mode-line. Can be an integer to
 determine the exact padding."
-  :group 'doom-one-theme
+  :group 'doom-old-hope-theme
   :type '(choice integer boolean))
 
 ;;
@@ -87,10 +87,10 @@ determine the exact padding."
 
    ;; custom categories
    (hidden     `(,(car bg) "black" "black"))
-   (-modeline-bright doom-one-brighter-modeline)
+   (-modeline-bright doom-old-hope-brighter-modeline)
    (-modeline-pad
-    (when doom-one-padded-modeline
-      (if (integerp doom-one-padded-modeline) doom-one-padded-modeline 4)))
+    (when doom-old-hope-padded-modeline
+      (if (integerp doom-old-hope-padded-modeline) doom-old-hope-padded-modeline 4)))
 
    (modeline-fg     fg)
    (modeline-fg-alt base5)
@@ -117,7 +117,7 @@ determine the exact padding."
 
    (font-lock-comment-face
     :foreground comments
-    :background (if doom-one-comment-bg (doom-lighten bg 0.05)))
+    :background (if doom-old-hope-comment-bg (doom-lighten bg 0.05)))
    (font-lock-doc-face
     :inherit 'font-lock-comment-face
     :foreground doc-comments)
@@ -178,7 +178,6 @@ determine the exact padding."
    (js2-jsdoc-value                :background nil :foreground blue)
    (js2-private-member             :background nil :foreground orange)
    (js2-object-property            :foreground fg)
-
    (rjsx-tag :foreground fg)
    (rjsx-attr :foreground orange :slant 'italic :weight 'medium)
    (rjsx-tag-bracket-face :foreground green)
@@ -192,42 +191,39 @@ determine the exact padding."
 
 
    ;; markdown-mode
-   (markdown-blockquote-face                     :inherit 'italic :foreground blue)
-   (markdown-list-face                           :foreground green)
-   (markdown-pre-face                            :foreground blue)
-   (markdown-link-face                           :inherit 'bold :foreground orange)
-
-   (markdown-header-face-1      :weight 'bold    :foreground blue)
-   (markdown-header-face-2      :weight 'bold    :foreground orange)
-   (markdown-header-face-3      :weight 'bold    :foreground green)
-   (markdown-header-face-4      :weight 'bold    :foreground yellow)
-   (markdown-header-face-5      :weight 'bold    :foreground blue)
-   (markdown-header-face-6      :weight 'bold    :foreground orange)
-
+   (markdown-list-face         :foreground green)
+   (markdown-pre-face          :foreground blue)
+   (markdown-blockquote-face   :inherit 'italic :foreground blue)
+   (markdown-link-face         :inherit 'bold :foreground orange)
+   (markdown-header-face-1     :weight 'bold  :foreground blue)
+   (markdown-header-face-2     :weight 'bold  :foreground orange)
+   (markdown-header-face-3     :weight 'bold  :foreground green)
+   (markdown-header-face-4     :weight 'bold  :foreground yellow)
+   (markdown-header-face-5     :weight 'bold  :foreground blue)
+   (markdown-header-face-6     :weight 'bold  :foreground orange)
    ;; org
-   (org-level-1                 :foreground blue)
-   (org-level-2                 :foreground orange)
-   (org-level-3                 :foreground yellow)
-   (org-level-4                 :foreground teal)
-   (org-level-5                 :foreground magenta)
-   (org-level-6                 :foreground blue)
-   (org-level-7                 :foreground orange)
-   (org-level-8                 :foreground yellow)
-   (org-link                    :foreground blue :underline t)
-   (org-document-title          :foreground orange)
-   (org-block                   :background base0 :extend t)
+   (org-level-1             :foreground blue)
+   (org-level-2             :foreground orange)
+   (org-level-3             :foreground yellow)
+   (org-level-4             :foreground teal)
+   (org-level-5             :foreground magenta)
+   (org-level-6             :foreground blue)
+   (org-level-7             :foreground orange)
+   (org-level-8             :foreground yellow)
+   (org-link                :foreground blue :underline t)
+   (org-document-title      :foreground orange)
+   (org-block               :background base0 :extend t)
 
-
-   (rainbow-delimiters-depth-1-face              :foreground red)
-   (rainbow-delimiters-depth-2-face              :foreground orange)
-   (rainbow-delimiters-depth-3-face              :foreground green)
-   (rainbow-delimiters-depth-4-face              :foreground cyan)
-   (rainbow-delimiters-depth-5-face              :foreground blue)
-   (rainbow-delimiters-depth-6-face              :foreground yellow)
-   (rainbow-delimiters-depth-7-face              :foreground green))
+   (rainbow-delimiters-depth-1-face  :foreground red)
+   (rainbow-delimiters-depth-2-face  :foreground orange)
+   (rainbow-delimiters-depth-3-face  :foreground green)
+   (rainbow-delimiters-depth-4-face  :foreground cyan)
+   (rainbow-delimiters-depth-5-face  :foreground blue)
+   (rainbow-delimiters-depth-6-face  :foreground yellow)
+   (rainbow-delimiters-depth-7-face  :foreground green))
 
   ;; --- extra variables ---------------------
   ())
 
 
-;;; doom-one-theme.el ends here
+;;; doom-old-hope-theme.el ends here
