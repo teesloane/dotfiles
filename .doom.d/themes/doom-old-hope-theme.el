@@ -141,7 +141,7 @@ determine the exact padding."
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive-l)))
 
    ;; Doom modeline
-   (doom-modeline-bar :background (if -modeline-bright modeline-bg highlight))
+   (doom-modeline-bar         :background (if -modeline-bright modeline-bg highlight))
    (doom-modeline-buffer-file :inherit 'mode-line-buffer-id :weight 'bold)
    (doom-modeline-buffer-path :inherit 'mode-line-emphasis :weight 'bold)
    (doom-modeline-buffer-project-root :foreground green :weight 'bold)
@@ -167,9 +167,9 @@ determine the exact padding."
    (org-hide :foreground hidden)
    (solaire-org-hide-face :foreground hidden)
 
-   ;; js/rjsx
-   (js2-function-name :forground yellow)
-   (js2-function-param :foreground blue)
+   ;; js/rjsx/web
+   (js2-function-name              :forground yellow)
+   (js2-function-param             :foreground blue)
    (js2-warning                    :underline `(:style wave :color ,yellow))
    (js2-error                      :underline `(:style wave :color ,red))
    (js2-external-variable          :underline `(:style wave :color ,blue))
@@ -178,41 +178,40 @@ determine the exact padding."
    (js2-jsdoc-value                :background nil :foreground blue)
    (js2-private-member             :background nil :foreground orange)
    (js2-object-property            :foreground fg)
-   (rjsx-tag :foreground fg)
-   (rjsx-attr :foreground orange :slant 'italic :weight 'medium)
-   (rjsx-tag-bracket-face :foreground green)
+   (rjsx-tag                       :foreground fg)
+   (rjsx-attr                      :foreground orange :slant 'italic :weight 'medium)
+   (rjsx-tag-bracket-face          :foreground green)
+   (web-mode-html-tag-face         :foreground fg :slant 'italic)
 
    ;; ivy
    (ivy-current-match       :background nil :foreground green)
    (ivy-posframe-cursor     :background red :foreground base0)
 
-   ;; web
-   (web-mode-html-tag-face :foreground fg :slant 'italic)
-
-
    ;; markdown-mode
    (markdown-list-face         :foreground green)
    (markdown-pre-face          :foreground blue)
    (markdown-blockquote-face   :inherit 'italic :foreground blue)
-   (markdown-link-face         :inherit 'bold :foreground orange)
-   (markdown-header-face-1     :weight 'bold  :foreground blue)
-   (markdown-header-face-2     :weight 'bold  :foreground orange)
-   (markdown-header-face-3     :weight 'bold  :foreground green)
-   (markdown-header-face-4     :weight 'bold  :foreground yellow)
-   (markdown-header-face-5     :weight 'bold  :foreground blue)
-   (markdown-header-face-6     :weight 'bold  :foreground orange)
+   (markdown-link-face         :inherit 'bold   :foreground orange)
+   (markdown-header-face-1     :weight 'bold    :foreground blue)
+   (markdown-header-face-2     :weight 'bold    :foreground orange)
+   (markdown-header-face-3     :weight 'bold    :foreground green)
+   (markdown-header-face-4     :weight 'bold    :foreground yellow)
+   (markdown-header-face-5     :weight 'bold    :foreground blue)
+   (markdown-header-face-6     :weight 'bold    :foreground orange)
    ;; org
-   (org-level-1             :foreground blue)
-   (org-level-2             :foreground orange)
-   (org-level-3             :foreground yellow)
-   (org-level-4             :foreground teal)
-   (org-level-5             :foreground magenta)
-   (org-level-6             :foreground blue)
-   (org-level-7             :foreground orange)
-   (org-level-8             :foreground yellow)
-   (org-link                :foreground blue :underline t)
-   (org-document-title      :foreground orange)
-   (org-block               :background base0 :extend t)
+   (org-level-1                      :foreground blue)
+   (org-level-2                      :foreground orange)
+   (org-level-3                      :foreground yellow)
+   (org-level-4                      :foreground teal)
+   (org-level-5                      :foreground magenta)
+   (org-level-6                      :foreground blue)
+   (org-level-7                      :foreground orange)
+   (org-level-8                      :foreground yellow)
+   (org-link                         :foreground blue :underline t)
+   (org-document-title               :foreground orange)
+   (org-document-info-keyword        :foreground comments)
+   (org-meta-line                    :foreground base6)
+   (org-block                        :background base0 :extend t)
 
    (rainbow-delimiters-depth-1-face  :foreground red)
    (rainbow-delimiters-depth-2-face  :foreground orange)
