@@ -30,7 +30,7 @@ determine the exact padding."
 
 ;;
 (def-doom-theme doom-old-hope
-  "A dark theme inspired by Atom One Dark"
+  "A dark theme inspired by An Old Hope"
 
   ;; name        default   256       16
   ((bg         '("#1c1d20" "#1c1d20"       nil))
@@ -74,7 +74,7 @@ determine the exact padding."
    (operators      green)
    (type           orange)
    (strings        blue)
-   (variables      red)
+   (variables      fg)
    (numbers        orange)
    (region         `(,(doom-lighten (car bg-alt) 0.15) ,@(doom-lighten (cdr base1) 0.35)))
    (error          red)
@@ -165,8 +165,66 @@ determine the exact padding."
 
    ;; org-mode
    (org-hide :foreground hidden)
-   (solaire-org-hide-face :foreground hidden))
+   (solaire-org-hide-face :foreground hidden)
 
+   ;; js/rjsx
+   (js2-function-name :forground yellow)
+   (js2-function-param :foreground blue)
+   (js2-warning                    :underline `(:style wave :color ,yellow))
+   (js2-error                      :underline `(:style wave :color ,red))
+   (js2-external-variable          :underline `(:style wave :color ,blue))
+   (js2-jsdoc-tag                  :background nil :foreground red)
+   (js2-jsdoc-type                 :background nil :foreground orange)
+   (js2-jsdoc-value                :background nil :foreground blue)
+   (js2-private-member             :background nil :foreground orange)
+   (js2-object-property            :foreground fg)
+
+   (rjsx-tag :foreground fg)
+   (rjsx-attr :foreground orange :slant 'italic :weight 'medium)
+   (rjsx-tag-bracket-face :foreground green)
+
+   ;; ivy
+   (ivy-current-match       :background nil :foreground green)
+   (ivy-posframe-cursor     :background red :foreground base0)
+
+   ;; web
+   (web-mode-html-tag-face :foreground fg :slant 'italic)
+
+
+   ;; markdown-mode
+   (markdown-blockquote-face                     :inherit 'italic :foreground blue)
+   (markdown-list-face                           :foreground green)
+   (markdown-pre-face                            :foreground blue)
+   (markdown-link-face                           :inherit 'bold :foreground orange)
+
+   (markdown-header-face-1      :weight 'bold    :foreground blue)
+   (markdown-header-face-2      :weight 'bold    :foreground orange)
+   (markdown-header-face-3      :weight 'bold    :foreground green)
+   (markdown-header-face-4      :weight 'bold    :foreground yellow)
+   (markdown-header-face-5      :weight 'bold    :foreground blue)
+   (markdown-header-face-6      :weight 'bold    :foreground orange)
+
+   ;; org
+   (org-level-1                 :foreground blue)
+   (org-level-2                 :foreground orange)
+   (org-level-3                 :foreground yellow)
+   (org-level-4                 :foreground teal)
+   (org-level-5                 :foreground magenta)
+   (org-level-6                 :foreground blue)
+   (org-level-7                 :foreground orange)
+   (org-level-8                 :foreground yellow)
+   (org-link                    :foreground blue :underline t)
+   (org-document-title          :foreground orange)
+   (org-block                   :background base0 :extend t)
+
+
+   (rainbow-delimiters-depth-1-face              :foreground red)
+   (rainbow-delimiters-depth-2-face              :foreground orange)
+   (rainbow-delimiters-depth-3-face              :foreground green)
+   (rainbow-delimiters-depth-4-face              :foreground cyan)
+   (rainbow-delimiters-depth-5-face              :foreground blue)
+   (rainbow-delimiters-depth-6-face              :foreground yellow)
+   (rainbow-delimiters-depth-7-face              :foreground green))
 
   ;; --- extra variables ---------------------
   ())
