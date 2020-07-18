@@ -211,7 +211,7 @@ determine the exact padding."
    (org-document-title               :foreground orange)
    (org-document-info-keyword        :foreground comments)
    (org-meta-line                    :foreground base6)
-   (org-block                        :background base0 :extend t)
+   (org-block                        :background (doom-darken bg 0.2 ) :extend t)
 
    (rainbow-delimiters-depth-1-face  :foreground red)
    (rainbow-delimiters-depth-2-face  :foreground orange)
