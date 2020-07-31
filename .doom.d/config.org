@@ -16,6 +16,7 @@ Thank you's:
 (package! solaire-mode :disable t)
 (package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
 (package! focus)
+(package! spray :recipe (:local-repo "~/.doom.d/local/spray.el"))
 #+END_SRC
 * General Customization
 ** Startup funcs
@@ -103,9 +104,10 @@ Prob can remove some of these weird js things from forever go.
  line-spacing                  2
  ;; doom-font                     (font-spec :family "JetBrains Mono" :size 13)
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-variable-pitch-font      (font-spec :family "Inconsolata" :size 12)
+ ;; doom-variable-pitch-font      (font-spec :family "Fira Code" :size 12 :weight 'light)
+ doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-opera
+ doom-theme                    'doom-old-hope
  )
 #+END_SRC
 ** Ivy
@@ -128,6 +130,7 @@ Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]].
 #+BEGIN_SRC elisp
 ;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
 (setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode clojure-mode
+                                                   javascript-mode
                                    latex-mode scheme-mode racket-mode ess-r-mode))
 
 (setq highlight-indent-guides-responsive 'top
@@ -411,7 +414,6 @@ Enable inlining formatting (bold, italics /etc/ ); Also enable *mixed pitch mode
 Make it so mixed-pitch headings are not variable fonts.
 
 #+BEGIN_SRC elisp
-
 (after! mixed-pitch
   (pushnew! mixed-pitch-fixed-pitch-faces
             'org-level-1 'org-level-2 'org-level-3
@@ -508,7 +510,7 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
            :file-name "${slug}"
            :head ,(tees/org-roam-template-head "general")
            :unnarrowed t)))
-  (org-roam-mode +1))
+  )
 
 #+END_SRC
 
