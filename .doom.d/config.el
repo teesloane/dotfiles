@@ -74,9 +74,10 @@
  line-spacing                  2
  ;; doom-font                     (font-spec :family "JetBrains Mono" :size 13)
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- doom-variable-pitch-font      (font-spec :family "Inconsolata" :size 12)
+ ;; doom-variable-pitch-font      (font-spec :family "Fira Code" :size 12 :weight 'light)
+ doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-opera
+ doom-theme                    'doom-old-hope
  )
 
 ;; Ivy
@@ -98,6 +99,7 @@
 
 ;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
 (setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode clojure-mode
+                                                   javascript-mode
                                    latex-mode scheme-mode racket-mode ess-r-mode))
 
 (setq highlight-indent-guides-responsive 'top
@@ -465,7 +467,7 @@
            :file-name "${slug}"
            :head ,(tees/org-roam-template-head "general")
            :unnarrowed t)))
-  (org-roam-mode +1))
+  )
 
 ;; Window navigation
 
