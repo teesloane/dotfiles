@@ -6,7 +6,7 @@
 (menu-bar-mode t)
 (fringe-mode 0)
 
-;; Basic defaults
+(setq org-startup-folded                  'fold)
 
 ;;; Variable overrides --
 
@@ -23,11 +23,6 @@
 
 (setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
 
-;; TODO Web Defaults
-
-;; Prob can remove some of these weird js things from forever go.
-
-
 ;;; Webby web web
 
 (setq-default
@@ -43,30 +38,6 @@
  web-mode-style-padding        2
  )
 
-;; Tabs
-;; [[https://raw.githubusercontent.com/andreyorst/dotfiles/master/.config/emacs/README.org][Possible tab inspiration]] when native tabs are available in os-x. For now, a potential centaur config:
-
-
-(after! centaur-tabs
-  ;; (centaur-tabs-mode -1))
-  (centaur-tabs-mode 1)
-  (centaur-tabs-group-by-projectile-project)
-
-  (setq centaur-tabs-height 30
-        centaur-tabs-set-icons t
-        centaur-tabs-modified-marker "    ~    "
-        centaur-tabs-left-edge-margin "     "
-        centaur-tabs-close-button "   ×   "
-        centaur-tabs-icon-v-adjust -0.03
-        centaur-tabs-icon-scale-factor 0.6
-        centaur-tabs-label-fixed-length 24
-        centaur-tabs-style 'bar
-        centaur-tabs-set-bar 'above)
-  centaur-tabs-gray-out-icons 'buffer
-  (centaur-tabs-change-fonts "IBM Plex Mono" 110))
-
-;; Doom
-
 ;; Doom things
 
 (setq-default
@@ -80,8 +51,6 @@
  doom-theme                    'doom-old-hope
  )
 
-;; Ivy
-
 (after! ivy-posframe
   (setq ivy-fixed-height-minibuffer nil
         ivy-posframe-border-width 10
@@ -89,13 +58,6 @@
         ivy-posframe-parameters
         `((min-width . 150)
           (min-height . ,ivy-height))))
-
-;; Fonts
-
-
-;; Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]].
-
-
 
 ;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
 (setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode clojure-mode
@@ -128,11 +90,6 @@
                         'append)
 ;; (custom-set-faces '(org-checkbox ((t (:foreground nil :inherit org-todo)))))
 
-;; Pretty leaders.
-
-;; This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
-
-
 ;;; Magit --
 
 ;; Make magit render icons for common commit leaders (ex: "Fix:" becomes "")
@@ -150,10 +107,6 @@
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 
-;; Set Directories
-
-;; First, configure directory specific variables. These need to run before any =after! org= blocks.
-
 ;;; Org Mode --
 (setq
  org-agenda-files              '("~/Sync/wiki/inbox.org" "~/Sync/wiki/projects.org")
@@ -162,16 +115,12 @@
  org-link-file-path-type       'relative
  )
 
-;; Refile
-
 (after! org
   (setq
    org-refile-allow-creating-parent-nodes 'confirm
    org-refile-targets                     '((org-agenda-files :maxlevel . 3))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    ))
-
-;; Variables
 
 ;;; Org: general variable setting --
 
@@ -181,13 +130,12 @@
    org-attach-id-dir                   "data/attachments/"
    org-bullets-bullet-list             '("⁖")
    org-superstar-headline-bullets-list '("⁖")
-   org-startup-folded                  'overview
+   org-startup-folded                  'fold
    org-log-done                        t
    org-log-into-drawer                 t
+   org-image-actual-width              400
    org-outline-path-complete-in-steps  nil ; refile easy
    ))
-
-;; Capture Templates
 
 ;; org - templates
 
@@ -214,11 +162,6 @@
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
-
-;; TODO Org Agenda
-
-;; Clean this up and separate custom commands into their own blocks.
-
 
 ;;; Org Agenda
 
@@ -329,19 +272,12 @@
                          (:name "TASKS" :todo "TODO")
                          (:discard (:anything t)))))))))))
 
-;; Pomodoro
-
-;; It's SO LOUD.
-
-
 (setq
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-long-break-sound-args "-volume 0.3"
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
-
-;; Org UI
 
 ;; Org general settings / ui
 
@@ -361,17 +297,7 @@
    org-habit-today-glyph                  ?‖
    ))
 
-
-
-;; Enable inlining formatting (bold, italics /etc/ ); Also enable *mixed pitch mode*.
-
-
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
-
-
-
-;; Make it so mixed-pitch headings are not variable fonts.
-
 
 (after! mixed-pitch
   (pushnew! mixed-pitch-fixed-pitch-faces
@@ -380,11 +306,6 @@
             'org-level-7 'org-link
             )
   )
-
-
-
-;; Make headings look nice.
-
 
 (after! org
   (setq-default
@@ -411,17 +332,9 @@
    )
   )
 
-
-
-;; Disable org mode src block backgrounds (cleans up backgrounds on headings when sections are folded):
-
-
 (custom-set-faces
   '(org-block-begin-line ((t (:background nil))))
   '(org-block-end-line   ((t (:background nil)))))
-
-;; Roam
-
 
 ;; Org Roam Config
 
@@ -469,8 +382,6 @@
            :unnarrowed t)))
   )
 
-;; Window navigation
-
 ;;; Hydras
 
 (defhydra tees/hydra-winnav (:color red)
@@ -494,8 +405,6 @@
   ("r" toggle-window-split "rotate windows") ; Located in utility functions
   ("q" nil "quit menu" :color blue :column nil))
 
-;; Workspace navigation
-
 (defhydra tees/hydra-workspace-nav (:color red)
   ("s" +workspace/display "Show workspaces" )
   ("h" +workspace/switch-left "Go left" )
@@ -504,8 +413,6 @@
   ("d" +workspace/delete "Delete" )
   ("r" +workspace/rename "Rename" )
   ("q" nil "quit menu" :color blue :column nil))
-
-;; Clock
 
 (defhydra tees/hydra-org-clock (:color blue :hint nil)
   "
@@ -524,8 +431,6 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
   ("d" org-clock-display)
   ("r" org-clock-report)
   ("?" (org-info "Clocking commands")))
-
-;; Agenda
 
 (defhydra tees/hydra-org-agenda (:pre (setq which-key-inhibit t)
                             :post (setq which-key-inhibit nil)
@@ -606,8 +511,6 @@ _vr_ reset      ^^                       ^^                 ^^
   ("." org-agenda-goto-today)
   ("gr" org-agenda-redo))
 
-;; Bindings
-
 ;;; Custom Bindings --
 
 (map!
@@ -652,19 +555,12 @@ _vr_ reset      ^^                       ^^                 ^^
       :desc "sp-next"              :n "l" #'sp-next-sexp
       :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 
-;; Enable GPG
-;; This was originally for a log.gpg file. Will probably migrate to org-journal.
-
-
 ;;' -- Enable gpg stuff --
 
 ;; (require 'epa-file)
 ;; (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
 ;; (epa-file-enable)
 ;; (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
-
-;; Hooks
-
 
 ;;;  Hooks --
 
@@ -674,16 +570,6 @@ _vr_ reset      ^^                       ^^                 ^^
 ;; Don't show line numbers in writeroom mode.
 (add-hook! 'writeroom-mode-hook
   (display-line-numbers-mode (if writeroom-mode -1 +1)))
-
-;; Getting happy completion with cider.
-
-;; I got here because my arrow keys weren't working for completion with clojure/cider.
-
-;; Related:
-
-;; - [[https://github.com/hlissner/doom-emacs/issues/1335][doom-emacs#1335 Cider + Company not working as it should]]
-;; [[https://github.com/hlissner/doom-emacs/issues/2610#issuecomment-593067367][- doom-emacs#2610 Company completion with Clojure - arrow keys are clo...]]
-
 
 (after! cider
   (add-hook 'company-completion-started-hook 'custom/set-company-maps)

@@ -28,6 +28,10 @@ Thank you's:
 (fringe-mode 0)
 
 #+END_SRC
+** Startup vars
+#+BEGIN_SRC elisp
+(setq org-startup-folded                  'fold)
+#+END_SRC
 
 ** Basic defaults
 #+BEGIN_SRC elisp
@@ -70,30 +74,6 @@ Prob can remove some of these weird js things from forever go.
 #+END_SRC
 
 * UI
-** Tabs
-[[https://raw.githubusercontent.com/andreyorst/dotfiles/master/.config/emacs/README.org][Possible tab inspiration]] when native tabs are available in os-x. For now, a potential centaur config:
-
-#+BEGIN_SRC elisp
-
-(after! centaur-tabs
-  ;; (centaur-tabs-mode -1))
-  (centaur-tabs-mode 1)
-  (centaur-tabs-group-by-projectile-project)
-
-  (setq centaur-tabs-height 30
-        centaur-tabs-set-icons t
-        centaur-tabs-modified-marker "    ~    "
-        centaur-tabs-left-edge-margin "     "
-        centaur-tabs-close-button "   ×   "
-        centaur-tabs-icon-v-adjust -0.03
-        centaur-tabs-icon-scale-factor 0.6
-        centaur-tabs-label-fixed-length 24
-        centaur-tabs-style 'bar
-        centaur-tabs-set-bar 'above)
-  centaur-tabs-gray-out-icons 'buffer
-  (centaur-tabs-change-fonts "IBM Plex Mono" 110))
-
-#+END_SRC
 ** Doom
 #+BEGIN_SRC elisp
 ;; Doom things
@@ -123,7 +103,7 @@ Prob can remove some of these weird js things from forever go.
 ** Fonts
 
 
-Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]].
+Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iosevka pretty in org-mode
 
 
 #+BEGIN_SRC elisp
@@ -217,9 +197,10 @@ First, configure directory specific variables. These need to run before any =aft
    org-attach-id-dir                   "data/attachments/"
    org-bullets-bullet-list             '("⁖")
    org-superstar-headline-bullets-list '("⁖")
-   org-startup-folded                  'overview
+   org-startup-folded                  'fold
    org-log-done                        t
    org-log-into-drawer                 t
+   org-image-actual-width              400
    org-outline-path-complete-in-steps  nil ; refile easy
    ))
 #+END_SRC
