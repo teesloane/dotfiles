@@ -34,7 +34,7 @@ determine the exact padding."
 
   ;; name        default   256       16
   ((bg         '("#1c1d20" "#1c1d20"       nil))
-   (bg-alt     '("#313339" "#313339"       nil))
+   (bg-alt     '("#151619" "#151619" nil))
    (base0      '("#1B2229" "black"   "black"))
    (base1      '("#1c1f24" "#1e1e1e" "brightblack"))
    (base2      '("#202328" "#2e2e2e" "brightblack"))
@@ -146,9 +146,6 @@ determine the exact padding."
    (doom-modeline-buffer-path :inherit 'mode-line-emphasis :weight 'bold)
    (doom-modeline-buffer-project-root :foreground green :weight 'bold)
 
-   ;; ivy-mode
-   (ivy-current-match :background bg-alt :distant-foreground bg :weight 'normal)
-
    ;; --- major-mode faces -------------------
    ;; css-mode / scss-mode
    (css-proprietary-property :foreground orange)
@@ -184,7 +181,7 @@ determine the exact padding."
    (web-mode-html-tag-face         :foreground fg :slant 'italic)
 
    ;; ivy
-   (ivy-current-match       :background nil :foreground green)
+   (ivy-current-match       :background base3 :foreground orange)
    (ivy-posframe-cursor     :background red :foreground base0)
 
    ;; markdown-mode

@@ -6,8 +6,6 @@
 (menu-bar-mode t)
 (fringe-mode 0)
 
-(setq org-startup-folded                  'fold)
-
 ;;; Variable overrides --
 
 (setq-default
@@ -48,7 +46,7 @@
  ;; doom-variable-pitch-font      (font-spec :family "Fira Code" :size 12 :weight 'light)
  doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-old-hope
+ doom-theme                    'doom-opera
  )
 
 (after! ivy-posframe
@@ -130,10 +128,9 @@
    org-attach-id-dir                   "data/attachments/"
    org-bullets-bullet-list             '("⁖")
    org-superstar-headline-bullets-list '("⁖")
-   org-startup-folded                  'fold
+   org-startup-folded                  t
    org-log-done                        t
    org-log-into-drawer                 t
-   org-image-actual-width              400
    org-outline-path-complete-in-steps  nil ; refile easy
    ))
 
@@ -287,8 +284,9 @@
    org-cycle-separator-lines 2
    org-bullets-bullet-list                '("⁖")
    org-startup-truncated                  t
-   org-startup-folded                     'overview
+   org-startup-folded                     t
    org-ellipsis                           " ⋱ " ;; " • " ;; " ⇢ " ;; " ⋱ " ;;
+   org-list-demote-modify-bullet          '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a."))
    org-fontify-whole-heading-line         nil
    org-tags-column                        65
    org-image-actual-width                 400 ; set the width of inline images.
@@ -324,13 +322,7 @@
      ("HOLD"       :foreground "#ff6480") ; :weight normal :underline t)
      ("[-]"        :foreground "#ff6480") ; :weight normal :underline t)
      ("ABRT"       :foreground "#ff6480") ; :weight normal :underline t)
-     )
-
-   ;; org-priority-faces '((65 :foreground "#e45649")
-   ;;                      (66 :foreground "#da8548")
-   ;;                      (67 :foreground "#0098dd"))
-   )
-  )
+     )))
 
 (custom-set-faces
   '(org-block-begin-line ((t (:background nil))))
