@@ -67,8 +67,8 @@
 
 ;; Org and R additional symbols
 ;; hex code ▷ (9655), ◇ (9671), ▶ (9654), ƒ (402)
-(setq +pretty-code-iosevka-font-ligatures
-      (append +pretty-code-iosevka-font-ligatures
+(setq +ligatures-iosevka-font-alist
+      (append +ligatures-iosevka-font-alist
               '(("[ ]" .  "☐")
                 ("[X]" . "☑" )
                 ("[-]" . "❍" )
@@ -76,6 +76,7 @@
                 ("%$%" . ?◇)
                 ("%T>%" . ?▶)
                 ("function" . ?ƒ))))
+
 
 ;; https://is.gd/3VuSXj
 (defface org-checkbox-done-text
