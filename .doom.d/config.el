@@ -77,7 +77,6 @@
                 ("%T>%" . ?▶)
                 ("function" . ?ƒ))))
 
-
 ;; https://is.gd/3VuSXj
 (defface org-checkbox-done-text
   '((t (:foreground "#5a637b")))
@@ -164,7 +163,7 @@
 ;;; Org Agenda
 
 (after! org
-  (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.5 :select t :ttl nil))
+  (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.75 :select t :ttl nil))
 
 (after! org-agenda
   (org-super-agenda-mode)
@@ -209,13 +208,14 @@
                             :order 1)))))
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
-                          '((:name "Active Projects" :todo "PROJ")
+                          '(
                             (:name "Ongoing" :todo "STRT")
                             (:name "Overdue" :deadline past)
+                            (:name "Active Projects" :todo "PROJ")
                             (:name "Low effort" :effort< "1:00")
                             (:name "On Hold" :todo "HOLD" :todo "WAIT")
-                            (:name "Recipes To Try" :tag "recipes")
-                            (:name "Unscheduled/No Deadline" :scheduled nil :deadline nil  :order 8)
+                            ;; (:name "Recipes To Try" :tag "recipes")
+                            ;; (:name "Unscheduled/No Deadline" :scheduled nil :deadline nil  :order 8)
                             (:name "Other"   :order 8)))))))
 
           ("wt" "Work"

@@ -55,7 +55,7 @@ shift + alt - f : yabai -m window --toggle native-fullscreen
 
 
 # toggle sticky(+float), topmost, border and picture-in-picture
-alt - p : yabai -m window --toggle sticky;\
+shift + alt - p : yabai -m window --toggle sticky;\
           yabai -m window --toggle topmost;\
           yabai -m window --toggle border;\
           yabai -m window --toggle pip
