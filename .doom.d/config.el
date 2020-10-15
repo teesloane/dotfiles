@@ -5,6 +5,9 @@
 
 (menu-bar-mode t)
 (fringe-mode 0)
+(global-auto-revert-mode 1) ; enable for reloading files when they change on disk. Used for sync thing.
+
+;; Basic defaults
 
 ;;; Variable overrides --
 
@@ -21,6 +24,11 @@
 
 (setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
 
+;; TODO Web Defaults
+
+;; Prob can remove some of these weird js things from forever go.
+
+
 ;;; Webby web web
 
 (setq-default
@@ -36,18 +44,19 @@
  web-mode-style-padding        2
  )
 
+;; Doom
+
 ;; Doom things
 
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- ;; doom-font                     (font-spec :family "JetBrains Mono" :size 13)
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
- ;; doom-variable-pitch-font      (font-spec :family "Fira Code" :size 12 :weight 'light)
  doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-opera
- )
+ doom-theme                    'doom-opera)
+
+;; Ivy
 
 (after! ivy-posframe
   (setq ivy-fixed-height-minibuffer nil
@@ -56,6 +65,13 @@
         ivy-posframe-parameters
         `((min-width . 150)
           (min-height . ,ivy-height))))
+
+;; Fonts
+
+
+;; Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iosevka pretty in org-mode
+
+
 
 ;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
 (setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode clojure-mode
@@ -67,15 +83,16 @@
 
 ;; Org and R additional symbols
 ;; hex code ▷ (9655), ◇ (9671), ▶ (9654), ƒ (402)
-(setq +ligatures-iosevka-font-alist
-      (append +ligatures-iosevka-font-alist
-              '(("[ ]" .  "☐")
-                ("[X]" . "☑" )
-                ("[-]" . "❍" )
-                ("%>%" . ?▷)
-                ("%$%" . ?◇)
-                ("%T>%" . ?▶)
-                ("function" . ?ƒ))))
+;; This doesn't work anymore:
+;; (setq +ligatures-iosevka-font-alist
+;;       (append +ligatures-iosevka-font-alist
+;;               '(("[ ]" .  "☐")
+;;                 ("[X]" . "☑" )
+;;                 ("[-]" . "❍" )
+;;                 ("%>%" . ?▷)
+;;                 ("%$%" . ?◇)
+;;                 ("%T>%" . ?▶)
+;;                 ("function" . ?ƒ))))
 
 ;; https://is.gd/3VuSXj
 (defface org-checkbox-done-text
@@ -87,6 +104,13 @@
                            1 'org-checkbox-done-text prepend))
                         'append)
 ;; (custom-set-faces '(org-checkbox ((t (:foreground nil :inherit org-todo)))))
+
+;; Pretty leaders.
+
+;; This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
+
+;; This is broken currently.
+
 
 ;;; Magit --
 
@@ -105,6 +129,10 @@
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 
+;; Set Directories
+
+;; First, configure directory specific variables. These need to run before any =after! org= blocks.
+
 ;;; Org Mode --
 (setq
  org-agenda-files              '("~/Sync/wiki/inbox.org" "~/Sync/wiki/projects.org")
@@ -113,18 +141,16 @@
  org-link-file-path-type       'relative
  )
 
-(after! org
-  (setq
-   org-refile-allow-creating-parent-nodes 'confirm
-   org-refile-targets                     '((org-agenda-files :maxlevel . 3))
-   org-refile-use-outline-path            'file ; Show/full/paths for refiling
-   ))
+;; Variables
 
 ;;; Org: general variable setting --
 
 (after! org
   ;; org variables not related to directories.
   (setq
+   org-refile-allow-creating-parent-nodes 'confirm
+   org-refile-targets                     '((org-agenda-files :maxlevel . 3))
+   org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-attach-id-dir                   "data/attachments/"
    org-bullets-bullet-list             '("⁖")
    org-superstar-headline-bullets-list '("⁖")
@@ -133,6 +159,8 @@
    org-log-into-drawer                 t
    org-outline-path-complete-in-steps  nil ; refile easy
    ))
+
+;; Capture Templates
 
 ;; org - templates
 
@@ -160,17 +188,20 @@
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 
-;;; Org Agenda
+;; Org Agenda
+
+
 
 (after! org
   (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.75 :select t :ttl nil))
 
 (after! org-agenda
   (org-super-agenda-mode)
+  ;; stop cursor from going to the bottom of the agenda.
+  (add-hook 'org-agenda-finalize-hook (lambda () (goto-char (point-min))) 90)
   (use-package! org-super-agenda :commands (org-super-agenda-mode))
 
   (setq
-   org-agenda-include-deadlines t
    org-agenda-start-with-log-mode t
    org-agenda-span 3
    org-agenda-block-separator ?-  ;; ?- is a "character" type. It evaluates to a num representing a char
@@ -180,95 +211,61 @@
    org-agenda-use-time-grid nil
    org-global-properties '(("Effort_ALL" . "0 0:10 0:20 0:30 0:45 1:00 1:30 2:00 3:00 4:00 6:00 8:00 10:00 20:00"))
    org-agenda-tags-column 100
-   org-agenda-compact-blocks nil)
-
-  (setq org-agenda-exporter-settings
-        '((ps-left-header (list 'org-agenda-write-buffer-name))
-          (ps-right-header
-           (list "/pagenumberstring load"
-                 (lambda () (format-time-string "%d/%m/%Y"))))
-          (ps-print-color-p 'black-white)
-          (ps-font-size '(11 . 10))       ; Lanscape . Portrait
-          (ps-top-margin 25)
-          (ps-number-of-columns 1)
-          (ps-landscape-mode t)
-          (ps-left-margin 35)
-          (ps-right-margin 30)))
+   org-agenda-compact-blocks nil
+   org-agenda-skip-scheduled-if-done t
+   org-agenda-include-deadlines t
+   )
 
   (setq org-agenda-custom-commands
-        '(("a" "Overview"
+        '(
+          ("d" "Day"
            ((agenda "" ((org-agenda-span 'day)
                         (org-super-agenda-groups
                          '((:name "Today"
-                            :time-grid t
+                            :log nil
                             :date today
-                            :scheduled nil
+                            :scheduled today
                             :deadline today
-                            :discard (:anything t)
                             :order 1)))))
+
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
                           '(
+                            (:name "Important" :tag "Important" :priority "A" :order 6)
                             (:name "Ongoing" :todo "STRT")
+                            (:name "Due Soon" :deadline future :order 2)
                             (:name "Overdue" :deadline past)
-                            (:name "Active Projects" :todo "PROJ")
                             (:name "Low effort" :effort< "1:00")
                             (:name "On Hold" :todo "HOLD" :todo "WAIT")
-                            ;; (:name "Recipes To Try" :tag "recipes")
-                            ;; (:name "Unscheduled/No Deadline" :scheduled nil :deadline nil  :order 8)
-                            (:name "Other"   :order 8)))))))
-
-          ("wt" "Work"
-           ((agenda "" ((org-agenda-span 'day)
-                        (org-agenda-files '("~/Sync/wiki/priv/work.org"))
+                            (:name "Active Projects" :todo "PROJ" :order 99)
+                            (:discard (:anything t))))))))
+          ("w" "Week"
+           ((agenda "" ((org-agenda-span 'week)
                         (org-super-agenda-groups
-                         '((:name ""
-                            :time-grid t
+                         '((:name "Today"
+                            :log nil
+                            :date today
                             :scheduled today
                             :deadline today
-                            :discard (:todo "WAIT" :todo "HOLD")
                             :order 1)))))
 
-            (todo "" ((org-agenda-overriding-header "")
-                      (org-agenda-files '("~/Sync/wiki/priv/work.org"))
-                      (org-super-agenda-groups
-                       '(
-                         (:name "IN PROGRESS" :todo  "PROJ" :todo "STRT")
-                         (:name "BLOCKED" :todo  "WAIT" :todo "HOLD")
-                         (:name "TASKS" :todo "TODO")
-                         (:discard (:anything t))))))
-            ;; Alternative to not getting the `(:tag "review")'
-            (tags "review" ((org-agenda-overriding-header "")
-                            (org-agenda-files '("~/Sync/wiki/priv/work.org"))
-                            (org-super-agenda-groups
-                             '((:name "REVIEWS" :tag "review") ;; this isn't working.
-                               (:discard (:anything t))))))))
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '(
+                            (:name "Important" :tag "Important" :priority "A" :order 6)
+                            (:name "Ongoing" :todo "STRT")
+                            (:name "Due Soon" :deadline future :order 2)
+                            (:name "Overdue" :deadline past)
+                            (:name "Low effort" :effort< "1:00")
+                            (:name "On Hold" :todo "HOLD" :todo "WAIT")
+                            (:name "Active Projects" :todo "PROJ" :order 99)
+                            (:discard (:anything t))))))))
+          )))
 
+;; Pomodoro
 
+;; It's SO LOUD.
 
-          ;; show tasks that were "closed" over a one week span.
-
-          ("ww" "Work Week Review"
-           ((agenda "" ((org-agenda-span 'week)
-                        (org-agenda-start-on-weekday 0)
-                        (org-agenda-files '("~/Sync/wiki/priv/work.org"))
-                        (org-agenda-prefix-format "  %t %s")
-                        (org-agenda-start-with-log-mode '(closed))
-                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
-                        ;; this removes duplicate entries of tasks that were scheduled and marked done.
-                        (org-super-agenda-groups
-                         '((:discard (:not (:tag "circle")))
-                           (:name "" :time-grid t :discard (:anything t) :order 1)))))
-
-            (todo "" ((org-agenda-overriding-header "")
-                      (org-agenda-files '("~/Sync/wiki/priv/work.org"))
-                      (org-agenda-prefix-format "  %t %s")
-                      (org-super-agenda-groups
-                       '((:discard (:not (:tag "circle")))
-                         (:name "IN PROGRESS" :todo  "PROJ" :todo "STRT")
-                         (:name "BLOCKED" :todo  "WAIT" :todo "HOLD")
-                         (:name "TASKS" :todo "TODO")
-                         (:discard (:anything t)))))))))))
 
 (setq
  org-pomodoro-finished-sound-args "-volume 0.3"
@@ -276,6 +273,8 @@
  org-pomodoro-long-break-sound-args "-volume 0.3"
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
+
+;; Org UI
 
 ;; Org general settings / ui
 
@@ -296,7 +295,17 @@
    org-habit-today-glyph                  ?‖
    ))
 
+
+
+;; Enable inlining formatting (bold, italics /etc/ ); Also enable *mixed pitch mode*.
+
+
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
+
+
+
+;; Make it so mixed-pitch headings are not variable fonts.
+
 
 (after! mixed-pitch
   (pushnew! mixed-pitch-fixed-pitch-faces
@@ -305,6 +314,11 @@
             'org-level-7 'org-link
             )
   )
+
+
+
+;; Make headings look nice.
+
 
 (after! org
   (setq-default
@@ -325,9 +339,17 @@
      ("ABRT"       :foreground "#ff6480") ; :weight normal :underline t)
      )))
 
+
+
+;; Disable org mode src block backgrounds (cleans up backgrounds on headings when sections are folded):
+
+
 (custom-set-faces
   '(org-block-begin-line ((t (:background nil))))
   '(org-block-end-line   ((t (:background nil)))))
+
+;; Roam
+
 
 ;; Org Roam Config
 
@@ -375,6 +397,8 @@
            :unnarrowed t)))
   )
 
+;; Window navigation
+
 ;;; Hydras
 
 (defhydra tees/hydra-winnav (:color red)
@@ -398,6 +422,8 @@
   ("r" toggle-window-split "rotate windows") ; Located in utility functions
   ("q" nil "quit menu" :color blue :column nil))
 
+;; Workspace navigation
+
 (defhydra tees/hydra-workspace-nav (:color red)
   ("s" +workspace/display "Show workspaces" )
   ("h" +workspace/switch-left "Go left" )
@@ -406,6 +432,8 @@
   ("d" +workspace/delete "Delete" )
   ("r" +workspace/rename "Rename" )
   ("q" nil "quit menu" :color blue :column nil))
+
+;; Clock
 
 (defhydra tees/hydra-org-clock (:color blue :hint nil)
   "
@@ -424,6 +452,8 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
   ("d" org-clock-display)
   ("r" org-clock-report)
   ("?" (org-info "Clocking commands")))
+
+;; Agenda
 
 (defhydra tees/hydra-org-agenda (:pre (setq which-key-inhibit t)
                             :post (setq which-key-inhibit nil)
@@ -504,6 +534,8 @@ _vr_ reset      ^^                       ^^                 ^^
   ("." org-agenda-goto-today)
   ("gr" org-agenda-redo))
 
+;; Bindings
+
 ;;; Custom Bindings --
 
 (map!
@@ -548,12 +580,19 @@ _vr_ reset      ^^                       ^^                 ^^
       :desc "sp-next"              :n "l" #'sp-next-sexp
       :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 
+;; Enable GPG
+;; This was originally for a log.gpg file. Will probably migrate to org-journal.
+
+
 ;;' -- Enable gpg stuff --
 
 ;; (require 'epa-file)
 ;; (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
 ;; (epa-file-enable)
 ;; (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
+
+;; Hooks
+
 
 ;;;  Hooks --
 
@@ -563,6 +602,16 @@ _vr_ reset      ^^                       ^^                 ^^
 ;; Don't show line numbers in writeroom mode.
 (add-hook! 'writeroom-mode-hook
   (display-line-numbers-mode (if writeroom-mode -1 +1)))
+
+;; Getting happy completion with cider.
+
+;; I got here because my arrow keys weren't working for completion with clojure/cider.
+
+;; Related:
+
+;; - [[https://github.com/hlissner/doom-emacs/issues/1335][doom-emacs#1335 Cider + Company not working as it should]]
+;; [[https://github.com/hlissner/doom-emacs/issues/2610#issuecomment-593067367][- doom-emacs#2610 Company completion with Clojure - arrow keys are clo...]]
+
 
 (after! cider
   (add-hook 'company-completion-started-hook 'custom/set-company-maps)
