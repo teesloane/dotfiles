@@ -80,7 +80,7 @@ Prob can remove some of these weird js things from forever go.
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-opera)
+ doom-theme                    'doom-flatwhite)
 #+END_SRC
 ** Ivy
 #+BEGIN_SRC elisp
@@ -185,15 +185,26 @@ First, configure directory specific variables. These need to run before any =aft
    org-refile-targets                     '((org-agenda-files :maxlevel . 2))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-attach-id-dir                   "data/attachments/"
-   org-bullets-bullet-list             '("≡")
-   org-superstar-headline-bullets-list '("≡")
+   ;; org-bullets-bullet-list             '("≡")
+   ;; org-superstar-headline-bullets-list '("≡")
    org-startup-folded                  t
    org-log-done                        t
    org-log-into-drawer                 t
    org-outline-path-complete-in-steps  nil ; refile easy
    ))
+
+
 #+END_SRC
 ** Capture Templates
+
+A helper for finding the org month you are in (for simpler date tree captures.) [[https://emacs.stackexchange.com/questions/48414/monthly-date-tree][source]].
+
+#+BEGIN_SRC elisp
+(defun org-find-month-in-datetree()
+  (org-datetree-find-date-create (calendar-current-date))
+  (kill-line))
+#+END_SRC
+
 #+BEGIN_SRC elisp
 
 ;; org - templates
@@ -219,12 +230,16 @@ First, configure directory specific variables. These need to run before any =aft
                  :prepend t :kill-buffer t))
 
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t))
-  (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
+  (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
+  (add-to-list 'org-capture-templates '("l" "Noiselog" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
+  (add-to-list 'org-capture-templates '("c" "Chronolog" item (file "chronolog.org") "- %U - %?" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 #+END_SRC
 
+
 ** Org Agenda
 
+*** Agenda setup.
 
 #+BEGIN_SRC elisp
 (after! org
@@ -245,7 +260,7 @@ First, configure directory specific variables. These need to run before any =aft
    org-agenda-skip-deadline-if-done t
    org-agenda-use-time-grid nil
    org-global-properties '(("Effort_ALL" . "0 0:10 0:20 0:30 0:45 1:00 1:30 2:00 3:00 4:00 6:00 8:00 10:00 20:00"))
-   org-agenda-tags-column 100
+   org-agenda-tags-column 80
    org-agenda-compact-blocks nil
    org-agenda-skip-scheduled-if-done t
    org-agenda-include-deadlines t
@@ -256,12 +271,14 @@ First, configure directory specific variables. These need to run before any =aft
           ("d" "Day"
            ((agenda "" ((org-agenda-span 'day)
                         (org-super-agenda-groups
-                         '((:name "Today"
+                         '((:discard (:todo "STRT"))
+                           (:name "Today"
                             :log nil
                             :date today
                             :scheduled today
                             :deadline today
-                            :order 1)))))
+                            :order 1)
+                           (:discard (:anything t))))))
 
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
@@ -297,6 +314,33 @@ First, configure directory specific variables. These need to run before any =aft
                             (:discard (:anything t))))))))
           )))
 #+END_SRC
+*** Habit streak hook.
+
+Shows count for habit streak in org agenda. see [[https://www.reddit.com/r/emacs/comments/awsvd1/need_help_to_show_current_streak_habit_as_a/][here.]]
+
+#+BEGIN_SRC elisp
+(defun org-habit-streak-count ()
+  (goto-char (point-min))
+  (while (not (eobp))
+    ;;on habit line?
+    (when (get-text-property (point) 'org-habit-p)
+      (let ((streak 0)
+            streak-broken)
+        (move-to-column org-habit-graph-column)
+        ;;until end of line
+        (while (not (eolp))
+          (if (= (char-after (point)) org-habit-completed-glyph)
+              (if streak-broken
+                  (setq streak 1
+                        streak-broken nil)
+                (setq streak (+ streak 1)))
+            (setq streak-broken t))
+          (forward-char 1))
+        (end-of-line)
+        (insert (number-to-string streak))))
+    (forward-line 1)))
+(add-hook 'org-agenda-finalize-hook 'org-habit-streak-count)
+#+END_SRC
 
 ** Pomodoro
 
@@ -320,7 +364,6 @@ It's SO LOUD.
   (setq
    line-spacing                           3
    org-cycle-separator-lines 2
-   org-bullets-bullet-list                '("⁖")
    org-startup-truncated                  t
    org-startup-folded                     t
    org-ellipsis                           " ⋱ " ;; " • " ;; " ⇢ " ;; " ⋱ " ;;
@@ -330,9 +373,13 @@ It's SO LOUD.
    org-image-actual-width                 400 ; set the width of inline images.
    org-habit-completed-glyph              ?✓
    org-habit-show-all-today               t
+   org-habit-preceding-days               7
    org-habit-today-glyph                  ?‖
    ))
 #+END_SRC
+
+#+RESULTS:
+: 8214
 
 Enable inlining formatting (bold, italics /etc/ ); Also enable *mixed pitch mode*.
 
@@ -352,13 +399,12 @@ Make it so mixed-pitch headings are not variable fonts.
   )
 #+END_SRC
 
-Make headings look nice.
-
+*** Heading font colours and ligatures.
 #+BEGIN_SRC elisp
+(add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 
 (after! org
   (setq-default
-   org-bullets-bullet-list '("⁖")
    org-todo-keyword-faces
    '(
      ("DONE"       :foreground "#7c7c75") ; :weight normal :underline t)
@@ -376,12 +422,59 @@ Make headings look nice.
      )))
 #+END_SRC
 
+#+BEGIN_SRC elisp
+(after! org
+  (appendq! +ligatures-extra-symbols
+            `(:checkbox      "☐"
+              :pending       "❍"
+              :checkedbox    "☑"
+              :list_property "∷"
+              :results       "🠶"
+              :begin_quote   "❮"
+              :end_quote     "❯"
+              :begin_export  "⯮"
+              :end_export    "⯬"
+              :priority_a   ,(propertize "⚑" 'face 'all-the-icons-red)
+              :priority_b   ,(propertize "⬆" 'face 'all-the-icons-orange)
+              :priority_c   ,(propertize "■" 'face 'all-the-icons-yellow)
+              :priority_d   ,(propertize "⬇" 'face 'all-the-icons-green)
+              :priority_e   ,(propertize "❓" 'face 'all-the-icons-blue)
+              :em_dash       "—"))
+  (set-ligatures! 'org-mode
+    :merge t
+    :checkbox      "[ ]"
+    :pending       "[-]"
+    :checkedbox    "[X]"
+    :list_property "::"
+    :results       "#+results:"
+    :begin_quote   "#+begin_quote"
+    :end_quote     "#+end_quote"
+    :begin_export  "#+begin_export"
+    :end_export    "#+end_export"
+    :priority_a    "[#A]"
+    :priority_b    "[#B]"
+    :priority_c    "[#C]"
+    :priority_d    "[#D]"
+    :priority_e    "[#E]"
+    :em_dash       "---"))
+(plist-put +ligatures-extra-symbols :name "⁍") ; or › could be good?
+
+#+END_SRC
+
+*** Src backgrounds
 Disable org mode src block backgrounds (cleans up backgrounds on headings when sections are folded):
 
 #+BEGIN_SRC elisp
 (custom-set-faces
   '(org-block-begin-line ((t (:background nil))))
   '(org-block-end-line   ((t (:background nil)))))
+#+END_SRC
+
+*** superstar
+#+BEGIN_SRC elisp
+(after! org-superstar
+  (setq org-superstar-headline-bullets-list '("☰" "☷" "☵" "☲"  "☳" "☴"  "☶"  "☱")
+        org-superstar-prettify-item-bullets t ))
 #+END_SRC
 ** Roam
 
