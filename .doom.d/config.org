@@ -264,6 +264,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
    org-agenda-compact-blocks nil
    org-agenda-skip-scheduled-if-done t
    org-agenda-include-deadlines t
+   org-deadline-warning-days 1
    )
 
   (setq org-agenda-custom-commands
@@ -272,6 +273,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
            ((agenda "" ((org-agenda-span 'day)
                         (org-super-agenda-groups
                          '((:discard (:todo "STRT"))
+                           (:name "Habits" :tag "habits" :order 2)
                            (:name "Today"
                             :log nil
                             :date today

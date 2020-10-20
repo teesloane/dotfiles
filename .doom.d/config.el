@@ -212,7 +212,8 @@
   (setq
    org-agenda-start-with-log-mode t
    org-agenda-span 3
-   org-agenda-block-separator ?-  ;; ?- is a "character" type. It evaluates to a num representing a char
+   org-agenda-block-separator ?   ;; ?- is a "character" type. It evaluates to a num representing a char
+   org-agenda-compact-blocks t
    org-agenda-start-day "+0d"
    org-agenda-skip-scheduled-if-deadline-is-shown t
    org-agenda-skip-deadline-if-done t
@@ -222,6 +223,7 @@
    org-agenda-compact-blocks nil
    org-agenda-skip-scheduled-if-done t
    org-agenda-include-deadlines t
+   org-deadline-warning-days 1
    )
 
   (setq org-agenda-custom-commands
@@ -230,6 +232,7 @@
            ((agenda "" ((org-agenda-span 'day)
                         (org-super-agenda-groups
                          '((:discard (:todo "STRT"))
+                           (:name "Habits" :tag "habits" :order 2)
                            (:name "Today"
                             :log nil
                             :date today
