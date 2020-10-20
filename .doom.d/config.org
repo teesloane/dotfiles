@@ -231,8 +231,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
 
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
-  (add-to-list 'org-capture-templates '("l" "Noiselog" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
-  (add-to-list 'org-capture-templates '("c" "Chronolog" item (file "chronolog.org") "- %U - %?" :prepend t))
+  (add-to-list 'org-capture-templates '("c" "Chronolog" entry (file+headline "chronolog.org" "The Chronolog") "** %u - %?\nSCHEDULED: %T" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 #+END_SRC
 

@@ -193,8 +193,7 @@
 
   (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t))
   (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
-  (add-to-list 'org-capture-templates '("l" "Noiselog" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
-  (add-to-list 'org-capture-templates '("c" "Chronolog" item (file "chronolog.org") "- %U - %?" :prepend t))
+  (add-to-list 'org-capture-templates '("c" "Chronolog" entry (file+headline "chronolog.org" "The Chronolog") "** %u - %?\nSCHEDULED: %T" :prepend t))
   (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
 
 ;; Agenda setup.
@@ -212,8 +211,7 @@
   (setq
    org-agenda-start-with-log-mode t
    org-agenda-span 3
-   org-agenda-block-separator ?   ;; ?- is a "character" type. It evaluates to a num representing a char
-   org-agenda-compact-blocks t
+   org-agenda-block-separator ?-  ;; ?- is a "character" type. It evaluates to a num representing a char
    org-agenda-start-day "+0d"
    org-agenda-skip-scheduled-if-deadline-is-shown t
    org-agenda-skip-deadline-if-done t
