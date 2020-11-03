@@ -169,14 +169,14 @@
   (org-datetree-find-date-create (calendar-current-date))
   (kill-line))
 
-;; org - templates
-
-(after! org
-  (add-to-list 'org-capture-templates
-               '("b" "New Book"
-                 entry  ; type
-                 (file "books.org") ; target
-                 "* %^{Author} - %^{Title}
+(setq my-org-capture-templates '(("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t)
+                                 ("l" "Log" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t)
+                                 ("c" "Chronolog" entry (file+headline "chronolog.org" "The Chronolog") "** %u - %?\nSCHEDULED: %T" :prepend t)
+                                 ("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)
+                                 ("T" "Todo Today" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i\nSCHEDULED: %T" :prepend t)
+                                 ("S" "Todo Scheduled" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i" :prepend t)
+                                 ("b" "New Book" entry (file "books.org")
+"* %^{Author} - %^{Title}
 :PROPERTIES:
 :author: %\\1
 :title: %\\2
@@ -189,12 +189,10 @@
 :rating: 0
 :END:
 "
-                 :prepend t :kill-buffer t))
+:prepend t :kill-buffer t)))
 
-  (add-to-list 'org-capture-templates '("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t))
-  (add-to-list 'org-capture-templates '("l" "Log" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t))
-  (add-to-list 'org-capture-templates '("c" "Chronolog" entry (file+headline "chronolog.org" "The Chronolog") "** %u - %?\nSCHEDULED: %T" :prepend t))
-  (add-to-list 'org-capture-templates '("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)))
+(after! org
+  (setq org-capture-templates my-org-capture-templates))
 
 ;; Agenda setup.
 
@@ -209,7 +207,7 @@
   (use-package! org-super-agenda :commands (org-super-agenda-mode))
 
   (setq
-   org-agenda-start-with-log-mode t
+   org-agenda-start-with-log-mode nil
    org-agenda-span 3
    org-agenda-block-separator ?-  ;; ?- is a "character" type. It evaluates to a num representing a char
    org-agenda-start-day "+0d"
@@ -230,13 +228,10 @@
            ((agenda "" ((org-agenda-span 'day)
                         (org-super-agenda-groups
                          '((:discard (:todo "STRT"))
-                           (:name "Habits" :tag "habits" :order 2)
-                           (:name "Today"
-                            :log nil
-                            :date today
-                            :scheduled today
-                            :deadline today
-                            :order 1)
+                           (:name "On Hold" :todo "HOLD" :todo "WAIT" :order 4)
+                           (:name "Habits" :tag "habits" :order 3)
+                           (:name "Low Effort" :effort> "0:10" :effort< "0:50" :order 1)
+                           (:name "Today" :log nil :date today :scheduled today :deadline today :order 2)
                            (:discard (:anything t))))))
 
             (alltodo "" ((org-agenda-overriding-header "")
@@ -247,7 +242,7 @@
                             (:name "Due Soon" :deadline future :order 2)
                             (:name "Overdue" :deadline past)
                             (:name "Low effort" :effort< "1:00")
-                            (:name "On Hold" :todo "HOLD" :todo "WAIT")
+                            ;; (:name "On Hold" :todo "HOLD" :todo "WAIT")
                             (:name "Active Projects" :todo "PROJ" :order 99)
                             (:discard (:anything t))))))))
           ("w" "Week"
