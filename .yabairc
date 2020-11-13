@@ -37,7 +37,7 @@ yabai -m config mouse_action2                resize
 
 # general space settings
 yabai -m config layout                       bsp
-yabai -m config top_padding                  20
+yabai -m config top_padding                  40
 yabai -m config bottom_padding               20
 yabai -m config left_padding                 20
 yabai -m config right_padding                20
@@ -55,6 +55,6 @@ yabai -m config window_shadow float
 # yabai -m config insert_window_border_color 0xffd75f5f
 #
 # Make emacs happy
-yabai -m rule --add app=Emacs manage=on space=2
-
+# yabai -m rule --add app=Emacs manage=on space=2
+yabai -m rule --add app=tic80 manage=on
 echo "yabai configuration loaded.."

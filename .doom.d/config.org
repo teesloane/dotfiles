@@ -80,7 +80,7 @@ Prob can remove some of these weird js things from forever go.
  doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-flatwhite)
+ doom-theme                    'doom-monokai-pro)
 #+END_SRC
 ** Ivy
 #+BEGIN_SRC elisp
@@ -269,7 +269,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
                          '((:discard (:todo "STRT"))
                            (:name "On Hold" :todo "HOLD" :todo "WAIT" :order 4)
                            (:name "Habits" :tag "habits" :order 3)
-                           (:name "Low Effort" :effort> "0:10" :effort< "0:50" :order 1)
+                           (:name "Low Effort" :and (:effort> "0:10" :effort< "0:50") :order 1)
                            (:name "Today" :log nil :date today :scheduled today :deadline today :order 2)
                            (:discard (:anything t))))))
 
@@ -280,7 +280,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
                             (:name "Ongoing" :todo "STRT")
                             (:name "Due Soon" :deadline future :order 2)
                             (:name "Overdue" :deadline past)
-                            (:name "Low effort" :effort< "1:00")
+                            ;; (:name "Low effort" :effort< "1:00")
                             ;; (:name "On Hold" :todo "HOLD" :todo "WAIT")
                             (:name "Active Projects" :todo "PROJ" :order 99)
                             (:discard (:anything t))))))))

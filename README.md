@@ -17,6 +17,6 @@ Run: `boot.exclude.sh update`
 
 **Stuff**
 
-- Menubar - Ubersicht - [Pecan](https://github.com/zzzeyez/pecan)
+- spacebar
 - WM - [Yabai](https://github.com/koekeishiya/yabai)
 - emacs - [doom-emacs](https://github.com/hlissner/doom-emacs/)
