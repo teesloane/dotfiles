@@ -42,7 +42,8 @@
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ ;; doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-font                     (font-spec :family "JetBrains Mono" :size 13)
  doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
  doom-theme                    'doom-monokai-pro)
@@ -121,8 +122,6 @@
    org-refile-targets                     '((org-agenda-files :maxlevel . 2))
    org-refile-use-outline-path            'file ; Show/full/paths for refiling
    org-attach-id-dir                   "data/attachments/"
-   ;; org-bullets-bullet-list             '("≡")
-   ;; org-superstar-headline-bullets-list '("≡")
    org-startup-folded                  t
    org-log-done                        t
    org-log-into-drawer                 t
@@ -139,8 +138,8 @@
                                  ("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)
                                  ("T" "Todo Today" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i\nSCHEDULED: %T" :prepend t)
                                  ("S" "Todo Scheduled" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i" :prepend t)
-                                 ("b" "New Book" entry (file "books.org")
-"* %^{Author} - %^{Title}
+                                 ("b" "New Book" entry (file+headline "books.org" "Reading")
+"** %^{Author} - %^{Title}
 :PROPERTIES:
 :author: %\\1
 :title: %\\2
@@ -271,10 +270,11 @@
    org-fontify-whole-heading-line         nil
    org-tags-column                        65
    org-image-actual-width                 400 ; set the width of inline images.
-   org-habit-completed-glyph              ?✓
+   ;; Habit glyphs
+   org-habit-completed-glyph              ?x
    org-habit-show-all-today               t
    org-habit-preceding-days               7
-   org-habit-today-glyph                  ?‖
+   org-habit-today-glyph                  ?!
    ))
 
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
