@@ -39,6 +39,7 @@ Thank you's:
  avy-all-windows              'all-frames
  deft-directory               _wiki-path
  projectile-project-search-path '("~/Projects" "~/Development")
+ vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=no" ; keep vterm happy
  time-stamp-active             t
  time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
  which-key-idle-delay          0.3
@@ -245,7 +246,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
   (use-package! org-super-agenda :commands (org-super-agenda-mode))
 
   (setq
-   org-agenda-start-with-log-mode nil
+   org-agenda-start-with-log-mode t
    org-agenda-span 3
    org-agenda-block-separator ?-  ;; ?- is a "character" type. It evaluates to a num representing a char
    org-agenda-start-day "+0d"
@@ -266,6 +267,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
            ((agenda "" ((org-agenda-span 'day)
                         (org-super-agenda-groups
                          '((:discard (:todo "STRT"))
+                           (:name "Logged" :log t :order 5)
                            (:name "On Hold" :todo "HOLD" :todo "WAIT" :order 4)
                            (:name "Habits" :tag "habits" :order 3)
                            (:name "Low Effort" :and (:effort> "0:10" :effort< "0:50") :order 1)

@@ -22,4 +22,4 @@ export GRAALVM_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java11-20.0.0/C
 
 alias fzf="fzf --preview 'bat --style=numbers --color=always {} | head -500'"
 
-. ~/.z.sh
+. ~/.tools/z.sh
