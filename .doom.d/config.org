@@ -12,9 +12,11 @@ Thank you's:
 * Packages
 #+BEGIN_SRC elisp :tangle packages.el
 (package! org-super-agenda)
-;; (package! solaire-mode :disable t)
+;; (package! solaire-mode :disable tter)
 (package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
 (package! focus)
+
+;; (package! nano-emacs :recipe (:host github :repo "rougier/nano-emacs"))
 #+END_SRC
 * General Customization
 ** Startup funcs
@@ -82,17 +84,19 @@ Prob can remove some of these weird js things from forever go.
  doom-font                     (font-spec :family "JetBrains Mono" :size 13)
  doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-monokai-pro)
+ doom-theme                    'doom-opera)
 #+END_SRC
 ** Ivy
 #+BEGIN_SRC elisp
 (after! ivy-posframe
   (setq ivy-fixed-height-minibuffer nil
+        ivy-posframe-style 'frame-top-center
         ivy-posframe-border-width 10
-        ivy-posframe-width 150
+        ivy-posframe-width 90
         ivy-posframe-parameters
-        `((min-width . 150)
-          (min-height . ,ivy-height))))
+        `((min-width . 90)
+          (min-height . ,ivy-height)))
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))))
 
 #+END_SRC
 ** Fonts
@@ -208,7 +212,8 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
 #+BEGIN_SRC elisp
 (setq my-org-capture-templates '(("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t)
                                  ("l" "Log" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t)
-                                 ("c" "Chronolog" entry (file+headline "chronolog.org" "The Chronolog") "** %u - %?\nSCHEDULED: %T" :prepend t)
+                                 ;; ("c" "Chronolog" entry (file+headline "chronolog.org" "The Chronolog") "** %u - %?\nSCHEDULED: %T" :prepend t)
+                                 ("c" "Chronolog" entry (file+datetree "chronolog.org") "**** %U %^{Title}\n%?" :prepend t)
                                  ("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)
                                  ("T" "Todo Today" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i\nSCHEDULED: %T" :prepend t)
                                  ("S" "Todo Scheduled" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i" :prepend t)
@@ -269,6 +274,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
                          '((:discard (:todo "STRT"))
                            (:name "Logged" :log t :order 5)
                            (:name "On Hold" :todo "HOLD" :todo "WAIT" :order 4)
+                           (:discard (:todo "DONE")) ;; don't show done (except in logged)
                            (:name "Habits" :tag "habits" :order 3)
                            (:name "Low Effort" :and (:effort> "0:10" :effort< "0:50") :order 1)
                            (:name "Today" :log nil :date today :scheduled today :deadline today :order 2)
@@ -809,3 +815,13 @@ Related:
     [tab]     #'company-complete-common-or-cycle
     [backtab] #'company-select-previous    ))
 #+END_SRC
+* Doom Nano
+# Connect [[https://github.com/rougier/elegant-emacs/issues/4][emacs-nano/elegant]] to doom.
+#+begin_src elisp
+;; (setq doom-theme 'nil)
+;; (require 'disp-table)
+;; (require 'nano-theme-dark)
+;; (require 'nano-help)
+;; (require 'nano-modeline)
+;; (require 'nano-layout)
+#+end_src
