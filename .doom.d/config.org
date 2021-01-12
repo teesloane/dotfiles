@@ -217,7 +217,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
                                  ("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)
                                  ("T" "Todo Today" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i\nSCHEDULED: %T" :prepend t)
                                  ("S" "Todo Scheduled" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i" :prepend t)
-                                 ("b" "New Book" entry (file+headline "books.org" "Reading")
+                                 ("b" "New Book" entry (file+headline "books/index.org" "Reading")
 "** %^{Author} - %^{Title}
 :PROPERTIES:
 :author: %\\1
@@ -227,6 +227,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
 :date_started: %U
 :date_completed:
 :genre:
+:year:
 :type: %^{Type|Novel|Graphic Novel|Manga|Short Stories|Poetry|Other}
 :rating: 0
 :END:

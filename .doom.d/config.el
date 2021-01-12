@@ -137,8 +137,8 @@
 
 (setq my-org-capture-templates '(("i" "Inbox" entry (file "inbox.org") "* %?\n%i\n" :prepend t :kill-buffer t)
                                  ("l" "Log" entry (file+datetree "priv/log.org.gpg") "**** %U %^{Title} %(org-set-tags-command) \n%?" :prepend t)
-                                 ;; ("c" "Chronolog" entry (file+datetree "chronolog.org" "The Chronolog") "** %u - %?\nSCHEDULED: %T" :prepend t)
-                                 ("c" "Chronolog" entry (file+datetree "chronolog.org") "*** %U %^{Title}\n%?" :prepend t)
+                                 ;; ("c" "Chronolog" entry (file+headline "chronolog.org" "The Chronolog") "** %u - %?\nSCHEDULED: %T" :prepend t)
+                                 ("c" "Chronolog" entry (file+datetree "chronolog.org") "**** %U %^{Title}\n%?" :prepend t)
                                  ("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)
                                  ("T" "Todo Today" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i\nSCHEDULED: %T" :prepend t)
                                  ("S" "Todo Scheduled" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i" :prepend t)
@@ -152,6 +152,7 @@
 :date_started: %U
 :date_completed:
 :genre:
+:year:
 :type: %^{Type|Novel|Graphic Novel|Manga|Short Stories|Poetry|Other}
 :rating: 0
 :END:
