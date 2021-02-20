@@ -44,24 +44,23 @@ brew install koekeishiya/formulae/skhd
 brew install koekeishiya/formulae/yabai #nees additional installation
 # UI FOR AN UI
 brew cask install visual-studio-code  # Big'un. 
-brew cask install spectacle           # Snappy windows
+# brew cask install spectacle           # Snappy windows
 brew cask install anki                # Ultra Lapsus memoriae
-brew cask install emacs               # DOOM...
-brew cask install anybar              # Menubar dots
-brew cask install google-chrome       # Everything is shiney.
-brew cask install openinterminal-lite # Finder -> Terminal
-brew cask install anybar              # Little dots.
-brew cask install firefox             # Fast Little Fox
-brew cask install iterm2              # I...Term...too?
-brew cask install telegram            # Greetings STOP
-brew cask install michaelvillar-timer # Time TIME TIME
+# brew cask install emacs               # DOOM...
+# brew cask install anybar              # Menubar dots
+# brew cask install google-chrome       # Everything is shiney.
+# brew cask install anybar              # Little dots.
+# brew cask install firefox             # Fast Little Fox
+# brew cask install iterm2              # I...Term...too?
+# brew cask install telegram            # Greetings STOP
+ brew cask install michaelvillar-timer # Time TIME TIME
 
 # Other
-brew tap caskroom/fonts
-brew cask install font-fira-code
-brew cask install font-inconsolata
+brew tap homebrew/cask-fonts
+brew install --cask font-fira-code
+brew install --cask font-inconsolata
 # Quick look plugins
-brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize qlvideo
+brew install --cask qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize qlvideo
 
 
 
