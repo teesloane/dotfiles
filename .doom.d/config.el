@@ -47,7 +47,7 @@
  doom-font                     (font-spec :family "JetBrains Mono" :size 13)
  doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-opera)
+ doom-theme                    'doom-tomorrow-night)
 
 (after! ivy-posframe
   (setq ivy-fixed-height-minibuffer nil
@@ -90,6 +90,15 @@
                            1 'org-checkbox-done-text prepend))
                         'append)
 ;; (custom-set-faces '(org-checkbox ((t (:foreground nil :inherit org-todo)))))
+
+(defun my/apply-theme (appearance)
+  "Load theme, taking current system APPEARANCE into consideration."
+  (mapc #'disable-theme custom-enabled-themes)
+  (pcase appearance
+    ('light (load-theme 'doom-flatwhite t))
+    ('dark (load-theme 'doom-tomorrow-night t))))
+
+(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
 ;;; Magit --
 
@@ -142,7 +151,7 @@
                                  ("t" "Todo" entry (file "inbox.org") "* TODO %?\n%i" :prepend t)
                                  ("T" "Todo Today" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i\nSCHEDULED: %T" :prepend t)
                                  ("S" "Todo Scheduled" entry (file+headline "inbox.org" "Scheduled") "** TODO %?\n%i" :prepend t)
-                                 ("b" "New Book" entry (file+headline "books.org" "Reading")
+                                 ("b" "New Book" entry (file+headline "books/index.org" "Reading")
 "** %^{Author} - %^{Title}
 :PROPERTIES:
 :author: %\\1
@@ -191,6 +200,7 @@
         '(
           ("d" "Day"
            ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-start-on-weekday nil) ;; recent
                         (org-super-agenda-groups
                          '((:discard (:todo "STRT"))
                            (:name "Logged" :log t :order 5)
@@ -554,6 +564,7 @@ _vr_ reset      ^^                       ^^                 ^^
     (:desc "tees" :prefix "v"
      :desc "M-X Alt"                   :n "v" #'execute-extended-command
      :desc "Focus it"                  :n "f" #'focus-mode
+     :desc "Expand region"             :n "e" #'er/expand-region
      :desc "Hydra-Clock"               :n "c" #'tees/hydra-org-clock/body
      :desc "Hydra-Workspaces"          :n "w" #'tees/hydra-workspace-nav/body
      :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda/body
@@ -649,9 +660,6 @@ _vr_ reset      ^^                       ^^                 ^^
     [tab]     #'company-complete-common-or-cycle
     [backtab] #'company-select-previous    ))
 
-;; (setq doom-theme 'nil)
-;; (require 'disp-table)
-;; (require 'nano-theme-dark)
-;; (require 'nano-help)
-;; (require 'nano-modeline)
-;; (require 'nano-layout)
+(defun my/tweet-something ()
+    (interactive)
+    (=twitter))

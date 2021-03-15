@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
 # bar settings
 yabai -m config status_bar                   on
 yabai -m config status_bar_text_font         "Helvetica Neue:Bold:12.0"
@@ -55,6 +58,6 @@ yabai -m config window_shadow float
 # yabai -m config insert_window_border_color 0xffd75f5f
 #
 # Make emacs happy
-# yabai -m rule --add app=Emacs manage=on space=2
+yabai -m rule --add app=Emacs manage=on space=2
 yabai -m rule --add app=tic80 manage=on
 echo "yabai configuration loaded.."

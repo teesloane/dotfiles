@@ -130,6 +130,7 @@
        fsharp           ; ML stands for Microsoft's Language
        ;; fstar             ; (dependent) types and (monadic) effects and Z3
        (go +lsp)         ; the hipster dialect
+       (gdscript +lsp)
        ;;(haskell +dante)  ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
