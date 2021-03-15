@@ -71,6 +71,43 @@ Prob can remove some of these weird js things from forever go.
  web-mode-style-padding        2
  )
 #+END_SRC
+** TODO Mac os x things
+#+begin_src elisp
+
+(global-set-key [(hyper a)] 'mark-whole-buffer)
+(global-set-key [(hyper v)] 'yank)
+(global-set-key [(hyper c)] 'kill-ring-save)
+(global-set-key [(hyper s)] 'save-buffer)
+(global-set-key [(hyper l)] 'goto-line)
+(global-set-key [(hyper w)]
+                (lambda () (interactive) (delete-window)))
+(global-set-key [(hyper z)] 'undo)
+(global-set-key [(hyper a)] 'mark-whole-buffer)
+(global-set-key [(hyper v)] 'yank)
+(global-set-key [(hyper c)] 'kill-ring-save)
+(global-set-key [(hyper s)] 'save-buffer)
+(global-set-key [(hyper l)] 'goto-line)
+(global-set-key [(hyper w)]
+                (lambda () (interactive) (delete-window)))
+(global-set-key [(hyper z)] 'undo)
+
+;; mac switch meta key
+(defun mac-switch-meta nil
+  "switch meta between Option and Command"
+  (interactive)
+  (if (eq mac-option-modifier nil)
+      (progn
+	(setq mac-option-modifier 'meta)
+	(setq mac-command-modifier 'hyper)
+	)
+    (progn
+      (setq mac-option-modifier nil)
+      (setq mac-command-modifier 'meta)
+      )
+    )
+  )
+
+#+end_src
 
 * UI
 ** Doom
@@ -84,7 +121,7 @@ Prob can remove some of these weird js things from forever go.
  doom-font                     (font-spec :family "JetBrains Mono" :size 13)
  doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-opera)
+ doom-theme                    'doom-tomorrow-night)
 #+END_SRC
 ** Ivy
 #+BEGIN_SRC elisp
@@ -139,6 +176,18 @@ Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iose
 ;; (custom-set-faces '(org-checkbox ((t (:foreground nil :inherit org-todo)))))
 
 #+END_SRC
+** Theme
+*** Lightmode / dark mode theme
+#+begin_src elisp
+(defun my/apply-theme (appearance)
+  "Load theme, taking current system APPEARANCE into consideration."
+  (mapc #'disable-theme custom-enabled-themes)
+  (pcase appearance
+    ('light (load-theme 'doom-flatwhite t))
+    ('dark (load-theme 'doom-tomorrow-night t))))
+
+(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+#+end_src
 
 * Magit
 ** Pretty leaders.
@@ -271,6 +320,7 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
         '(
           ("d" "Day"
            ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-start-on-weekday nil) ;; recent
                         (org-super-agenda-groups
                          '((:discard (:todo "STRT"))
                            (:name "Logged" :log t :order 5)
@@ -695,6 +745,7 @@ _vr_ reset      ^^                       ^^                 ^^
     (:desc "tees" :prefix "v"
      :desc "M-X Alt"                   :n "v" #'execute-extended-command
      :desc "Focus it"                  :n "f" #'focus-mode
+     :desc "Expand region"             :n "e" #'er/expand-region
      :desc "Hydra-Clock"               :n "c" #'tees/hydra-org-clock/body
      :desc "Hydra-Workspaces"          :n "w" #'tees/hydra-workspace-nav/body
      :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda/body
@@ -816,13 +867,3 @@ Related:
     [tab]     #'company-complete-common-or-cycle
     [backtab] #'company-select-previous    ))
 #+END_SRC
-* Doom Nano
-# Connect [[https://github.com/rougier/elegant-emacs/issues/4][emacs-nano/elegant]] to doom.
-#+begin_src elisp
-;; (setq doom-theme 'nil)
-;; (require 'disp-table)
-;; (require 'nano-theme-dark)
-;; (require 'nano-help)
-;; (require 'nano-modeline)
-;; (require 'nano-layout)
-#+end_src
