@@ -478,7 +478,7 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
 #+BEGIN_SRC elisp
 (after! org-superstar
   (setq org-superstar-headline-bullets-list '("🙘" "🙙" "🙚" "🙛"))
-  (setq  org-superstar-prettify-item-bullets t)
+  (setq  org-superstar-prettify-item-bullets t))
 #+END_SRC
 ** Roam
 
