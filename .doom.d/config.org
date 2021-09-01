@@ -2,7 +2,8 @@
 
 * Preface
 
-This is a literate configuration. Some of it is mine, but a lot of it has been borrowed from people who know a lot more than me.
+This is a literate configuration. Some of it is mine, but a lot of it has been
+borrowed from people who know a lot more than me.
 
 Thank you's:
 
@@ -10,6 +11,7 @@ Thank you's:
 -  [[https://github.com/zaiste/zaiste-emacs-theme][zaiste/zaiste-emacs-theme]]
 
 * Packages
+
 #+BEGIN_SRC elisp :tangle packages.el
 (package! org-super-agenda)
 ;; (package! solaire-mode :disable tter)
@@ -18,6 +20,7 @@ Thank you's:
 
 ;; (package! nano-emacs :recipe (:host github :repo "rougier/nano-emacs"))
 #+END_SRC
+
 * General Customization
 ** Startup funcs
 
@@ -37,11 +40,11 @@ Thank you's:
 ;;; Variable overrides --
 
 (setq-default
- _wiki-path                   "~/Sync/wiki/"
- avy-all-windows              'all-frames
- deft-directory               _wiki-path
+ _wiki-path                     "~/Sync/wiki/"
+ avy-all-windows                'all-frames
+ deft-directory                 _wiki-path
  projectile-project-search-path '("~/Projects" "~/Development")
- vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=no" ; keep vterm happy
+ vterm-module-cmake-args       "-DUSE_SYSTEM_LIBVTERM=no" ; keep vterm happy
  time-stamp-active             t
  time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
  which-key-idle-delay          0.3
@@ -51,9 +54,8 @@ Thank you's:
 (setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
 
 #+END_SRC
-** TODO Web Defaults
+** Web Defaults
 
-Prob can remove some of these weird js things from forever go.
 
 #+BEGIN_SRC elisp
 ;;; Webby web web
@@ -71,58 +73,25 @@ Prob can remove some of these weird js things from forever go.
  web-mode-style-padding        2
  )
 #+END_SRC
-** TODO Mac os x things
-#+begin_src elisp
-
-(global-set-key [(hyper a)] 'mark-whole-buffer)
-(global-set-key [(hyper v)] 'yank)
-(global-set-key [(hyper c)] 'kill-ring-save)
-(global-set-key [(hyper s)] 'save-buffer)
-(global-set-key [(hyper l)] 'goto-line)
-(global-set-key [(hyper w)]
-                (lambda () (interactive) (delete-window)))
-(global-set-key [(hyper z)] 'undo)
-(global-set-key [(hyper a)] 'mark-whole-buffer)
-(global-set-key [(hyper v)] 'yank)
-(global-set-key [(hyper c)] 'kill-ring-save)
-(global-set-key [(hyper s)] 'save-buffer)
-(global-set-key [(hyper l)] 'goto-line)
-(global-set-key [(hyper w)]
-                (lambda () (interactive) (delete-window)))
-(global-set-key [(hyper z)] 'undo)
-
-;; mac switch meta key
-(defun mac-switch-meta nil
-  "switch meta between Option and Command"
-  (interactive)
-  (if (eq mac-option-modifier nil)
-      (progn
-	(setq mac-option-modifier 'meta)
-	(setq mac-command-modifier 'hyper)
-	)
-    (progn
-      (setq mac-option-modifier nil)
-      (setq mac-command-modifier 'meta)
-      )
-    )
-  )
-
-#+end_src
 
 * UI
 ** Doom
+
 #+BEGIN_SRC elisp
 ;; Doom things
+(setq dark-theme 'doom-tomorrow-night
+      light-theme 'doom-flatwhite)
 
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- ;; doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ ;; doom-font                     (font-spec :family "Iosevka" :size 13 :weight 'regular)
  doom-font                     (font-spec :family "JetBrains Mono" :size 13)
- doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-tomorrow-night)
+ doom-theme                    dark-theme)
 #+END_SRC
+
+
 ** Ivy
 #+BEGIN_SRC elisp
 (after! ivy-posframe
@@ -136,11 +105,9 @@ Prob can remove some of these weird js things from forever go.
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))))
 
 #+END_SRC
+
 ** Fonts
-
-
 Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iosevka pretty in org-mode
-
 
 #+BEGIN_SRC elisp
 ;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
@@ -151,19 +118,6 @@ Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iose
 (setq highlight-indent-guides-responsive 'top
       highlight-indent-guides-delay 0)
 
-;; Org and R additional symbols
-;; hex code ▷ (9655), ◇ (9671), ▶ (9654), ƒ (402)
-;; This doesn't work anymore:
-;; (setq +ligatures-iosevka-font-alist
-;;       (append +ligatures-iosevka-font-alist
-;;               '(("[ ]" .  "☐")
-;;                 ("[X]" . "☑" )
-;;                 ("[-]" . "❍" )
-;;                 ("%>%" . ?▷)
-;;                 ("%$%" . ?◇)
-;;                 ("%T>%" . ?▶)
-;;                 ("function" . ?ƒ))))
-
 ;; https://is.gd/3VuSXj
 (defface org-checkbox-done-text
   '((t (:foreground "#5a637b")))
@@ -173,9 +127,8 @@ Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iose
                         '(("^[ \t]*\\(?:[-+*]\\|[0-9]+[).]\\)[ \t]+\\(\\(?:\\[@\\(?:start:\\)?[0-9]+\\][ \t]*\\)?\\[\\(?:X\\|\\([0-9]+\\)/\\2\\)\\][^\n]*\n\\)"
                            1 'org-checkbox-done-text prepend))
                         'append)
-;; (custom-set-faces '(org-checkbox ((t (:foreground nil :inherit org-todo)))))
-
 #+END_SRC
+
 ** Theme
 *** Lightmode / dark mode theme
 #+begin_src elisp
@@ -183,8 +136,8 @@ Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iose
   "Load theme, taking current system APPEARANCE into consideration."
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
-    ('light (load-theme 'doom-flatwhite t))
-    ('dark (load-theme 'doom-tomorrow-night t))))
+    ('light (load-theme light-theme t))
+    ('dark (load-theme dark-theme t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 #+end_src
@@ -192,9 +145,7 @@ Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iose
 * Magit
 ** Pretty leaders.
 
-This sets up Magit to have pretty icons with "commit leaders" Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
-
-This is broken currently.
+This sets up Magit to have pretty icons with "commit leaders". Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
 
 #+BEGIN_SRC elisp
 
@@ -215,6 +166,7 @@ This is broken currently.
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 #+END_SRC
+
 * Org Mode
 ** Set Directories
 
@@ -479,7 +431,7 @@ Make it so mixed-pitch headings are not variable fonts.
   (appendq! +ligatures-extra-symbols
             `(:checkbox      "☐"
               :pending       "❍"
-              :checkedbox    "☑"
+              :checkedbox    "☒"
               :list_property "∷"
               :results       "🠶"
               :begin_quote   "❮"
@@ -525,8 +477,8 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
 *** superstar
 #+BEGIN_SRC elisp
 (after! org-superstar
-  (setq org-superstar-headline-bullets-list '("☰" "☷" "☵" "☲"  "☳" "☴"  "☶"  "☱")
-        org-superstar-prettify-item-bullets t ))
+  (setq org-superstar-headline-bullets-list '("🙘" "🙙" "🙚" "🙛"))
+  (setq  org-superstar-prettify-item-bullets t)
 #+END_SRC
 ** Roam
 
@@ -580,67 +532,99 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
 
 #+END_SRC
 
-* Hydras
-** Window navigation
-#+BEGIN_SRC elisp
-;;; Hydras
+* Bindings
+** General
 
-(defhydra tees/hydra-winnav (:color red)
-  ("s" shrink-window-horizontally "shrink horizontally" :column "Sizing")
-  ("e" enlarge-window-horizontally "enlarge horizontally")
-  ("b" balance-windows "balance window height")
-  ("m" maximize-window "maximize current window")
-  ("M" minimize-window "minimize current window")
-
-  ("H" split-window-below "split horizontally" :column "Split management")
-  ("v" split-window-right "split vertically")
-  ("d" delete-window "delete current window")
-  ("x" delete-other-windows "delete-other-windows")
-
-
-  ("z" ace-window "ace window" :color blue :column "Navigation")
-  ("h" windmove-left "← window")
-  ("j" windmove-down "↓ window")
-  ("k" windmove-up "↑ window")
-  ("l" windmove-right "→ window")
-  ("r" toggle-window-split "rotate windows") ; Located in utility functions
-  ("q" nil "quit menu" :color blue :column nil))
-#+END_SRC
-** Workspace navigation
 #+BEGIN_SRC elisp
 
-(defhydra tees/hydra-workspace-nav (:color red)
-  ("s" +workspace/display "Show workspaces" )
-  ("h" +workspace/switch-left "Go left" )
-  ("l" +workspace/switch-right "Go left" )
-  ("n" +workspace/new "New" )
-  ("d" +workspace/delete "Delete" )
-  ("r" +workspace/rename "Rename" )
-  ("q" nil "quit menu" :color blue :column nil))
+;;; Custom Bindings --
 
+(map!
+ ;; -- <GLOBAL> --
+ :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
+ :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
+ :desc "Switch to 3rd workspace" :n  "s-3"   (λ! (+workspace/switch-to 2))
+ :desc "Switch to 4th workspace" :n  "s-4"   (λ! (+workspace/switch-to 3))
+ :desc "Switch to 5th workspace" :n  "s-5"   (λ! (+workspace/switch-to 4))
+ :desc "Switch to 6th workspace" :n  "s-6"   (λ! (+workspace/switch-to 5))
+ :desc "Switch to 7th workspace" :n  "s-7"   (λ! (+workspace/switch-to 6))
+ :desc "Switch to 8th workspace" :n  "s-8"   (λ! (+workspace/switch-to 7))
+ :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
+ :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
 
+; ; -- <LEADER> --
+
+ (:leader
+    (:desc "tees" :prefix "v"
+     :desc "M-X Alt"                   :n "v" #'execute-extended-command
+     :desc "Focus it"                  :n "f" #'focus-mode
+     :desc "Expand region"             :n "e" #'er/expand-region
+     :desc "Hydra-Clock"               :n "c" #'tees/hydra-org-clock/body
+     :desc "Hydra-Workspaces"          :n "w" #'tees/hydra-workspace-nav/body
+     :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda/body
+     :desc "Hydra-Windows"             :n "l" #'tees/hydra-winnav/body
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
+     )
+
+    ;; additional org roam bindings to `SPC n`
+    (:prefix-map ("n" . "notes")
+      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+        )
+
+    (:prefix-map ("k" . "lisp")
+      :desc "sp-copy"              :n "c" #'sp-copy-sexp
+      :desc "sp-kill"              :n "k" #'sp-kill-sexp
+      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+      :desc "sp-up"                :n "u" #'sp-up-sexp
+      :desc "sp-down"              :n "d" #'sp-down-sexp
+      :desc "sp-next"              :n "l" #'sp-next-sexp
+      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
 #+END_SRC
-** Clock
-#+BEGIN_SRC elisp
-(defhydra tees/hydra-org-clock (:color blue :hint nil)
-  "
-Clock   In/out^     ^Edit^    ^Summary     (_?_)
------------------------------------------
-        _i_n         _e_ffort _g_oto entry
-        _c_ontinue   _q_uit   _d_isplay
-        _o_ut        ^ ^      _r_eport
-      "
-  ("i" org-clock-in)
-  ("o" org-clock-out)
-  ("c" org-clock-in-last)
-  ("e" org-clock-modify-effort-estimate)
-  ("q" org-clock-cancel)
-  ("g" org-clock-goto)
-  ("d" org-clock-display)
-  ("r" org-clock-report)
-  ("?" (org-info "Clocking commands")))
-#+END_SRC
-** Agenda
+
+** OS X Specific
+
+#+begin_src elisp
+
+(global-set-key [(hyper a)] 'mark-whole-buffer)
+(global-set-key [(hyper v)] 'yank)
+(global-set-key [(hyper c)] 'kill-ring-save)
+(global-set-key [(hyper s)] 'save-buffer)
+(global-set-key [(hyper l)] 'goto-line)
+(global-set-key [(hyper w)]
+                (lambda () (interactive) (delete-window)))
+(global-set-key [(hyper z)] 'undo)
+(global-set-key [(hyper a)] 'mark-whole-buffer)
+(global-set-key [(hyper v)] 'yank)
+(global-set-key [(hyper c)] 'kill-ring-save)
+(global-set-key [(hyper s)] 'save-buffer)
+(global-set-key [(hyper l)] 'goto-line)
+(global-set-key [(hyper w)]
+                (lambda () (interactive) (delete-window)))
+(global-set-key [(hyper z)] 'undo)
+
+;; mac switch meta key
+(defun mac-switch-meta nil
+  "switch meta between Option and Command"
+  (interactive)
+  (if (eq mac-option-modifier nil)
+      (progn
+	(setq mac-option-modifier 'meta)
+	(setq mac-command-modifier 'hyper)
+	)
+    (progn
+      (setq mac-option-modifier nil)
+      (setq mac-command-modifier 'meta)
+      )
+    )
+  )
+
+#+end_src
+
+** Hydras
+*** Agenda
+
 #+BEGIN_SRC elisp
 (defhydra tees/hydra-org-agenda (:pre (setq which-key-inhibit t)
                             :post (setq which-key-inhibit nil)
@@ -721,57 +705,71 @@ _vr_ reset      ^^                       ^^                 ^^
   ("." org-agenda-goto-today)
   ("gr" org-agenda-redo))
 #+END_SRC
-* Bindings
+
+*** Window navigation
+
 #+BEGIN_SRC elisp
+;;; Hydras
 
-;;; Custom Bindings --
+(defhydra tees/hydra-winnav (:color red)
+  ("s" shrink-window-horizontally "shrink horizontally" :column "Sizing")
+  ("e" enlarge-window-horizontally "enlarge horizontally")
+  ("b" balance-windows "balance window height")
+  ("m" maximize-window "maximize current window")
+  ("M" minimize-window "minimize current window")
 
-(map!
- ;; -- <GLOBAL> --
- :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
- :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
- :desc "Switch to 3rd workspace" :n  "s-3"   (λ! (+workspace/switch-to 2))
- :desc "Switch to 4th workspace" :n  "s-4"   (λ! (+workspace/switch-to 3))
- :desc "Switch to 5th workspace" :n  "s-5"   (λ! (+workspace/switch-to 4))
- :desc "Switch to 6th workspace" :n  "s-6"   (λ! (+workspace/switch-to 5))
- :desc "Switch to 7th workspace" :n  "s-7"   (λ! (+workspace/switch-to 6))
- :desc "Switch to 8th workspace" :n  "s-8"   (λ! (+workspace/switch-to 7))
- :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
- :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
+  ("H" split-window-below "split horizontally" :column "Split management")
+  ("v" split-window-right "split vertically")
+  ("d" delete-window "delete current window")
+  ("x" delete-other-windows "delete-other-windows")
 
-; ; -- <LEADER> --
 
- (:leader
-    (:desc "tees" :prefix "v"
-     :desc "M-X Alt"                   :n "v" #'execute-extended-command
-     :desc "Focus it"                  :n "f" #'focus-mode
-     :desc "Expand region"             :n "e" #'er/expand-region
-     :desc "Hydra-Clock"               :n "c" #'tees/hydra-org-clock/body
-     :desc "Hydra-Workspaces"          :n "w" #'tees/hydra-workspace-nav/body
-     :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda/body
-     :desc "Hydra-Windows"             :n "l" #'tees/hydra-winnav/body
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
-     )
-
-    ;; additional org roam bindings to `SPC n`
-    (:prefix-map ("n" . "notes")
-      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
-        )
-
-    (:prefix-map ("k" . "lisp")
-      :desc "sp-copy"              :n "c" #'sp-copy-sexp
-      :desc "sp-kill"              :n "k" #'sp-kill-sexp
-      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
-      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
-      :desc "sp-up"                :n "u" #'sp-up-sexp
-      :desc "sp-down"              :n "d" #'sp-down-sexp
-      :desc "sp-next"              :n "l" #'sp-next-sexp
-      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+  ("z" ace-window "ace window" :color blue :column "Navigation")
+  ("h" windmove-left "← window")
+  ("j" windmove-down "↓ window")
+  ("k" windmove-up "↑ window")
+  ("l" windmove-right "→ window")
+  ("r" toggle-window-split "rotate windows") ; Located in utility functions
+  ("q" nil "quit menu" :color blue :column nil))
 #+END_SRC
 
-#+RESULTS:
-: sp-previous-sexp
+*** Workspace navigation
+
+#+BEGIN_SRC elisp
+
+(defhydra tees/hydra-workspace-nav (:color red)
+  ("s" +workspace/display "Show workspaces" )
+  ("h" +workspace/switch-left "Go left" )
+  ("l" +workspace/switch-right "Go left" )
+  ("n" +workspace/new "New" )
+  ("d" +workspace/delete "Delete" )
+  ("r" +workspace/rename "Rename" )
+  ("q" nil "quit menu" :color blue :column nil))
+
+
+#+END_SRC
+
+*** Clock
+
+#+BEGIN_SRC elisp
+(defhydra tees/hydra-org-clock (:color blue :hint nil)
+  "
+Clock   In/out^     ^Edit^    ^Summary     (_?_)
+-----------------------------------------
+        _i_n         _e_ffort _g_oto entry
+        _c_ontinue   _q_uit   _d_isplay
+        _o_ut        ^ ^      _r_eport
+      "
+  ("i" org-clock-in)
+  ("o" org-clock-out)
+  ("c" org-clock-in-last)
+  ("e" org-clock-modify-effort-estimate)
+  ("q" org-clock-cancel)
+  ("g" org-clock-goto)
+  ("d" org-clock-display)
+  ("r" org-clock-report)
+  ("?" (org-info "Clocking commands")))
+#+END_SRC
 
 * Enable GPG
 This was originally for a log.gpg file. Will probably migrate to org-journal.
@@ -785,6 +783,7 @@ This was originally for a log.gpg file. Will probably migrate to org-journal.
 ;; (epa-file-enable)
 ;; (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
 #+END_SRC
+
 * Hooks
 
 #+BEGIN_SRC elisp
@@ -799,16 +798,28 @@ This was originally for a log.gpg file. Will probably migrate to org-journal.
   (display-line-numbers-mode (if writeroom-mode -1 +1)))
 
 #+END_SRC
+
 * Languages
+** LSP
+
+General LSP settings:
+
+#+begin_src elisp
+(setq
+ lsp-lens-enable t
+ lsp-ui-imenu-auto-refresh t
+ lsp-headerline-breadcrumb-enable t
+ lsp-ui-sideline-show-code-actions nil
+ )
+#+end_src
+
 ** Clojure
 *** Getting happy completion with cider.
 
-I got here because my arrow keys weren't working for completion with clojure/cider.
-
-Related:
+I got here because my arrow keys weren't working for completion with clojure/cider. Related:
 
 - [[https://github.com/hlissner/doom-emacs/issues/1335][doom-emacs#1335 Cider + Company not working as it should]]
-[[https://github.com/hlissner/doom-emacs/issues/2610#issuecomment-593067367][- doom-emacs#2610 Company completion with Clojure - arrow keys are clo...]]
+- [[https://github.com/hlissner/doom-emacs/issues/2610#issuecomment-593067367][doom-emacs#2610 Company completion with Clojure - arrow keys are clo...]]
 
 #+BEGIN_SRC elisp
 (after! cider
@@ -867,3 +878,8 @@ Related:
     [tab]     #'company-complete-common-or-cycle
     [backtab] #'company-select-previous    ))
 #+END_SRC
+** Go
+Set path manually because the desktop emacs can nay find it.
+#+begin_src elisp
+(setenv "PATH" (concat (getenv "PATH") "~/Development/go/bin"))
+#+end_src

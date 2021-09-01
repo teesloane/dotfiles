@@ -23,7 +23,7 @@
        company           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
-       (ivy +fuzzy +childframe +icons)               ; a search engine for love and life
+       (ivy +fuzzy +icons)               ; a search engine for love and life
 
        :ui
        ;;deft              ; notational velocity for Emacs
@@ -43,7 +43,7 @@
         +defaults)       ; default popup rules
        (ligatures +iosevka +extra)
        ;; tabs              ; an tab bar for Emacs
-       treemacs          ; a project drawer, like neotree but cooler
+       (treemacs +lsp)          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -67,7 +67,8 @@
 
        :emacs
        (dired            ; making dired pretty [functional]
-        +ranger          ; bringing the goodness of ranger to dired
+        ;; +ranger
+                                        ; bringing the goodness of ranger to dired
         +icons)           ; colorful icons for dired-mode
        electric          ; smarter, keyword-based electric-indent
        ;;ibuffer         ; interactive buffer management
@@ -96,7 +97,7 @@
        ;;gist              ; interacting with github gists
        (lookup           ; helps you navigate your code and documentation
         +docsets)        ; ...or in Dash docsets locally
-       lsp
+       (lsp +peek)
        ;; macos             ; MacOS-specific commands
        (magit +forge)             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
@@ -114,7 +115,7 @@
        :lang
        ;;agda              ; types of types of types of types...
        (cc +lsp)                ; C/C++/Obj-C madness
-       clojure           ; java with a lisp
+       (clojure +lsp)           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        crystal           ; ruby at the speed of c
@@ -169,7 +170,7 @@
        rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
        (ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-       rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       (rust +lsp)              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        scheme            ; a fully conniving family of lisps
        sh                ; she sells {ba,z,fi}sh shells on the C xor

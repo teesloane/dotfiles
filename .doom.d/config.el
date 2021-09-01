@@ -7,14 +7,16 @@
 (fringe-mode 0)
 (global-auto-revert-mode 1) ; enable for reloading files when they change on disk. Used for sync thing.
 
+;; Basic defaults
+
 ;;; Variable overrides --
 
 (setq-default
- _wiki-path                   "~/Sync/wiki/"
- avy-all-windows              'all-frames
- deft-directory               _wiki-path
+ _wiki-path                     "~/Sync/wiki/"
+ avy-all-windows                'all-frames
+ deft-directory                 _wiki-path
  projectile-project-search-path '("~/Projects" "~/Development")
- vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=no" ; keep vterm happy
+ vterm-module-cmake-args       "-DUSE_SYSTEM_LIBVTERM=no" ; keep vterm happy
  time-stamp-active             t
  time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
  which-key-idle-delay          0.3
@@ -22,6 +24,10 @@
  )
 
 (setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
+
+;; Web Defaults
+
+
 
 ;;; Webby web web
 
@@ -38,16 +44,22 @@
  web-mode-style-padding        2
  )
 
+;; Doom
+
+
 ;; Doom things
+(setq dark-theme 'doom-tomorrow-night
+      light-theme 'doom-flatwhite)
 
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- ;; doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ ;; doom-font                     (font-spec :family "Iosevka" :size 13 :weight 'regular)
  doom-font                     (font-spec :family "JetBrains Mono" :size 13)
- doom-variable-pitch-font      (font-spec :family "Iosevka" :size 14)
  +zen-text-scale               0
- doom-theme                    'doom-tomorrow-night)
+ doom-theme                    dark-theme)
+
+;; Ivy
 
 (after! ivy-posframe
   (setq ivy-fixed-height-minibuffer nil
@@ -59,6 +71,10 @@
           (min-height . ,ivy-height)))
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))))
 
+;; Fonts
+;; Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iosevka pretty in org-mode
+
+
 ;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
 (setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode clojure-mode
                                                    javascript-mode
@@ -66,19 +82,6 @@
 
 (setq highlight-indent-guides-responsive 'top
       highlight-indent-guides-delay 0)
-
-;; Org and R additional symbols
-;; hex code ▷ (9655), ◇ (9671), ▶ (9654), ƒ (402)
-;; This doesn't work anymore:
-;; (setq +ligatures-iosevka-font-alist
-;;       (append +ligatures-iosevka-font-alist
-;;               '(("[ ]" .  "☐")
-;;                 ("[X]" . "☑" )
-;;                 ("[-]" . "❍" )
-;;                 ("%>%" . ?▷)
-;;                 ("%$%" . ?◇)
-;;                 ("%T>%" . ?▶)
-;;                 ("function" . ?ƒ))))
 
 ;; https://is.gd/3VuSXj
 (defface org-checkbox-done-text
@@ -89,16 +92,22 @@
                         '(("^[ \t]*\\(?:[-+*]\\|[0-9]+[).]\\)[ \t]+\\(\\(?:\\[@\\(?:start:\\)?[0-9]+\\][ \t]*\\)?\\[\\(?:X\\|\\([0-9]+\\)/\\2\\)\\][^\n]*\n\\)"
                            1 'org-checkbox-done-text prepend))
                         'append)
-;; (custom-set-faces '(org-checkbox ((t (:foreground nil :inherit org-todo)))))
+
+;; Lightmode / dark mode theme
 
 (defun my/apply-theme (appearance)
   "Load theme, taking current system APPEARANCE into consideration."
   (mapc #'disable-theme custom-enabled-themes)
   (pcase appearance
-    ('light (load-theme 'doom-flatwhite t))
-    ('dark (load-theme 'doom-tomorrow-night t))))
+    ('light (load-theme light-theme t))
+    ('dark (load-theme dark-theme t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+
+;; Pretty leaders.
+
+;; This sets up Magit to have pretty icons with "commit leaders". Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
+
 
 ;;; Magit --
 
@@ -117,6 +126,10 @@
   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 
+;; Set Directories
+
+;; First, configure directory specific variables. These need to run before any =after! org= blocks.
+
 ;;; Org Mode --
 (setq
  org-agenda-files              '("~/Sync/wiki/inbox.org" "~/Sync/wiki/projects.org")
@@ -124,6 +137,8 @@
  org-directory                 _wiki-path
  org-link-file-path-type       'relative
  )
+
+;; Variables
 
 ;;; Org: general variable setting --
 
@@ -139,6 +154,11 @@
    org-log-into-drawer                 t
    org-outline-path-complete-in-steps  nil ; refile easy
    ))
+
+;; Capture Templates
+
+;; A helper for finding the org month you are in (for simpler date tree captures.) [[https://emacs.stackexchange.com/questions/48414/monthly-date-tree][source]].
+
 
 (defun org-find-month-in-datetree()
   (org-datetree-find-date-create (calendar-current-date))
@@ -170,6 +190,9 @@
 
 (after! org
   (setq org-capture-templates my-org-capture-templates))
+
+;; Agenda setup.
+
 
 (after! org
   (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.75 :select t :ttl nil))
@@ -245,6 +268,11 @@
                             (:discard (:anything t))))))))
           )))
 
+;; Habit streak hook.
+
+;; Shows count for habit streak in org agenda. see [[https://www.reddit.com/r/emacs/comments/awsvd1/need_help_to_show_current_streak_habit_as_a/][here.]]
+
+
 (defun org-habit-streak-count ()
   (goto-char (point-min))
   (while (not (eobp))
@@ -267,12 +295,19 @@
     (forward-line 1)))
 (add-hook 'org-agenda-finalize-hook 'org-habit-streak-count)
 
+;; Pomodoro
+
+;; It's SO LOUD.
+
+
 (setq
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-long-break-sound-args "-volume 0.3"
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
+
+;; Org UI
 
 ;; Org general settings / ui
 
@@ -294,7 +329,20 @@
    org-habit-today-glyph                  ?!
    ))
 
+
+
+;; #+RESULTS:
+;; : 8214
+
+;; Enable inlining formatting (bold, italics /etc/ ); Also enable *mixed pitch mode*.
+
+
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
+
+
+
+;; Make it so mixed-pitch headings are not variable fonts.
+
 
 (after! mixed-pitch
   (pushnew! mixed-pitch-fixed-pitch-faces
@@ -303,6 +351,8 @@
             'org-level-7 'org-link
             )
   )
+
+;; Heading font colours and ligatures.
 
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 
@@ -328,7 +378,7 @@
   (appendq! +ligatures-extra-symbols
             `(:checkbox      "☐"
               :pending       "❍"
-              :checkedbox    "☑"
+              :checkedbox    "☒"
               :list_property "∷"
               :results       "🠶"
               :begin_quote   "❮"
@@ -360,13 +410,22 @@
     :em_dash       "---"))
 (plist-put +ligatures-extra-symbols :name "⁍") ; or › could be good?
 
+;; Src backgrounds
+;; Disable org mode src block backgrounds (cleans up backgrounds on headings when sections are folded):
+
+
 (custom-set-faces
   '(org-block-begin-line ((t (:background nil))))
   '(org-block-end-line   ((t (:background nil)))))
 
+;; superstar
+
 (after! org-superstar
-  (setq org-superstar-headline-bullets-list '("☰" "☷" "☵" "☲"  "☳" "☴"  "☶"  "☱")
-        org-superstar-prettify-item-bullets t ))
+  (setq org-superstar-headline-bullets-list '("🙘" "🙙" "🙚" "🙛"))
+  (setq  org-superstar-prettify-item-bullets t)
+
+;; Roam
+
 
 ;; Org Roam Config
 
@@ -414,55 +473,92 @@
            :unnarrowed t)))
   )
 
-;;; Hydras
-
-(defhydra tees/hydra-winnav (:color red)
-  ("s" shrink-window-horizontally "shrink horizontally" :column "Sizing")
-  ("e" enlarge-window-horizontally "enlarge horizontally")
-  ("b" balance-windows "balance window height")
-  ("m" maximize-window "maximize current window")
-  ("M" minimize-window "minimize current window")
-
-  ("H" split-window-below "split horizontally" :column "Split management")
-  ("v" split-window-right "split vertically")
-  ("d" delete-window "delete current window")
-  ("x" delete-other-windows "delete-other-windows")
+;; General
 
 
-  ("z" ace-window "ace window" :color blue :column "Navigation")
-  ("h" windmove-left "← window")
-  ("j" windmove-down "↓ window")
-  ("k" windmove-up "↑ window")
-  ("l" windmove-right "→ window")
-  ("r" toggle-window-split "rotate windows") ; Located in utility functions
-  ("q" nil "quit menu" :color blue :column nil))
+;;; Custom Bindings --
 
-(defhydra tees/hydra-workspace-nav (:color red)
-  ("s" +workspace/display "Show workspaces" )
-  ("h" +workspace/switch-left "Go left" )
-  ("l" +workspace/switch-right "Go left" )
-  ("n" +workspace/new "New" )
-  ("d" +workspace/delete "Delete" )
-  ("r" +workspace/rename "Rename" )
-  ("q" nil "quit menu" :color blue :column nil))
+(map!
+ ;; -- <GLOBAL> --
+ :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
+ :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
+ :desc "Switch to 3rd workspace" :n  "s-3"   (λ! (+workspace/switch-to 2))
+ :desc "Switch to 4th workspace" :n  "s-4"   (λ! (+workspace/switch-to 3))
+ :desc "Switch to 5th workspace" :n  "s-5"   (λ! (+workspace/switch-to 4))
+ :desc "Switch to 6th workspace" :n  "s-6"   (λ! (+workspace/switch-to 5))
+ :desc "Switch to 7th workspace" :n  "s-7"   (λ! (+workspace/switch-to 6))
+ :desc "Switch to 8th workspace" :n  "s-8"   (λ! (+workspace/switch-to 7))
+ :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
+ :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
 
-(defhydra tees/hydra-org-clock (:color blue :hint nil)
-  "
-Clock   In/out^     ^Edit^    ^Summary     (_?_)
------------------------------------------
-        _i_n         _e_ffort _g_oto entry
-        _c_ontinue   _q_uit   _d_isplay
-        _o_ut        ^ ^      _r_eport
-      "
-  ("i" org-clock-in)
-  ("o" org-clock-out)
-  ("c" org-clock-in-last)
-  ("e" org-clock-modify-effort-estimate)
-  ("q" org-clock-cancel)
-  ("g" org-clock-goto)
-  ("d" org-clock-display)
-  ("r" org-clock-report)
-  ("?" (org-info "Clocking commands")))
+; ; -- <LEADER> --
+
+ (:leader
+    (:desc "tees" :prefix "v"
+     :desc "M-X Alt"                   :n "v" #'execute-extended-command
+     :desc "Focus it"                  :n "f" #'focus-mode
+     :desc "Expand region"             :n "e" #'er/expand-region
+     :desc "Hydra-Clock"               :n "c" #'tees/hydra-org-clock/body
+     :desc "Hydra-Workspaces"          :n "w" #'tees/hydra-workspace-nav/body
+     :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda/body
+     :desc "Hydra-Windows"             :n "l" #'tees/hydra-winnav/body
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
+     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
+     )
+
+    ;; additional org roam bindings to `SPC n`
+    (:prefix-map ("n" . "notes")
+      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+        )
+
+    (:prefix-map ("k" . "lisp")
+      :desc "sp-copy"              :n "c" #'sp-copy-sexp
+      :desc "sp-kill"              :n "k" #'sp-kill-sexp
+      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
+      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
+      :desc "sp-up"                :n "u" #'sp-up-sexp
+      :desc "sp-down"              :n "d" #'sp-down-sexp
+      :desc "sp-next"              :n "l" #'sp-next-sexp
+      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+
+;; OS X Specific
+
+
+(global-set-key [(hyper a)] 'mark-whole-buffer)
+(global-set-key [(hyper v)] 'yank)
+(global-set-key [(hyper c)] 'kill-ring-save)
+(global-set-key [(hyper s)] 'save-buffer)
+(global-set-key [(hyper l)] 'goto-line)
+(global-set-key [(hyper w)]
+                (lambda () (interactive) (delete-window)))
+(global-set-key [(hyper z)] 'undo)
+(global-set-key [(hyper a)] 'mark-whole-buffer)
+(global-set-key [(hyper v)] 'yank)
+(global-set-key [(hyper c)] 'kill-ring-save)
+(global-set-key [(hyper s)] 'save-buffer)
+(global-set-key [(hyper l)] 'goto-line)
+(global-set-key [(hyper w)]
+                (lambda () (interactive) (delete-window)))
+(global-set-key [(hyper z)] 'undo)
+
+;; mac switch meta key
+(defun mac-switch-meta nil
+  "switch meta between Option and Command"
+  (interactive)
+  (if (eq mac-option-modifier nil)
+      (progn
+	(setq mac-option-modifier 'meta)
+	(setq mac-command-modifier 'hyper)
+	)
+    (progn
+      (setq mac-option-modifier nil)
+      (setq mac-command-modifier 'meta)
+      )
+    )
+  )
+
+;; Agenda
+
 
 (defhydra tees/hydra-org-agenda (:pre (setq which-key-inhibit t)
                             :post (setq which-key-inhibit nil)
@@ -543,50 +639,68 @@ _vr_ reset      ^^                       ^^                 ^^
   ("." org-agenda-goto-today)
   ("gr" org-agenda-redo))
 
-;;; Custom Bindings --
+;; Window navigation
 
-(map!
- ;; -- <GLOBAL> --
- :desc "Switch to 1st workspace" :n  "s-1"   (λ! (+workspace/switch-to 0))
- :desc "Switch to 2nd workspace" :n  "s-2"   (λ! (+workspace/switch-to 1))
- :desc "Switch to 3rd workspace" :n  "s-3"   (λ! (+workspace/switch-to 2))
- :desc "Switch to 4th workspace" :n  "s-4"   (λ! (+workspace/switch-to 3))
- :desc "Switch to 5th workspace" :n  "s-5"   (λ! (+workspace/switch-to 4))
- :desc "Switch to 6th workspace" :n  "s-6"   (λ! (+workspace/switch-to 5))
- :desc "Switch to 7th workspace" :n  "s-7"   (λ! (+workspace/switch-to 6))
- :desc "Switch to 8th workspace" :n  "s-8"   (λ! (+workspace/switch-to 7))
- :desc "Switch to 9th workspace" :n  "s-9"   (λ! (+workspace/switch-to 8))
- :desc "Create workspace"        :n  "s-t"   (λ! (+workspace/new))
 
-; ; -- <LEADER> --
+;;; Hydras
 
- (:leader
-    (:desc "tees" :prefix "v"
-     :desc "M-X Alt"                   :n "v" #'execute-extended-command
-     :desc "Focus it"                  :n "f" #'focus-mode
-     :desc "Expand region"             :n "e" #'er/expand-region
-     :desc "Hydra-Clock"               :n "c" #'tees/hydra-org-clock/body
-     :desc "Hydra-Workspaces"          :n "w" #'tees/hydra-workspace-nav/body
-     :desc "Hydra-Agenda"              :n "a" #'tees/hydra-org-agenda/body
-     :desc "Hydra-Windows"             :n "l" #'tees/hydra-winnav/body
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
-     :desc "Correct Spelling at Point" :n "s" #'flyspell-correct-word-before-point
-     )
+(defhydra tees/hydra-winnav (:color red)
+  ("s" shrink-window-horizontally "shrink horizontally" :column "Sizing")
+  ("e" enlarge-window-horizontally "enlarge horizontally")
+  ("b" balance-windows "balance window height")
+  ("m" maximize-window "maximize current window")
+  ("M" minimize-window "minimize current window")
 
-    ;; additional org roam bindings to `SPC n`
-    (:prefix-map ("n" . "notes")
-      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
-        )
+  ("H" split-window-below "split horizontally" :column "Split management")
+  ("v" split-window-right "split vertically")
+  ("d" delete-window "delete current window")
+  ("x" delete-other-windows "delete-other-windows")
 
-    (:prefix-map ("k" . "lisp")
-      :desc "sp-copy"              :n "c" #'sp-copy-sexp
-      :desc "sp-kill"              :n "k" #'sp-kill-sexp
-      :desc "sp-slurp"             :n "S" #'sp-forward-slurp-sexp
-      :desc "sp-barf"              :n "B" #'sp-forward-barf-sexp
-      :desc "sp-up"                :n "u" #'sp-up-sexp
-      :desc "sp-down"              :n "d" #'sp-down-sexp
-      :desc "sp-next"              :n "l" #'sp-next-sexp
-      :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+
+  ("z" ace-window "ace window" :color blue :column "Navigation")
+  ("h" windmove-left "← window")
+  ("j" windmove-down "↓ window")
+  ("k" windmove-up "↑ window")
+  ("l" windmove-right "→ window")
+  ("r" toggle-window-split "rotate windows") ; Located in utility functions
+  ("q" nil "quit menu" :color blue :column nil))
+
+;; Workspace navigation
+
+
+(defhydra tees/hydra-workspace-nav (:color red)
+  ("s" +workspace/display "Show workspaces" )
+  ("h" +workspace/switch-left "Go left" )
+  ("l" +workspace/switch-right "Go left" )
+  ("n" +workspace/new "New" )
+  ("d" +workspace/delete "Delete" )
+  ("r" +workspace/rename "Rename" )
+  ("q" nil "quit menu" :color blue :column nil))
+
+;; Clock
+
+
+(defhydra tees/hydra-org-clock (:color blue :hint nil)
+  "
+Clock   In/out^     ^Edit^    ^Summary     (_?_)
+-----------------------------------------
+        _i_n         _e_ffort _g_oto entry
+        _c_ontinue   _q_uit   _d_isplay
+        _o_ut        ^ ^      _r_eport
+      "
+  ("i" org-clock-in)
+  ("o" org-clock-out)
+  ("c" org-clock-in-last)
+  ("e" org-clock-modify-effort-estimate)
+  ("q" org-clock-cancel)
+  ("g" org-clock-goto)
+  ("d" org-clock-display)
+  ("r" org-clock-report)
+  ("?" (org-info "Clocking commands")))
+
+;; Enable GPG
+;; This was originally for a log.gpg file. Will probably migrate to org-journal.
+
 
 ;;' -- Enable gpg stuff --
 
@@ -594,6 +708,9 @@ _vr_ reset      ^^                       ^^                 ^^
 ;; (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
 ;; (epa-file-enable)
 ;; (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
+
+;; Hooks
+
 
 ;;;  Hooks --
 
@@ -603,6 +720,26 @@ _vr_ reset      ^^                       ^^                 ^^
 ;; Don't show line numbers in writeroom mode.
 (add-hook! 'writeroom-mode-hook
   (display-line-numbers-mode (if writeroom-mode -1 +1)))
+
+;; LSP
+
+;; General LSP settings:
+
+
+(setq
+ lsp-lens-enable t
+ lsp-ui-imenu-auto-refresh t
+ lsp-headerline-breadcrumb-enable t
+ lsp-ui-sideline-show-code-actions nil
+ )
+
+;; Getting happy completion with cider.
+
+;; I got here because my arrow keys weren't working for completion with clojure/cider. Related:
+
+;; - [[https://github.com/hlissner/doom-emacs/issues/1335][doom-emacs#1335 Cider + Company not working as it should]]
+;; - [[https://github.com/hlissner/doom-emacs/issues/2610#issuecomment-593067367][doom-emacs#2610 Company completion with Clojure - arrow keys are clo...]]
+
 
 (after! cider
   (add-hook 'company-completion-started-hook 'custom/set-company-maps)
@@ -660,6 +797,7 @@ _vr_ reset      ^^                       ^^                 ^^
     [tab]     #'company-complete-common-or-cycle
     [backtab] #'company-select-previous    ))
 
-(defun my/tweet-something ()
-    (interactive)
-    (=twitter))
+;; Go
+;; Set path manually because the desktop emacs can nay find it.
+
+(setenv "PATH" (concat (getenv "PATH") "~/Development/go/bin"))
