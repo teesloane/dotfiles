@@ -7,6 +7,8 @@
 (fringe-mode 0)
 (global-auto-revert-mode 1) ; enable for reloading files when they change on disk. Used for sync thing.
 
+;; Basic defaults
+
 ;;; Variable overrides --
 
 (setq-default
@@ -23,6 +25,10 @@
 
 (setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
 
+;; Web Defaults
+
+
+
 ;;; Webby web web
 
 (setq-default
@@ -38,6 +44,9 @@
  web-mode-style-padding        2
  )
 
+;; Doom
+
+
 ;; Doom things
 (setq dark-theme 'doom-tomorrow-night
       light-theme 'doom-flatwhite)
@@ -47,18 +56,13 @@
  line-spacing                  2
  ;; doom-font                     (font-spec :family "Iosevka" :size 13 :weight 'regular)
  doom-font                     (font-spec :family "JetBrains Mono" :size 13)
+ doom-variable-pitch-font      (font-spec :family "Iosevka" :size 13)
  +zen-text-scale               0
  doom-theme                    dark-theme)
 
-(after! ivy-posframe
-  (setq ivy-fixed-height-minibuffer nil
-        ivy-posframe-style 'frame-top-center
-        ivy-posframe-border-width 10
-        ivy-posframe-width 90
-        ivy-posframe-parameters
-        `((min-width . 90)
-          (min-height . ,ivy-height)))
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))))
+;; Fonts
+;; Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iosevka pretty in org-mode
+
 
 ;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
 (setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode clojure-mode
@@ -78,6 +82,8 @@
                            1 'org-checkbox-done-text prepend))
                         'append)
 
+;; Lightmode / dark mode theme
+
 (defun my/apply-theme (appearance)
   "Load theme, taking current system APPEARANCE into consideration."
   (mapc #'disable-theme custom-enabled-themes)
@@ -87,30 +93,41 @@
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
+;; Pretty leaders.
+
+;; This sets up Magit to have pretty icons with "commit leaders". Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
+
+
 ;;; Magit --
 
 ;; Make magit render icons for common commit leaders (ex: "Fix:" becomes "")
-(use-package! pretty-magit
-  :init
-  (pretty-magit "Feat" ? '(:foreground "slate gray" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Add" ? '(:foreground "#375E97" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Fix" ? '(:foreground "#FB6542" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Clean" ? '(:foreground "#B5E655" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Docs" ? '(:foreground "#FFBB00" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Test" ? '(:foreground "#4BB5C1" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Start" ? '(:foreground "#2ecc71" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Stop" ? '(:foreground "#e74c3c" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Refactor" ? '(:foreground "#9b59b6" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
-  (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
+;; (use-package! pretty-magit
+;;   :init
+;;   (pretty-magit "Feat" ? '(:foreground "slate gray" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Add" ? '(:foreground "#375E97" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Fix" ? '(:foreground "#FB6542" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Clean" ? '(:foreground "#B5E655" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Docs" ? '(:foreground "#FFBB00" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Test" ? '(:foreground "#4BB5C1" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Start" ? '(:foreground "#2ecc71" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Stop" ? '(:foreground "#e74c3c" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Refactor" ? '(:foreground "#9b59b6" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
+;;   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
+
+;; Set Directories
+
+;; First, configure directory specific variables. These need to run before any =after! org= blocks.
 
 ;;; Org Mode --
 (setq
  org-agenda-files              '("~/Sync/wiki/inbox.org" "~/Sync/wiki/projects.org")
  org-default-notes-file        (concat _wiki-path "inbox.org")
- org-directory                 _wiki-path
+ org-directory                  "~/Sync/wiki/" ; _wiki-path
  org-link-file-path-type       'relative
  )
+
+;; Variables
 
 ;;; Org: general variable setting --
 
@@ -126,6 +143,11 @@
    org-log-into-drawer                 t
    org-outline-path-complete-in-steps  nil ; refile easy
    ))
+
+;; Capture Templates
+
+;; A helper for finding the org month you are in (for simpler date tree captures.) [[https://emacs.stackexchange.com/questions/48414/monthly-date-tree][source]].
+
 
 (defun org-find-month-in-datetree()
   (org-datetree-find-date-create (calendar-current-date))
@@ -157,6 +179,9 @@
 
 (after! org
   (setq org-capture-templates my-org-capture-templates))
+
+;; Agenda setup.
+
 
 (after! org
   (set-popup-rule! "^\\*Org Agenda" :side 'bottom :size 0.75 :select t :ttl nil))
@@ -232,6 +257,11 @@
                             (:discard (:anything t))))))))
           )))
 
+;; Habit streak hook.
+
+;; Shows count for habit streak in org agenda. see [[https://www.reddit.com/r/emacs/comments/awsvd1/need_help_to_show_current_streak_habit_as_a/][here.]]
+
+
 (defun org-habit-streak-count ()
   (goto-char (point-min))
   (while (not (eobp))
@@ -254,12 +284,19 @@
     (forward-line 1)))
 (add-hook 'org-agenda-finalize-hook 'org-habit-streak-count)
 
+;; Pomodoro
+
+;; It's SO LOUD.
+
+
 (setq
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-finished-sound-args "-volume 0.3"
  org-pomodoro-long-break-sound-args "-volume 0.3"
  org-pomodoro-short-break-sound-args "-volume 0.3"
  )
+
+;; Org UI
 
 ;; Org general settings / ui
 
@@ -281,7 +318,20 @@
    org-habit-today-glyph                  ?!
    ))
 
+
+
+;; #+RESULTS:
+;; : 8214
+
+;; Enable inlining formatting (bold, italics /etc/ ); Also enable *mixed pitch mode*.
+
+
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
+
+
+
+;; Make it so mixed-pitch headings are not variable fonts.
+
 
 (after! mixed-pitch
   (pushnew! mixed-pitch-fixed-pitch-faces
@@ -290,6 +340,8 @@
             'org-level-7 'org-link
             )
   )
+
+;; Heading font colours and ligatures.
 
 (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 
@@ -347,13 +399,22 @@
     :em_dash       "---"))
 (plist-put +ligatures-extra-symbols :name "⁍") ; or › could be good?
 
+;; Src backgrounds
+;; Disable org mode src block backgrounds (cleans up backgrounds on headings when sections are folded):
+
+
 (custom-set-faces
   '(org-block-begin-line ((t (:background nil))))
   '(org-block-end-line   ((t (:background nil)))))
 
+;; superstar
+
 (after! org-superstar
   (setq org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●"))
   (setq  org-superstar-prettify-item-bullets t))
+
+;; Roam
+
 
 ;; Org Roam Config
 
@@ -401,6 +462,9 @@
            :unnarrowed t)))
   )
 
+;; General
+
+
 ;;; Custom Bindings --
 
 (map!
@@ -433,7 +497,9 @@
 
     ;; additional org roam bindings to `SPC n`
     (:prefix-map ("n" . "notes")
-      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+      ;; :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+       :desc "Browse notes"                "/" #'+default/browse-notes
+
         )
 
     (:prefix-map ("k" . "lisp")
@@ -445,6 +511,9 @@
       :desc "sp-down"              :n "d" #'sp-down-sexp
       :desc "sp-next"              :n "l" #'sp-next-sexp
       :desc "sp-prev"              :n "h" #'sp-previous-sexp)))
+
+;; OS X Specific
+
 
 (global-set-key [(hyper a)] 'mark-whole-buffer)
 (global-set-key [(hyper v)] 'yank)
@@ -478,6 +547,9 @@
       )
     )
   )
+
+;; Agenda
+
 
 (defhydra tees/hydra-org-agenda (:pre (setq which-key-inhibit t)
                             :post (setq which-key-inhibit nil)
@@ -558,6 +630,9 @@ _vr_ reset      ^^                       ^^                 ^^
   ("." org-agenda-goto-today)
   ("gr" org-agenda-redo))
 
+;; Window navigation
+
+
 ;;; Hydras
 
 (defhydra tees/hydra-winnav (:color red)
@@ -581,6 +656,9 @@ _vr_ reset      ^^                       ^^                 ^^
   ("r" toggle-window-split "rotate windows") ; Located in utility functions
   ("q" nil "quit menu" :color blue :column nil))
 
+;; Workspace navigation
+
+
 (defhydra tees/hydra-workspace-nav (:color red)
   ("s" +workspace/display "Show workspaces" )
   ("h" +workspace/switch-left "Go left" )
@@ -589,6 +667,9 @@ _vr_ reset      ^^                       ^^                 ^^
   ("d" +workspace/delete "Delete" )
   ("r" +workspace/rename "Rename" )
   ("q" nil "quit menu" :color blue :column nil))
+
+;; Clock
+
 
 (defhydra tees/hydra-org-clock (:color blue :hint nil)
   "
@@ -608,12 +689,19 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
   ("r" org-clock-report)
   ("?" (org-info "Clocking commands")))
 
+;; Enable GPG
+;; This was originally for a log.gpg file. Will probably migrate to org-journal.
+
+
 ;;' -- Enable gpg stuff --
 
 ;; (require 'epa-file)
 ;; (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
 ;; (epa-file-enable)
 ;; (setq epa-file-cache-passphrase-for-symmetric-encryption nil) ; disable caching of passphrases.
+
+;; Hooks
+
 
 ;;;  Hooks --
 
@@ -624,12 +712,24 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
 (add-hook! 'writeroom-mode-hook
   (display-line-numbers-mode (if writeroom-mode -1 +1)))
 
+;; LSP
+
+;; General LSP settings:
+
+
 (setq
  lsp-lens-enable t
  lsp-ui-imenu-auto-refresh t
- lsp-headerline-breadcrumb-enable t
  lsp-ui-sideline-show-code-actions nil
  )
+
+;; Getting happy completion with cider.
+
+;; I got here because my arrow keys weren't working for completion with clojure/cider. Related:
+
+;; - [[https://github.com/hlissner/doom-emacs/issues/1335][doom-emacs#1335 Cider + Company not working as it should]]
+;; - [[https://github.com/hlissner/doom-emacs/issues/2610#issuecomment-593067367][doom-emacs#2610 Company completion with Clojure - arrow keys are clo...]]
+
 
 (after! cider
   (add-hook 'company-completion-started-hook 'custom/set-company-maps)
@@ -686,5 +786,8 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
     "TAB"     #'company-complete-common-or-cycle
     [tab]     #'company-complete-common-or-cycle
     [backtab] #'company-select-previous    ))
+
+;; Go
+;; Set path manually because the desktop emacs can nay find it.
 
 (setenv "PATH" (concat (getenv "PATH") "~/Development/go/bin"))

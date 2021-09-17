@@ -15,7 +15,7 @@ Thank you's:
 #+BEGIN_SRC elisp :tangle packages.el
 (package! org-super-agenda)
 ;; (package! solaire-mode :disable tter)
-(package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
+;; (package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
 (package! focus)
 
 ;; (package! nano-emacs :recipe (:host github :repo "rougier/nano-emacs"))
@@ -87,11 +87,12 @@ Thank you's:
  line-spacing                  2
  ;; doom-font                     (font-spec :family "Iosevka" :size 13 :weight 'regular)
  doom-font                     (font-spec :family "JetBrains Mono" :size 13)
+ doom-variable-pitch-font      (font-spec :family "Iosevka" :size 13)
  +zen-text-scale               0
  doom-theme                    dark-theme)
 #+END_SRC
 
-** Ivy
+** COMMENT Ivy
 #+BEGIN_SRC elisp
 (after! ivy-posframe
   (setq ivy-fixed-height-minibuffer nil
@@ -151,19 +152,19 @@ This sets up Magit to have pretty icons with "commit leaders". Borrowed from [[h
 ;;; Magit --
 
 ;; Make magit render icons for common commit leaders (ex: "Fix:" becomes "")
-(use-package! pretty-magit
-  :init
-  (pretty-magit "Feat" ? '(:foreground "slate gray" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Add" ? '(:foreground "#375E97" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Fix" ? '(:foreground "#FB6542" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Clean" ? '(:foreground "#B5E655" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Docs" ? '(:foreground "#FFBB00" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Test" ? '(:foreground "#4BB5C1" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Start" ? '(:foreground "#2ecc71" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Stop" ? '(:foreground "#e74c3c" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "Refactor" ? '(:foreground "#9b59b6" :height 1.0 :family "FontAwesome"))
-  (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
-  (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
+;; (use-package! pretty-magit
+;;   :init
+;;   (pretty-magit "Feat" ? '(:foreground "slate gray" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Add" ? '(:foreground "#375E97" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Fix" ? '(:foreground "#FB6542" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Clean" ? '(:foreground "#B5E655" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Docs" ? '(:foreground "#FFBB00" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Test" ? '(:foreground "#4BB5C1" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Start" ? '(:foreground "#2ecc71" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Stop" ? '(:foreground "#e74c3c" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "Refactor" ? '(:foreground "#9b59b6" :height 1.0 :family "FontAwesome"))
+;;   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
+;;   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 #+END_SRC
 
 * Org Mode
@@ -175,7 +176,7 @@ First, configure directory specific variables. These need to run before any =aft
 (setq
  org-agenda-files              '("~/Sync/wiki/inbox.org" "~/Sync/wiki/projects.org")
  org-default-notes-file        (concat _wiki-path "inbox.org")
- org-directory                 _wiki-path
+ org-directory                  "~/Sync/wiki/" ; _wiki-path
  org-link-file-path-type       'relative
  )
 #+END_SRC
@@ -568,7 +569,9 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
 
     ;; additional org roam bindings to `SPC n`
     (:prefix-map ("n" . "notes")
-      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+      ;; :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+       :desc "Browse notes"                "/" #'+default/browse-notes
+
         )
 
     (:prefix-map ("k" . "lisp")
@@ -807,7 +810,6 @@ General LSP settings:
 (setq
  lsp-lens-enable t
  lsp-ui-imenu-auto-refresh t
- lsp-headerline-breadcrumb-enable t
  lsp-ui-sideline-show-code-actions nil
  )
 #+end_src
