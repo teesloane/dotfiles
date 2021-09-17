@@ -48,7 +48,7 @@ Thank you's:
  time-stamp-active             t
  time-stamp-format             "%04y-%02m-%02d %02H:%02M:%02S"
  which-key-idle-delay          0.3
- counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
+ ;; counsel-rg-base-command       "rg -i -M 160 --no-heading --line-number --color never %s ." ;; stop rg crashing on long files.
  )
 
 (setq org-babel-default-header-args '((:results . "replace") (:comments . "org")))
@@ -80,7 +80,7 @@ Thank you's:
 #+BEGIN_SRC elisp
 ;; Doom things
 (setq dark-theme 'doom-tomorrow-night
-      light-theme 'doom-flatwhite)
+      light-theme 'doom-nord)
 
 (setq-default
  global-whitespace-mode        0
@@ -92,32 +92,10 @@ Thank you's:
  doom-theme                    dark-theme)
 #+END_SRC
 
-** COMMENT Ivy
-#+BEGIN_SRC elisp
-(after! ivy-posframe
-  (setq ivy-fixed-height-minibuffer nil
-        ivy-posframe-style 'frame-top-center
-        ivy-posframe-border-width 10
-        ivy-posframe-width 90
-        ivy-posframe-parameters
-        `((min-width . 90)
-          (min-height . ,ivy-height)))
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))))
-
-#+END_SRC
-
 ** Fonts
 Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iosevka pretty in org-mode
 
 #+BEGIN_SRC elisp
-;; Best with custom Iosevka font. See, e.g., https://is.gd/L67AoR
-(setq +pretty-code-enabled-modes '(emacs-lisp-mode org-mode clojure-mode
-                                                   javascript-mode
-                                   latex-mode scheme-mode racket-mode ess-r-mode))
-
-(setq highlight-indent-guides-responsive 'top
-      highlight-indent-guides-delay 0)
-
 ;; https://is.gd/3VuSXj
 (defface org-checkbox-done-text
   '((t (:foreground "#5a637b")))
@@ -143,28 +121,28 @@ Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iose
 #+end_src
 
 * Magit
-** Pretty leaders.
+** COMMENT Pretty leaders.
 
 This sets up Magit to have pretty icons with "commit leaders". Borrowed from [[http://www.modernemacs.com/post/pretty-magit/][here]].
 
 #+BEGIN_SRC elisp
 
-;;; Magit --
+Magit --
 
-;; Make magit render icons for common commit leaders (ex: "Fix:" becomes "")
-;; (use-package! pretty-magit
-;;   :init
-;;   (pretty-magit "Feat" ? '(:foreground "slate gray" :height 1.0 :family "FontAwesome"))
-;;   (pretty-magit "Add" ? '(:foreground "#375E97" :height 1.0 :family "FontAwesome"))
-;;   (pretty-magit "Fix" ? '(:foreground "#FB6542" :height 1.0 :family "FontAwesome"))
-;;   (pretty-magit "Clean" ? '(:foreground "#B5E655" :height 1.0 :family "FontAwesome"))
-;;   (pretty-magit "Docs" ? '(:foreground "#FFBB00" :height 1.0 :family "FontAwesome"))
-;;   (pretty-magit "Test" ? '(:foreground "#4BB5C1" :height 1.0 :family "FontAwesome"))
-;;   (pretty-magit "Start" ? '(:foreground "#2ecc71" :height 1.0 :family "FontAwesome"))
-;;   (pretty-magit "Stop" ? '(:foreground "#e74c3c" :height 1.0 :family "FontAwesome"))
-;;   (pretty-magit "Refactor" ? '(:foreground "#9b59b6" :height 1.0 :family "FontAwesome"))
-;;   (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
-;;   (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
+Make magit render icons for common commit leaders (ex: "Fix:" becomes "")
+(use-package! pretty-magit
+  :init
+  (pretty-magit "Feat" ? '(:foreground "slate gray" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Add" ? '(:foreground "#375E97" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Fix" ? '(:foreground "#FB6542" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Clean" ? '(:foreground "#B5E655" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Docs" ? '(:foreground "#FFBB00" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Test" ? '(:foreground "#4BB5C1" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Start" ? '(:foreground "#2ecc71" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Stop" ? '(:foreground "#e74c3c" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "Refactor" ? '(:foreground "#9b59b6" :height 1.0 :family "FontAwesome"))
+  (pretty-magit "master" ? '(:box nil :height 1.0 :family "github-octicons") t)
+  (pretty-magit "origin" ? '(:box nil :height 1.0 :family "github-octicons") t))
 #+END_SRC
 
 * Org Mode
@@ -197,9 +175,8 @@ First, configure directory specific variables. These need to run before any =aft
    org-log-into-drawer                 t
    org-outline-path-complete-in-steps  nil ; refile easy
    ))
-
-
 #+END_SRC
+
 ** Capture Templates
 
 A helper for finding the org month you are in (for simpler date tree captures.) [[https://emacs.stackexchange.com/questions/48414/monthly-date-tree][source]].
@@ -239,7 +216,10 @@ A helper for finding the org month you are in (for simpler date tree captures.) 
   (setq org-capture-templates my-org-capture-templates))
 #+END_SRC
 
-** Org Agenda
+** COMMENT Org Agenda
+
+Not really using agenda right now, but this was useful at one point.
+
 *** Agenda setup.
 
 #+BEGIN_SRC elisp
@@ -492,7 +472,7 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
   :init
-  (setq org-roam-directory "~/Sync/wiki"
+  (setq org-roam-directory "~/Sync/wiki/"
         org-roam-db-location "~/.org/org-roam.db"
         org-roam-link-title-format "%sº") ;; appends a  `º` to each Roam link.
   (map!
@@ -569,8 +549,8 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
 
     ;; additional org roam bindings to `SPC n`
     (:prefix-map ("n" . "notes")
-      ;; :desc "Org-Roam-Find"                "/" #'org-roam-find-file
-       :desc "Browse notes"                "/" #'+default/browse-notes
+      :desc "Org-Roam-Find"                "/" #'org-roam-find-file
+       ;; :desc "Browse notes"                "/" #'+default/browse-notes
 
         )
 
@@ -773,7 +753,7 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
   ("?" (org-info "Clocking commands")))
 #+END_SRC
 
-* Enable GPG
+* COMMENT Enable GPG
 This was originally for a log.gpg file. Will probably migrate to org-journal.
 
 #+BEGIN_SRC elisp

@@ -1,6 +1,3 @@
-;; Packages
-
-
 (package! org-super-agenda)
 ;; (package! solaire-mode :disable tter)
 ;; (package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
