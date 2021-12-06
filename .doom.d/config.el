@@ -2,6 +2,11 @@
 
 
 ;;; Startup Calls --
+;; unbreak doom on emacs@29
+(general-auto-unbind-keys :off)
+(remove-hook 'doom-after-init-modules-hook #'general-auto-unbind-keys)
+(setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10:/usr/local/opt/libgccjit/lib/gcc/10:/usr/local/opt/gcc/lib/gcc/10/gcc/x86_64-apple-darwin20/10.2.0")
+
 
 (menu-bar-mode t)
 (fringe-mode 0)
@@ -39,17 +44,20 @@
  )
 
 ;; Doom things
-(setq dark-theme 'doom-tomorrow-night
-      light-theme 'doom-nord)
+(setq dark-theme 'doom-opera
+      light-theme 'doom-acario-light)
 
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- ;; doom-font                     (font-spec :family "Iosevka" :size 13 :weight 'regular)
- doom-font                     (font-spec :family "JetBrains Mono" :size 13)
- doom-variable-pitch-font      (font-spec :family "Iosevka" :size 13)
+  ;; doom-font                     (font-spec :family "IBM Plex Mono" :size 13 :weight 'regular)
+ doom-font                     (font-spec :family "JetBrains Mono" :size 12)
+ doom-variable-pitch-font      (font-spec :family "IBM Plex Serif" :size 12)
  +zen-text-scale               0
  doom-theme                    dark-theme)
+
+(after! lsp-mode
+  (setq lsp-ui-doc-enable nil))
 
 ;; https://is.gd/3VuSXj
 (defface org-checkbox-done-text
@@ -69,6 +77,9 @@
     ('dark (load-theme dark-theme t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+
+(dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
+  (remove-hook hook 'highlight-indent-guides-mode))
 
 ;;; Org Mode --
 (setq
@@ -192,11 +203,11 @@
               :end_quote     "❯"
               :begin_export  "⯮"
               :end_export    "⯬"
-              :priority_a   ,(propertize "⚑" 'face 'all-the-icons-red)
-              :priority_b   ,(propertize "⬆" 'face 'all-the-icons-orange)
-              :priority_c   ,(propertize "■" 'face 'all-the-icons-yellow)
-              :priority_d   ,(propertize "⬇" 'face 'all-the-icons-green)
-              :priority_e   ,(propertize "❓" 'face 'all-the-icons-blue)
+              ;; :priority_a   ,(propertize "⚑" 'face 'all-the-icons-red)
+              ;; :priority_b   ,(propertize "🡅" 'face 'all-the-icons-orange)
+              ;; :priority_c   ,(propertize "■" 'face 'all-the-icons-yellow)
+              ;; :priority_d   ,(propertize "🡇" 'face 'all-the-icons-green)
+              ;; :priority_e   ,(propertize "❓" 'face 'all-the-icons-blue)
               :em_dash       "—"))
   (set-ligatures! 'org-mode
     :merge t
@@ -209,11 +220,11 @@
     :end_quote     "#+end_quote"
     :begin_export  "#+begin_export"
     :end_export    "#+end_export"
-    :priority_a    "[#A]"
-    :priority_b    "[#B]"
-    :priority_c    "[#C]"
-    :priority_d    "[#D]"
-    :priority_e    "[#E]"
+    ;; :priority_a    "[#A]"
+    ;; :priority_b    "[#B]"
+    ;; :priority_c    "[#C]"
+    ;; :priority_d    "[#D]"
+    ;; :priority_e    "[#E]"
     :em_dash       "---"))
 (plist-put +ligatures-extra-symbols :name "⁍") ; or › could be good?
 
@@ -493,6 +504,7 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
  lsp-lens-enable t
  lsp-ui-imenu-auto-refresh t
  lsp-ui-sideline-show-code-actions nil
+ lsp-zig-zls-executable "/usr/local/bin/zls"
  )
 
 (after! cider
@@ -552,3 +564,15 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
     [backtab] #'company-select-previous    ))
 
 (setenv "PATH" (concat (getenv "PATH") "~/Development/go/bin"))
+
+(use-package! zig-mode
+  :hook ((zig-mode . lsp-deferred))
+  :custom (zig-format-on-save nil)
+  :config
+  (after! lsp-mode
+    (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
+    (lsp-register-client
+      (make-lsp-client
+        :new-connection (lsp-stdio-connection "/usr/local/bin/zls")
+        :major-modes '(zig-mode)
+        :server-id 'zls))))

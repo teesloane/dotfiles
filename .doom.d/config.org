@@ -17,8 +17,13 @@ Thank you's:
 ;; (package! solaire-mode :disable tter)
 ;; (package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
 (package! focus)
+(package! parseclj :recipe (:build (:not compile)))
+(unpin! cider)
+(package! blamer :recipe (:host github :repo "artawower/blamer.el"))
 
 ;; (package! nano-emacs :recipe (:host github :repo "rougier/nano-emacs"))
+
+(package! org-bars :recipe (:local-repo "~/.doom.d/lisp/"))
 #+END_SRC
 
 * General Customization
@@ -27,6 +32,11 @@ Thank you's:
 #+BEGIN_SRC elisp :comments org
 
 ;;; Startup Calls --
+;; unbreak doom on emacs@29
+(general-auto-unbind-keys :off)
+(remove-hook 'doom-after-init-modules-hook #'general-auto-unbind-keys)
+(setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10:/usr/local/opt/libgccjit/lib/gcc/10:/usr/local/opt/gcc/lib/gcc/10/gcc/x86_64-apple-darwin20/10.2.0")
+
 
 (menu-bar-mode t)
 (fringe-mode 0)
@@ -79,18 +89,24 @@ Thank you's:
 
 #+BEGIN_SRC elisp
 ;; Doom things
-(setq dark-theme 'doom-tomorrow-night
-      light-theme 'doom-nord)
+(setq dark-theme 'doom-opera
+      light-theme 'doom-acario-light)
 
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
- ;; doom-font                     (font-spec :family "Iosevka" :size 13 :weight 'regular)
- doom-font                     (font-spec :family "JetBrains Mono" :size 13)
- doom-variable-pitch-font      (font-spec :family "Iosevka" :size 13)
+  ;; doom-font                     (font-spec :family "IBM Plex Mono" :size 13 :weight 'regular)
+ doom-font                     (font-spec :family "JetBrains Mono" :size 12)
+ doom-variable-pitch-font      (font-spec :family "IBM Plex Serif" :size 12)
  +zen-text-scale               0
  doom-theme                    dark-theme)
 #+END_SRC
+** LSP
+#+begin_src elisp
+
+(after! lsp-mode
+  (setq lsp-ui-doc-enable nil))
+#+end_src
 
 ** Fonts
 Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iosevka pretty in org-mode
@@ -118,6 +134,14 @@ Borrowed from [[https://aliquote.org/post/enliven-your-emacs/][here]]. Make Iose
     ('dark (load-theme dark-theme t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+#+end_src
+** Indent guides
+
+Stop indent guides from auto showing.
+
+#+begin_src elisp
+(dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
+  (remove-hook hook 'highlight-indent-guides-mode))
 #+end_src
 
 * Magit
@@ -418,11 +442,11 @@ Make it so mixed-pitch headings are not variable fonts.
               :end_quote     "❯"
               :begin_export  "⯮"
               :end_export    "⯬"
-              :priority_a   ,(propertize "⚑" 'face 'all-the-icons-red)
-              :priority_b   ,(propertize "⬆" 'face 'all-the-icons-orange)
-              :priority_c   ,(propertize "■" 'face 'all-the-icons-yellow)
-              :priority_d   ,(propertize "⬇" 'face 'all-the-icons-green)
-              :priority_e   ,(propertize "❓" 'face 'all-the-icons-blue)
+              ;; :priority_a   ,(propertize "⚑" 'face 'all-the-icons-red)
+              ;; :priority_b   ,(propertize "🡅" 'face 'all-the-icons-orange)
+              ;; :priority_c   ,(propertize "■" 'face 'all-the-icons-yellow)
+              ;; :priority_d   ,(propertize "🡇" 'face 'all-the-icons-green)
+              ;; :priority_e   ,(propertize "❓" 'face 'all-the-icons-blue)
               :em_dash       "—"))
   (set-ligatures! 'org-mode
     :merge t
@@ -435,11 +459,11 @@ Make it so mixed-pitch headings are not variable fonts.
     :end_quote     "#+end_quote"
     :begin_export  "#+begin_export"
     :end_export    "#+end_export"
-    :priority_a    "[#A]"
-    :priority_b    "[#B]"
-    :priority_c    "[#C]"
-    :priority_d    "[#D]"
-    :priority_e    "[#E]"
+    ;; :priority_a    "[#A]"
+    ;; :priority_b    "[#B]"
+    ;; :priority_c    "[#C]"
+    ;; :priority_d    "[#D]"
+    ;; :priority_e    "[#E]"
     :em_dash       "---"))
 (plist-put +ligatures-extra-symbols :name "⁍") ; or › could be good?
 
@@ -791,6 +815,7 @@ General LSP settings:
  lsp-lens-enable t
  lsp-ui-imenu-auto-refresh t
  lsp-ui-sideline-show-code-actions nil
+ lsp-zig-zls-executable "/usr/local/bin/zls"
  )
 #+end_src
 
@@ -863,4 +888,19 @@ I got here because my arrow keys weren't working for completion with clojure/cid
 Set path manually because the desktop emacs can nay find it.
 #+begin_src elisp
 (setenv "PATH" (concat (getenv "PATH") "~/Development/go/bin"))
+#+end_src
+** Zig
+#+begin_src elisp
+(use-package! zig-mode
+  :hook ((zig-mode . lsp-deferred))
+  :custom (zig-format-on-save nil)
+  :config
+  (after! lsp-mode
+    (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
+    (lsp-register-client
+      (make-lsp-client
+        :new-connection (lsp-stdio-connection "/usr/local/bin/zls")
+        :major-modes '(zig-mode)
+        :server-id 'zls))))
+
 #+end_src
