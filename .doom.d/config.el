@@ -52,7 +52,7 @@
  line-spacing                  2
   ;; doom-font                     (font-spec :family "IBM Plex Mono" :size 13 :weight 'regular)
  doom-font                     (font-spec :family "JetBrains Mono" :size 12)
- doom-variable-pitch-font      (font-spec :family "IBM Plex Serif" :size 12)
+ doom-variable-pitch-font      (font-spec :family "JetBrains Mono" :size 12)
  +zen-text-scale               0
  doom-theme                    dark-theme)
 
