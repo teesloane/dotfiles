@@ -17,6 +17,7 @@ Thank you's:
 ;; (package! solaire-mode :disable tter)
 ;; (package! pretty-magit :recipe (:local-repo "~/.doom.d/local"))
 (package! focus)
+(package! blamer :recipe (:host github :repo "artawower/blamer.el"))
 (package! parseclj :recipe (:build (:not compile)))
 (unpin! cider)
 (package! blamer :recipe (:host github :repo "artawower/blamer.el"))
@@ -97,7 +98,8 @@ Thank you's:
  line-spacing                  2
   ;; doom-font                     (font-spec :family "IBM Plex Mono" :size 13 :weight 'regular)
  doom-font                     (font-spec :family "JetBrains Mono" :size 12)
- doom-variable-pitch-font      (font-spec :family "IBM Plex Serif" :size 12)
+ ;; doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
+ doom-variable-pitch-font      (font-spec :family "JetBrains Mono" :size 12)
  +zen-text-scale               0
  doom-theme                    dark-theme)
 #+END_SRC
