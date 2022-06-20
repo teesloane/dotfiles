@@ -32,12 +32,16 @@ Thank you's:
 
 #+BEGIN_SRC elisp :comments org
 
+
 ;;; Startup Calls --
 ;; unbreak doom on emacs@29
 (general-auto-unbind-keys :off)
+
 (remove-hook 'doom-after-init-modules-hook #'general-auto-unbind-keys)
 (setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10:/usr/local/opt/libgccjit/lib/gcc/10:/usr/local/opt/gcc/lib/gcc/10/gcc/x86_64-apple-darwin20/10.2.0")
 
+;; no menu bar
+(add-to-list 'default-frame-alist '(undecorated . t))
 
 (menu-bar-mode t)
 (fringe-mode 0)
@@ -912,4 +916,51 @@ Set path manually because the desktop emacs can nay find it.
         :major-modes '(zig-mode)
         :server-id 'zls))))
 
+#+end_src
+** Elixir
+
+The above is from: https://elixirforum.com/t/doom-emacs-elixir-wiki/45842
+
+#+begin_src elisp
+;; Configure elixir-lsp
+;; replace t with nil to disable.
+(setq lsp-elixir-fetch-deps nil)
+(setq lsp-elixir-suggest-specs nil)
+(setq lsp-elixir-signature-after-complete t)
+(setq lsp-elixir-enable-test-lenses nil)
+
+
+;; Compile and test on save
+;; (setq alchemist-hooks-test-on-save t)
+(setq alchemist-hooks-compile-on-save t)
+
+;; Disable popup quitting for Elixir’s REPL
+;; Default behaviour of doom’s treating of Alchemist’s REPL window is to quit the
+;; REPL when ESC or q is pressed (in normal mode). It’s quite annoying so below
+;; code disables this and set’s the size of REPL’s window to 30% of editor frame’s
+;; height.
+(set-popup-rule! "^\\*Alchemist-IEx" :quit nil :size 0.3)
+
+;; Do not select exunit-compilation window
+(setq shackle-rules '(("*exunit-compilation*" :noselect t))
+      shackle-default-rule '(:select t))
+
+;; Set global LSP options
+(after! lsp-mode (
+setq lsp-lens-enable nil
+lsp-ui-peek-enable t
+lsp-ui-doc-enable nil
+lsp-ui-doc-position 'bottom
+lsp-ui-doc-max-height 70
+lsp-ui-doc-max-width 150
+lsp-ui-sideline-show-diagnostics t
+lsp-ui-sideline-show-hover nil
+lsp-ui-sideline-show-code-actions t
+lsp-ui-sideline-diagnostic-max-lines 20
+lsp-ui-sideline-ignore-duplicate t
+lsp-ui-sideline-enable t))
+
+(add-hook 'elixir-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook #'lsp-format-buffer nil t)))
 #+end_src
