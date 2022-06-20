@@ -91,7 +91,7 @@ Thank you's:
 #+BEGIN_SRC elisp
 ;; Doom things
 (setq dark-theme 'doom-opera
-      light-theme 'doom-acario-light)
+      light-theme 'doom-flatwhite)
 
 (setq-default
  global-whitespace-mode        0
@@ -518,6 +518,13 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
            :file-name "${slug}"
            :head ,(tees/org-roam-template-head "project")
            :unnarrowed t)
+          ("r" "blog" entry (function org-roam--capture-get-point)
+           ;; "r Entry item!"
+           (file "~/.doom.d/templates/org-roam-research.org")
+           :file-name "${slug}"
+           :head ,(tees/org-roam-template-head "blog")
+           :unnarrowed t)
+
           ("r" "research" entry (function org-roam--capture-get-point)
            ;; "r Entry item!"
            (file "~/.doom.d/templates/org-roam-research.org")
