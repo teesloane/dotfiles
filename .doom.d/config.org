@@ -496,6 +496,9 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
 
 ;; Org Roam Config
 
+; disable weird bug https://discord.com/channels/406534637242810369/406554085794381833/988431916837511218
+(add-to-list '+evil-collection-disabled-list 'org-roam)
+
 (defun tees/org-roam-template-head (file-under)
   (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
 
@@ -924,7 +927,7 @@ The above is from: https://elixirforum.com/t/doom-emacs-elixir-wiki/45842
 #+begin_src elisp
 ;; Configure elixir-lsp
 ;; replace t with nil to disable.
-(setq lsp-elixir-fetch-deps nil)
+(setq lsp-elixir-fetch-deps t)
 (setq lsp-elixir-suggest-specs nil)
 (setq lsp-elixir-signature-after-complete t)
 (setq lsp-elixir-enable-test-lenses nil)
