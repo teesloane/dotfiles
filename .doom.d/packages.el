@@ -6,6 +6,7 @@
 (package! parseclj :recipe (:build (:not compile)))
 (unpin! cider)
 (package! blamer :recipe (:host github :repo "artawower/blamer.el"))
+(package! polymode)
 
 ;; (package! nano-emacs :recipe (:host github :repo "rougier/nano-emacs"))
 

@@ -21,6 +21,7 @@ Thank you's:
 (package! parseclj :recipe (:build (:not compile)))
 (unpin! cider)
 (package! blamer :recipe (:host github :repo "artawower/blamer.el"))
+(package! polymode)
 
 ;; (package! nano-emacs :recipe (:host github :repo "rougier/nano-emacs"))
 
@@ -41,7 +42,7 @@ Thank you's:
 (setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10:/usr/local/opt/libgccjit/lib/gcc/10:/usr/local/opt/gcc/lib/gcc/10/gcc/x86_64-apple-darwin20/10.2.0")
 
 ;; no menu bar
-(add-to-list 'default-frame-alist '(undecorated . t))
+;; (add-to-list 'default-frame-alist '(undecorated . t))
 
 (menu-bar-mode t)
 (fringe-mode 0)
@@ -496,7 +497,6 @@ Disable org mode src block backgrounds (cleans up backgrounds on headings when s
 
 ;; Org Roam Config
 
-; disable weird bug https://discord.com/channels/406534637242810369/406554085794381833/988431916837511218
 (add-to-list '+evil-collection-disabled-list 'org-roam)
 
 (defun tees/org-roam-template-head (file-under)
@@ -927,7 +927,7 @@ The above is from: https://elixirforum.com/t/doom-emacs-elixir-wiki/45842
 #+begin_src elisp
 ;; Configure elixir-lsp
 ;; replace t with nil to disable.
-(setq lsp-elixir-fetch-deps t)
+(setq lsp-elixir-fetch-deps nil)
 (setq lsp-elixir-suggest-specs nil)
 (setq lsp-elixir-signature-after-complete t)
 (setq lsp-elixir-enable-test-lenses nil)
@@ -944,6 +944,7 @@ The above is from: https://elixirforum.com/t/doom-emacs-elixir-wiki/45842
 ;; height.
 (set-popup-rule! "^\\*Alchemist-IEx" :quit nil :size 0.3)
 
+(set-popup-rule! "^\\*exunit-compilation" :quit nil :size 0.3)
 ;; Do not select exunit-compilation window
 (setq shackle-rules '(("*exunit-compilation*" :noselect t))
       shackle-default-rule '(:select t))
@@ -966,4 +967,29 @@ lsp-ui-sideline-enable t))
 (add-hook 'elixir-mode-hook
           (lambda ()
             (add-hook 'before-save-hook #'lsp-format-buffer nil t)))
+#+end_src
+
+add highlighting to heex files where sigils are used.
+
+# from: https://blog.evalcode.com/phoenix-liveview-inline-syntax-highlighting-for-emacs/
+#+begin_src elisp
+(use-package! polymode
+  :mode ("\.ex$" . poly-elixir-web-mode)
+  :config
+  (define-hostmode poly-elixir-hostmode :mode 'elixir-mode)
+  (define-innermode poly-liveview-expr-elixir-innermode
+    :mode 'web-mode
+    :head-matcher (rx line-start (* space) "~H" (= 3 (char "\"'")) line-end)
+    :tail-matcher (rx line-start (* space) (= 3 (char "\"'")) line-end)
+    :head-mode 'host
+    :tail-mode 'host
+    :allow-nested nil
+    :keep-in-mode 'host
+    :fallback-mode 'host)
+  (define-polymode poly-elixir-web-mode
+    :hostmode 'poly-elixir-hostmode
+    :innermodes '(poly-liveview-expr-elixir-innermode))
+  )
+(setq web-mode-engines-alist '(("elixir" . "\\.ex\\'")))
+
 #+end_src
