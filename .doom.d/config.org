@@ -930,7 +930,7 @@ The above is from: https://elixirforum.com/t/doom-emacs-elixir-wiki/45842
 (setq lsp-elixir-fetch-deps nil)
 (setq lsp-elixir-suggest-specs nil)
 (setq lsp-elixir-signature-after-complete t)
-(setq lsp-elixir-enable-test-lenses nil)
+(setq lsp-elixir-enable-test-lenses t)
 
 
 ;; Compile and test on save
@@ -944,21 +944,21 @@ The above is from: https://elixirforum.com/t/doom-emacs-elixir-wiki/45842
 ;; height.
 (set-popup-rule! "^\\*Alchemist-IEx" :quit nil :size 0.3)
 
-(set-popup-rule! "^\\*exunit-compilation" :quit nil :size 0.3)
+(set-popup-rule! "^\\*exunit-compilation" :quit nil :size 0.4)
 ;; Do not select exunit-compilation window
 (setq shackle-rules '(("*exunit-compilation*" :noselect t))
       shackle-default-rule '(:select t))
 
 ;; Set global LSP options
 (after! lsp-mode (
-setq lsp-lens-enable nil
+setq lsp-lens-enable t
 lsp-ui-peek-enable t
 lsp-ui-doc-enable nil
 lsp-ui-doc-position 'bottom
 lsp-ui-doc-max-height 70
 lsp-ui-doc-max-width 150
 lsp-ui-sideline-show-diagnostics t
-lsp-ui-sideline-show-hover nil
+lsp-ui-sideline-show-hover t
 lsp-ui-sideline-show-code-actions t
 lsp-ui-sideline-diagnostic-max-lines 20
 lsp-ui-sideline-ignore-duplicate t
@@ -991,5 +991,41 @@ add highlighting to heex files where sigils are used.
     :innermodes '(poly-liveview-expr-elixir-innermode))
   )
 (setq web-mode-engines-alist '(("elixir" . "\\.ex\\'")))
+
+#+end_src
+* General funcs
+
+** Copy buffer file name
+#+begin_src elisp
+(defun tees/copy-file-path (&optional DirPathOnlyQ)
+  "Copy current buffer file path or dired path.
+Result is full path.
+If `universal-argument' is called first, copy only the dir path.
+
+If in dired, copy the current or marked files.
+
+If a buffer is not file and not dired, copy value of `default-directory'.
+
+URL `http://xahlee.info/emacs/emacs/emacs_copy_file_path.html'
+Version 2018-06-18 2021-09-30"
+  (interactive "P")
+  (let (($fpath
+         (if (string-equal major-mode 'dired-mode)
+             (progn
+               (let (($result (mapconcat 'identity (dired-get-marked-files) "\n")))
+                 (if (equal (length $result) 0)
+                     (progn default-directory )
+                   (progn $result))))
+           (if (buffer-file-name)
+               (buffer-file-name)
+             (expand-file-name default-directory)))))
+    (kill-new
+     (if DirPathOnlyQ
+         (progn
+           (message "Directory copied: %s" (file-name-directory $fpath))
+           (file-name-directory $fpath))
+       (progn
+         (message "File path copied: %s" $fpath)
+         $fpath )))))
 
 #+end_src
