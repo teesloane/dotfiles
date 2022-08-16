@@ -102,6 +102,7 @@ Thank you's:
  global-whitespace-mode        0
  line-spacing                  2
   ;; doom-font                     (font-spec :family "IBM Plex Mono" :size 13 :weight 'regular)
+ ;; doom-font                     (font-spec :family "Fantasque Sans Mono" :size 13)
  doom-font                     (font-spec :family "JetBrains Mono" :size 12)
  ;; doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-variable-pitch-font      (font-spec :family "JetBrains Mono" :size 12)
@@ -828,7 +829,7 @@ General LSP settings:
 
 #+begin_src elisp
 (setq
- lsp-lens-enable t
+ lsp-lens-enable nil
  lsp-ui-imenu-auto-refresh t
  lsp-ui-sideline-show-code-actions nil
  lsp-zig-zls-executable "/usr/local/bin/zls"
@@ -942,23 +943,23 @@ The above is from: https://elixirforum.com/t/doom-emacs-elixir-wiki/45842
 ;; REPL when ESC or q is pressed (in normal mode). It’s quite annoying so below
 ;; code disables this and set’s the size of REPL’s window to 30% of editor frame’s
 ;; height.
-(set-popup-rule! "^\\*Alchemist-IEx" :quit nil :size 0.3)
+(set-popup-rule! "^\\*Alchemist-IEx" :quit nil :size 0.35)
 
-(set-popup-rule! "^\\*exunit-compilation" :quit nil :size 0.4)
+(set-popup-rule! "^\\*exunit-compilation*" :quit nil :size 0.35)
 ;; Do not select exunit-compilation window
 (setq shackle-rules '(("*exunit-compilation*" :noselect t))
       shackle-default-rule '(:select t))
 
 ;; Set global LSP options
 (after! lsp-mode (
-setq lsp-lens-enable t
+setq lsp-lens-enable nil
 lsp-ui-peek-enable t
 lsp-ui-doc-enable nil
 lsp-ui-doc-position 'bottom
 lsp-ui-doc-max-height 70
 lsp-ui-doc-max-width 150
 lsp-ui-sideline-show-diagnostics t
-lsp-ui-sideline-show-hover t
+lsp-ui-sideline-show-hover nil
 lsp-ui-sideline-show-code-actions t
 lsp-ui-sideline-diagnostic-max-lines 20
 lsp-ui-sideline-ignore-duplicate t
@@ -973,11 +974,14 @@ add highlighting to heex files where sigils are used.
 
 # from: https://blog.evalcode.com/phoenix-liveview-inline-syntax-highlighting-for-emacs/
 #+begin_src elisp
-(use-package! polymode
-  :mode ("\.ex$" . poly-elixir-web-mode)
+(use-package!
+   polymode
+  :ensure t
+  :mode ("\\.ex\\'" . poly-elixir-web-mode)
+  :init (setq web-mode-engines-alist '(("elixir" . "\\.ex\\'")))
   :config
   (define-hostmode poly-elixir-hostmode :mode 'elixir-mode)
-  (define-innermode poly-liveview-expr-elixir-innermode
+  (define-innermode poly-surface-expr-elixir-innermode
     :mode 'web-mode
     :head-matcher (rx line-start (* space) "~H" (= 3 (char "\"'")) line-end)
     :tail-matcher (rx line-start (* space) (= 3 (char "\"'")) line-end)
@@ -988,9 +992,7 @@ add highlighting to heex files where sigils are used.
     :fallback-mode 'host)
   (define-polymode poly-elixir-web-mode
     :hostmode 'poly-elixir-hostmode
-    :innermodes '(poly-liveview-expr-elixir-innermode))
-  )
-(setq web-mode-engines-alist '(("elixir" . "\\.ex\\'")))
+    :innermodes '(poly-surface-expr-elixir-innermode)))
 
 #+end_src
 * General funcs

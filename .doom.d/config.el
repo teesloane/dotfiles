@@ -4,9 +4,12 @@
 ;;; Startup Calls --
 ;; unbreak doom on emacs@29
 (general-auto-unbind-keys :off)
+
 (remove-hook 'doom-after-init-modules-hook #'general-auto-unbind-keys)
 (setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10:/usr/local/opt/libgccjit/lib/gcc/10:/usr/local/opt/gcc/lib/gcc/10/gcc/x86_64-apple-darwin20/10.2.0")
 
+;; no menu bar
+;; (add-to-list 'default-frame-alist '(undecorated . t))
 
 (menu-bar-mode t)
 (fringe-mode 0)
@@ -45,12 +48,13 @@
 
 ;; Doom things
 (setq dark-theme 'doom-opera
-      light-theme 'doom-acario-light)
+      light-theme 'doom-flatwhite)
 
 (setq-default
  global-whitespace-mode        0
  line-spacing                  2
   ;; doom-font                     (font-spec :family "IBM Plex Mono" :size 13 :weight 'regular)
+ ;; doom-font                     (font-spec :family "Fantasque Sans Mono" :size 13)
  doom-font                     (font-spec :family "JetBrains Mono" :size 12)
  ;; doom-font                     (font-spec :family "Iosevka" :size 14 :weight 'regular)
  doom-variable-pitch-font      (font-spec :family "JetBrains Mono" :size 12)
@@ -239,6 +243,8 @@
 
 ;; Org Roam Config
 
+(add-to-list '+evil-collection-disabled-list 'org-roam)
+
 (defun tees/org-roam-template-head (file-under)
   (concat "#+TITLE: ${title}\n#+DATE_CREATED: <> \n#+DATE_UPDATED: <> \n#+FIRN_UNDER: " file-under "\n#+FIRN_LAYOUT: default\n\n"))
 
@@ -265,6 +271,13 @@
            :file-name "${slug}"
            :head ,(tees/org-roam-template-head "project")
            :unnarrowed t)
+          ("r" "blog" entry (function org-roam--capture-get-point)
+           ;; "r Entry item!"
+           (file "~/.doom.d/templates/org-roam-research.org")
+           :file-name "${slug}"
+           :head ,(tees/org-roam-template-head "blog")
+           :unnarrowed t)
+
           ("r" "research" entry (function org-roam--capture-get-point)
            ;; "r Entry item!"
            (file "~/.doom.d/templates/org-roam-research.org")
@@ -502,7 +515,7 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
   (display-line-numbers-mode (if writeroom-mode -1 +1)))
 
 (setq
- lsp-lens-enable t
+ lsp-lens-enable nil
  lsp-ui-imenu-auto-refresh t
  lsp-ui-sideline-show-code-actions nil
  lsp-zig-zls-executable "/usr/local/bin/zls"
@@ -577,3 +590,97 @@ Clock   In/out^     ^Edit^    ^Summary     (_?_)
         :new-connection (lsp-stdio-connection "/usr/local/bin/zls")
         :major-modes '(zig-mode)
         :server-id 'zls))))
+
+;; Configure elixir-lsp
+;; replace t with nil to disable.
+(setq lsp-elixir-fetch-deps nil)
+(setq lsp-elixir-suggest-specs nil)
+(setq lsp-elixir-signature-after-complete t)
+(setq lsp-elixir-enable-test-lenses t)
+
+
+;; Compile and test on save
+;; (setq alchemist-hooks-test-on-save t)
+(setq alchemist-hooks-compile-on-save t)
+
+;; Disable popup quitting for Elixir’s REPL
+;; Default behaviour of doom’s treating of Alchemist’s REPL window is to quit the
+;; REPL when ESC or q is pressed (in normal mode). It’s quite annoying so below
+;; code disables this and set’s the size of REPL’s window to 30% of editor frame’s
+;; height.
+(set-popup-rule! "^\\*Alchemist-IEx" :quit nil :size 0.35)
+
+(set-popup-rule! "^\\*exunit-compilation*" :quit nil :size 0.35)
+;; Do not select exunit-compilation window
+(setq shackle-rules '(("*exunit-compilation*" :noselect t))
+      shackle-default-rule '(:select t))
+
+;; Set global LSP options
+(after! lsp-mode (
+setq lsp-lens-enable nil
+lsp-ui-peek-enable t
+lsp-ui-doc-enable nil
+lsp-ui-doc-position 'bottom
+lsp-ui-doc-max-height 70
+lsp-ui-doc-max-width 150
+lsp-ui-sideline-show-diagnostics t
+lsp-ui-sideline-show-hover nil
+lsp-ui-sideline-show-code-actions t
+lsp-ui-sideline-diagnostic-max-lines 20
+lsp-ui-sideline-ignore-duplicate t
+lsp-ui-sideline-enable t))
+
+(add-hook 'elixir-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook #'lsp-format-buffer nil t)))
+
+(use-package!
+   polymode
+  :ensure t
+  :mode ("\\.ex\\'" . poly-elixir-web-mode)
+  :init (setq web-mode-engines-alist '(("elixir" . "\\.ex\\'")))
+  :config
+  (define-hostmode poly-elixir-hostmode :mode 'elixir-mode)
+  (define-innermode poly-surface-expr-elixir-innermode
+    :mode 'web-mode
+    :head-matcher (rx line-start (* space) "~H" (= 3 (char "\"'")) line-end)
+    :tail-matcher (rx line-start (* space) (= 3 (char "\"'")) line-end)
+    :head-mode 'host
+    :tail-mode 'host
+    :allow-nested nil
+    :keep-in-mode 'host
+    :fallback-mode 'host)
+  (define-polymode poly-elixir-web-mode
+    :hostmode 'poly-elixir-hostmode
+    :innermodes '(poly-surface-expr-elixir-innermode)))
+
+(defun tees/copy-file-path (&optional DirPathOnlyQ)
+  "Copy current buffer file path or dired path.
+Result is full path.
+If `universal-argument' is called first, copy only the dir path.
+
+If in dired, copy the current or marked files.
+
+If a buffer is not file and not dired, copy value of `default-directory'.
+
+URL `http://xahlee.info/emacs/emacs/emacs_copy_file_path.html'
+Version 2018-06-18 2021-09-30"
+  (interactive "P")
+  (let (($fpath
+         (if (string-equal major-mode 'dired-mode)
+             (progn
+               (let (($result (mapconcat 'identity (dired-get-marked-files) "\n")))
+                 (if (equal (length $result) 0)
+                     (progn default-directory )
+                   (progn $result))))
+           (if (buffer-file-name)
+               (buffer-file-name)
+             (expand-file-name default-directory)))))
+    (kill-new
+     (if DirPathOnlyQ
+         (progn
+           (message "Directory copied: %s" (file-name-directory $fpath))
+           (file-name-directory $fpath))
+       (progn
+         (message "File path copied: %s" $fpath)
+         $fpath )))))
