@@ -997,6 +997,20 @@ add highlighting to heex files where sigils are used.
 #+end_src
 * General funcs
 
+** fn for fixing emacs too many files open error
+From [[https://www.blogbyben.com/2022/05/gotcha-emacs-on-mac-os-too-many-files.html][here]]
+
+#+begin_src elisp
+(defun tees/file-notify-rm-all-watches ()
+  "Remove all existing file notification watches from Emacs."
+  (interactive)
+  (maphash
+   (lambda (key _value)
+     (file-notify-rm-watch key))
+   file-notify-descriptors))
+#+end_src
+
+
 ** Copy buffer file name
 #+begin_src elisp
 (defun tees/copy-file-path (&optional DirPathOnlyQ)
