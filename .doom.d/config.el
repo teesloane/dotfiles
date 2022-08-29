@@ -654,6 +654,14 @@ lsp-ui-sideline-enable t))
     :hostmode 'poly-elixir-hostmode
     :innermodes '(poly-surface-expr-elixir-innermode)))
 
+(defun tees/file-notify-rm-all-watches ()
+  "Remove all existing file notification watches from Emacs."
+  (interactive)
+  (maphash
+   (lambda (key _value)
+     (file-notify-rm-watch key))
+   file-notify-descriptors))
+
 (defun tees/copy-file-path (&optional DirPathOnlyQ)
   "Copy current buffer file path or dired path.
 Result is full path.
